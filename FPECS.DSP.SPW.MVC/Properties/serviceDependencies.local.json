@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "connectionInfo": "App registration: DigitalizedStudentsPortalResearchersModule, Tenant: DNU Faculty of Physics, Electronics and Computer Systems (ffeks.dnu.edu.ua - Microsoft Entra ID)",
+      "secretStore": "LocalSecretsFile",
+      "type": "identityapp.secretStore",
+      "connectionId": "AzureAD:ClientSecret"
+    },
+    "postgresql1": {
+      "containerPorts": "5432:5432",
+      "secretStore": "LocalSecretsFile",
+      "containerName": "postgresql",
+      "containerImage": "postgres",
+      "type": "postgresql.container",
+      "connectionId": "Database",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "ignored": "true",
+      "type": "mssql"
+    },
+    "sqlite1": {
+      "ignored": "true",
+      "type": "sqlite"
+    }
+  }
+}

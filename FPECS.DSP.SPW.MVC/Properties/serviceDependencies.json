@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "type": "identityapp",
+      "connectionId": "AzureAD:ClientSecret"
+    },
+    "postgresql1": {
+      "type": "postgresql",
+      "connectionId": "Database",
+      "dynamicId": null
+    }
+  }
+}
