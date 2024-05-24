@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using FPECS.DSP.SPW.Business;
 using FPECS.DSP.SPW.MVC.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -49,7 +50,7 @@ public class Startup(IConfiguration configuration)
 
         services.AddHttpContextAccessor();
 
-        // TODO: Register business
+        services.AddBusinessLayer(configuration);
 
         services.AddCors(options =>
         {
