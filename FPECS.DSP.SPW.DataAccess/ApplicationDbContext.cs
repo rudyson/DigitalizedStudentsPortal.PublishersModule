@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
+using FPECS.DSP.SPW.DataAccess.Entities;
+
 namespace FPECS.DSP.SPW.DataAccess;
 internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : DbContext(options)
@@ -11,7 +12,14 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
 
     #region Database sets
 
-    //public required DbSet<Category> Categories { get; set; }
+    public required DbSet<Researcher> Researchers { get; set; }
+    public required DbSet<ResearcherPseudonym> ResearcherPseudonyms { get; set; }
+    public required DbSet<ResearcherProfile> ResearcherProfiles { get; set; }
+    public required DbSet<Publication> Publications { get; set; }
+    public required DbSet<PublicationPublisher> PublicationPublishers { get; set; }
+    public required DbSet<Chair> Chairs { get; set; }
+    public required DbSet<Faculty> Faculties { get; set; }
+    public required DbSet<ScienceEmployee> ScienceEmployees { get; set; }
 
     #endregion
 }
