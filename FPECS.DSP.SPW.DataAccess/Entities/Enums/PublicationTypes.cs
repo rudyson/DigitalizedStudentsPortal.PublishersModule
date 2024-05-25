@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace FPECS.DSP.SPW.DataAccess.Entities.Enums;
 public enum PublicationTypes
 {
+    None = 0,
     Article, // стаття
     Theses, // тези
     MethodicalManual, // Методичний посібник

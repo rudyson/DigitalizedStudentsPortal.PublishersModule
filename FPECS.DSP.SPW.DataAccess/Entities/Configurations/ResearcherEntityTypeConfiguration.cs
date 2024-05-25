@@ -10,9 +10,6 @@ public class ResearcherEntityTypeConfiguration : IEntityTypeConfiguration<Resear
         builder.ToTable("researchers");
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.LastName).IsRequired();
-        builder.Property(e => e.FirstName).IsRequired();
-
         builder.HasMany(e => e.ResearcherPseudonyms)
             .WithOne(e => e.Researcher)
             .HasForeignKey(e => e.ResearcherId);
@@ -20,5 +17,9 @@ public class ResearcherEntityTypeConfiguration : IEntityTypeConfiguration<Resear
         builder.HasMany(e => e.ResearcherProfiles)
             .WithOne(e => e.Researcher)
             .HasForeignKey(e => e.ResearcherId);
+
+        builder.HasOne(e => e.Chair)
+            .WithMany(e => e.Researchers)
+            .HasForeignKey(e => e.ChairId);
     }
 }

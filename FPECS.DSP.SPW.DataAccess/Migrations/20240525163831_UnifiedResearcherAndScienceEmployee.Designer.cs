@@ -3,6 +3,7 @@ using System;
 using FPECS.DSP.SPW.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FPECS.DSP.SPW.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240525163831_UnifiedResearcherAndScienceEmployee")]
+    partial class UnifiedResearcherAndScienceEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                     b.Property<int>("Category")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(0)
+                        .HasDefaultValue(1)
                         .HasColumnName("category");
 
                     b.Property<string>("Doi")
@@ -101,7 +104,7 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("text")
                         .HasColumnName("issn");
 
-                    b.Property<short?>("Pages")
+                    b.Property<short>("Pages")
                         .HasColumnType("smallint")
                         .HasColumnName("pages");
 
@@ -110,6 +113,7 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnName("pages_author");
 
                     b.Property<string>("PublicationOriginSource")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("publication_origin_source");
 

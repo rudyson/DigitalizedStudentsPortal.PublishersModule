@@ -10,8 +10,6 @@ public class ChairEntityTypeConfiguration : IEntityTypeConfiguration<Chair>
         builder.ToTable("chairs");
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.Name).IsRequired();
-
         builder.HasOne(e => e.Faculty)
             .WithMany(e => e.Chairs)
             .HasForeignKey(e => e.FacultyId);

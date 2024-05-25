@@ -8,22 +8,30 @@
 </div>
 
 <div>
-    <table>
-        <tr>
-            <td></td>
-            <td>@ViewData["UserDisplayName"]</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>@ViewData["UserJobTitle"]</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>@ViewData["UserId"]</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>@ViewData["UserMail"]</td>
-        </tr>
-    </table>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">
+                @ViewData["UserDisplayName"] (@ViewData["UserJobTitle"])
+            </h5>
+        </div>
+        <div class="card-body">
+            <h6>@ViewData["UserMail"]</h6>
+        </div>
+        <div class="card-footer">
+            <table>
+                <tr>
+                    <td></td>
+                    <td>@ViewData["UserId"]</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>@ViewData["UserGivenName"]</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>@ViewData["UserSurname"]</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>

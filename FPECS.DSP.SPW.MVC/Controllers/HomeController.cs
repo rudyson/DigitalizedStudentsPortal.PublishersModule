@@ -18,6 +18,8 @@ public class HomeController(GraphServiceClient graphServiceClient) : Controller
 
         ViewData["UserDisplayName"] = user.DisplayName;
         ViewData["UserJobTitle"] = user.JobTitle;
+        ViewData["UserGivenName"] = user.GivenName;
+        ViewData["UserSurname"] = user.Surname;
         ViewData["UserId"] = user.Id;
         ViewData["UserMail"] = user.Mail;
 

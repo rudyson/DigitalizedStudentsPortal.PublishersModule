@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace FPECS.DSP.SPW.DataAccess.Entities.Enums;
 public enum AcademicDegrees
 {
+    None = 0,
+    Student,
     Assistant, // Асистент
     AssociateProfessor, // Доцент
     SeniorLecturer, // Старший викладач

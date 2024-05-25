@@ -19,7 +19,6 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
     public required DbSet<PublicationPublisher> PublicationPublishers { get; set; }
     public required DbSet<Chair> Chairs { get; set; }
     public required DbSet<Faculty> Faculties { get; set; }
-    public required DbSet<ScienceEmployee> ScienceEmployees { get; set; }
 
     #endregion
 }

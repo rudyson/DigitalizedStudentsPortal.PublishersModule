@@ -14,5 +14,5 @@ public class Chair
     public required long FacultyId { get; set; }
     public virtual Faculty? Faculty { get; set; }
 
-    public virtual List<ScienceEmployee>? ScienceEmployees { get; set; }
+    public virtual List<Researcher>? Researchers { get; set; }
 }

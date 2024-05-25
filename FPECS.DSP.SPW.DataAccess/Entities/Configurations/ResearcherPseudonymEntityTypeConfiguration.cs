@@ -9,7 +9,5 @@ public class ResearcherPseudonymEntityTypeConfigurationEntityTypeConfiguration :
     {
         builder.ToTable("researcher_pseudonyms");
         builder.HasKey(e => e.Id);
-
-        builder.Property(e => e.ShortName).IsRequired();
     }
 }

@@ -11,11 +11,7 @@ public class PublicationEntityTypeConfiguration : IEntityTypeConfiguration<Publi
         builder.ToTable("publications");
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.Title).IsRequired();
-        builder.Property(e => e.PublicationOriginSource).IsRequired();
-        builder.Property(e => e.Type).IsRequired();
-        builder.Property(e => e.Pages).IsRequired();
-        builder.Property(e => e.Category).HasDefaultValue(PublicationCategory.B);
+        builder.Property(e => e.Category).HasDefaultValue(PublicationCategory.None);
 
         builder.HasMany(e => e.PublicationPublishers)
             .WithOne(e => e.Publication)

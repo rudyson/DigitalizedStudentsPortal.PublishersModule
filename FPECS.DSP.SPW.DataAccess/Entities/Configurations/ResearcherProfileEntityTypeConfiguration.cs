@@ -9,7 +9,5 @@ public class ResearcherProfileEntityTypeConfiguration : IEntityTypeConfiguration
     {
         builder.ToTable("researcher_profiles");
         builder.HasKey(e => e.Id);
-
-        builder.Property(e => e.Type).IsRequired();
     }
 }

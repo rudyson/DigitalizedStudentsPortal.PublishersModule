@@ -9,7 +9,5 @@ public class FacultyEntityTypeConfiguration : IEntityTypeConfiguration<Faculty>
     {
         builder.ToTable("faculties");
         builder.HasKey(e => e.Id);
-
-        builder.Property(e => e.Title).IsRequired();
     }
 }
