@@ -2,13 +2,16 @@ using FPECS.DSP.SPW.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using FPECS.DSP.SPW.Business.Services;
+using FPECS.DSP.SPW.DataAccess;
+using FPECS.DSP.SPW.DataAccess.Entities.Enums;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
 
 namespace FPECS.DSP.SPW.MVC.Controllers;
 
 [Authorize]
-public class HomeController(GraphServiceClient graphServiceClient) : Controller
+public class HomeController(GraphServiceClient graphServiceClient, IResearcherService researcherService) : Controller
 {
 
     [AuthorizeForScopes(ScopeKeySection = "MicrosoftGraph:Scopes")]
@@ -16,14 +19,21 @@ public class HomeController(GraphServiceClient graphServiceClient) : Controller
     {
         var user = await graphServiceClient.Me.Request().GetAsync();
 
-        ViewData["UserDisplayName"] = user.DisplayName;
-        ViewData["UserJobTitle"] = user.JobTitle;
-        ViewData["UserGivenName"] = user.GivenName;
-        ViewData["UserSurname"] = user.Surname;
-        ViewData["UserId"] = user.Id;
-        ViewData["UserMail"] = user.Mail;
+        var mappedIdentity =
+            new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail, AcademicDegrees.None);
 
-        return View();
+        var mappedUser = await researcherService.GetInformationOnLoginAsync(mappedIdentity);
+
+        // TODO: TenantIdentity verifying
+        /*
+    ViewData["UserDisplayName"] = user.DisplayName;
+    ViewData["UserJobTitle"] = user.JobTitle;
+    ViewData["UserGivenName"] = user.GivenName;
+    ViewData["UserSurname"] = user.Surname;
+    ViewData["UserId"] = user.Id;
+    ViewData["UserMail"] = user.Mail;
+        */
+        return View(mappedUser);
     }
 
     public IActionResult Privacy()
