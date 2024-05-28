@@ -19,11 +19,18 @@ public class Startup(IConfiguration configuration)
         var microsoftGraphConfigurationSection = configuration.GetSection("MicrosoftGraph");
 
         // ASP.NET Core MVC
+        /*
         services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApp(azureActiveDirectoryConfigurationSection)
             .EnableTokenAcquisitionToCallDownstreamApi(GetAzureAdScopeSection?.Split(' '))
             .AddMicrosoftGraph(microsoftGraphConfigurationSection)
-            .AddInMemoryTokenCaches();
+            .AddInMemoryTokenCaches();*/
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(azureActiveDirectoryConfigurationSection);
+            //.EnableTokenAcquisitionToCallDownstreamApi()
+            //.AddMicrosoftGraph(microsoftGraphConfigurationSection);
+            //.AddInMemoryTokenCaches();
 
         // ASP.NET Core Web API
         /*
@@ -60,17 +67,27 @@ public class Startup(IConfiguration configuration)
                     builder
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:4200", "https://localhost:4200", "http://localhost:4200/", "https://localhost:4200/");
                 });
             options.AddPolicy("AzureADPolicy",
                 builder =>
                 {
-                    builder.WithOrigins("https://login.microsoftonline.com")
+                    builder.WithOrigins("https://login.microsoftonline.com/72e42a61-9cee-4b78-8828-29b226163bd7")
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
         });
 
+        services
+            .AddControllers()
+            .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.JsonSerializerOptions.WriteIndented = true;
+            options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+        });
+        /*
         services.AddControllersWithViews(options =>
         {
             var policy = new AuthorizationPolicyBuilder()
@@ -84,7 +101,7 @@ public class Startup(IConfiguration configuration)
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
-        });
+        });*/
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -96,7 +113,8 @@ public class Startup(IConfiguration configuration)
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "FPECS.DSP.SPW.Api"));
+            app.UseSwaggerUI();
+            // app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "FPECS.DSP.SPW.Api"));
         }
         else
         {
@@ -120,9 +138,10 @@ public class Startup(IConfiguration configuration)
 
         app.UseEndpoints(endpoints =>
         {
+            /*
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");*/
             endpoints.MapControllers();
             //endpoints.MapRazorPages();
 

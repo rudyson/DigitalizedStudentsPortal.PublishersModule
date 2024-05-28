@@ -1,0 +1,21 @@
+<div *ngIf="profile">
+  <p-chip
+    [label]="profile.displayName"
+    [pTooltip]="profile.userPrincipalName"
+    tooltipPosition="bottom"
+    ><p-avatar
+      [label]="profile.userPrincipalName![0].toString().toUpperCase()"
+      icon="pi pi-user"
+      styleClass="mr-2"
+      [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }"
+      shape="circle"
+      [image]="profilePicture?.toString()"
+  /></p-chip>
+
+  <p><strong>First Name: </strong> {{ profile.givenName }}</p>
+  <p><strong>Last Name: </strong> {{ profile.surname }}</p>
+  <p><strong>Email: </strong> {{ profile.userPrincipalName }}</p>
+  <p><strong>UserDisplayName: </strong> {{ profile.displayName }}</p>
+  <p><strong>UserJobTitle: </strong> {{ profile.jobTitle }}</p>
+  <p><strong>UserMail: </strong> {{ profile.mail }}</p>
+</div>
