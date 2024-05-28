@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dsp.spw.client:build:production"
+              "buildTarget": "dsp.spw.client:build:production"
             },
             "development": {
-              "browserTarget": "dsp.spw.client:build:development"
+              "buildTarget": "dsp.spw.client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dsp.spw.client:build"
+            "buildTarget": "dsp.spw.client:build"
           }
         },
         "test": {
