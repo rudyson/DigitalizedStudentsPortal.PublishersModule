@@ -34,6 +34,7 @@ import {
   MsalModule,
   MsalInterceptor,
 } from '@azure/msal-angular';
+import { TestApiCallComponent } from './test-api-call/test-api-call.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -73,6 +74,9 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
   protectedResourceMap.set(GRAPH_ENDPOINT, ['user.read']);
+  protectedResourceMap.set('localhost', [
+    'api://95e3fcdb-5f1c-4a70-ae15-56e68a9337ed/api.scope',
+  ]);
 
   return {
     interactionType: InteractionType.Redirect,
@@ -89,7 +93,12 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ProfileComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    ProfileComponent,
+    TestApiCallComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

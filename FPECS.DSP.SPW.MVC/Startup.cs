@@ -1,10 +1,13 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using FPECS.DSP.SPW.Business;
 using FPECS.DSP.SPW.MVC.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Graph;
+using Microsoft.Identity.Client;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -12,36 +15,15 @@ namespace FPECS.DSP.SPW.MVC;
 
 public class Startup(IConfiguration configuration)
 {
-    private string? GetAzureAdScopeSection => configuration["MicrosoftGraph:Scopes"] ?? configuration["DownstreamApi:Scopes"];
     public void ConfigureServices(IServiceCollection services)
     {
         var azureActiveDirectoryConfigurationSection = configuration.GetSection("AzureAd");
         var microsoftGraphConfigurationSection = configuration.GetSection("MicrosoftGraph");
 
-        // ASP.NET Core MVC
-        services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApp(azureActiveDirectoryConfigurationSection)
-            .EnableTokenAcquisitionToCallDownstreamApi(GetAzureAdScopeSection?.Split(' '))
-            .AddMicrosoftGraph(microsoftGraphConfigurationSection)
-            .AddInMemoryTokenCaches();
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(azureActiveDirectoryConfigurationSection);
 
-        // ASP.NET Core Web API
-        /*
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-           .AddMicrosoftIdentityWebApi(azureActiveDirectoryConfigurationSection)
-           .EnableTokenAcquisitionToCallDownstreamApi()
-            .AddMicrosoftGraph(microsoftGraphConfigurationSection)
-            .AddInMemoryTokenCaches();*/
-        /*
-        var jwtBearerOpenIdConnectAuthorizationPolicyBuilder =
-            new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme,
-                    OpenIdConnectDefaults.AuthenticationScheme)
-                .RequireAuthenticatedUser()
-                .Build();
-
-        services.AddAuthorizationBuilder()
-            .SetDefaultPolicy(jwtBearerOpenIdConnectAuthorizationPolicyBuilder);
-        */
         services.AddRouting(options =>
         {
             options.LowercaseQueryStrings = true;
@@ -60,7 +42,8 @@ public class Startup(IConfiguration configuration)
                     builder
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:4200", "https://localhost:4200");
                 });
             options.AddPolicy("AzureADPolicy",
                 builder =>
@@ -71,15 +54,7 @@ public class Startup(IConfiguration configuration)
                 });
         });
 
-        services.AddControllersWithViews(options =>
-        {
-            var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-            options.Filters.Add(new AuthorizeFilter(policy));
-        })
-            .AddMicrosoftIdentityUI()
-            .AddJsonOptions(options =>
+        services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             options.JsonSerializerOptions.WriteIndented = true;
@@ -96,11 +71,10 @@ public class Startup(IConfiguration configuration)
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "FPECS.DSP.SPW.Api"));
+            app.UseSwaggerUI();
         }
         else
         {
-            app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
 
@@ -115,20 +89,9 @@ public class Startup(IConfiguration configuration)
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
             endpoints.MapControllers();
-            //endpoints.MapRazorPages();
-
-            //endpoints.MapIdentityApi<ApplicationUser>();
-
-            //endpoints.MapFallbackToFile("/index.html");
         });
     }
 }
