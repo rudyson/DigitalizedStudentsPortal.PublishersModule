@@ -1,6 +1,6 @@
 <nav class="header">
   <div class="header-left">
-    <div class="header-logo"><img src="../../../assets/RE1Mu3b.png" /></div>
+    <div class="header-logo"><img src="../../../assets/new-logo.svg" /></div>
   </div>
   <div class="header-right">
     <div class="header-userprofile">
@@ -8,22 +8,30 @@
         <p-avatar
           *ngIf="profile"
           styleClass="mr-2"
-          [label]="profile.userPrincipalName![0].toString().toUpperCase()"
-          size="xlarge"
           [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }"
-          ><img [src]="image" [alt]="profile.id" />
+          ><img
+            [src]="image"
+            [alt]="profile.userPrincipalName![0].toString().toUpperCase()"
+          />
         </p-avatar>
       </div>
-      <div class="header-userprofile-info">
-        <p>{{ profile.displayName }}</p>
-        <p>
-          <span class="email">{{
-            profile.email ?? profile.userPrincipalName
-          }}</span
-          ><span class="job-title">{{ profile.jobTitle }}</span>
+      <div
+        class="header-userprofile-info"
+        [pTooltip]="profile.email ?? profile.userPrincipalName"
+        tooltipPosition="bottom"
+      >
+        <p class="header-userprofile-info-name">{{ profile.displayName }}</p>
+        <p class="header-userprofile-info-jobtitle">
+          {{ profile.jobTitle }}
         </p>
         <p></p>
       </div>
+      <p-button
+        icon="pi pi-sign-out"
+        [rounded]="true"
+        [text]="true"
+        severity="primary"
+      />
     </div>
   </div>
 </nav>

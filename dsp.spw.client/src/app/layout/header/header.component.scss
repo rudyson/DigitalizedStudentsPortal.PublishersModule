@@ -13,14 +13,19 @@
   &-right {
   }
   &-avatar {
-    width: 24px;
-    height: 24px;
-    background-color: white;
+    aspect-ratio: 1/1;
+    height: 100%;
+    overflow: hidden;
   }
   &-logo {
-    width: 160px;
+    width: max-content;
     height: 100%;
-    background-color: white;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      filter: brightness(0) invert(1);
+    }
   }
 
   &-userprofile {
@@ -28,11 +33,20 @@
     flex-direction: row;
     align-items: center;
     gap: 8px;
-    background-color: beige;
-    border-radius: 16px;
-    padding: 0 16px;
-    &-info p {
-      margin: 0;
+    color: white;
+    height: 100%;
+    &-info {
+      p {
+        margin: 0;
+      }
+
+      &-jobtitle {
+        font-size: 14px;
+      }
+
+      &-name {
+        font-size: 16px;
+      }
     }
   }
 }

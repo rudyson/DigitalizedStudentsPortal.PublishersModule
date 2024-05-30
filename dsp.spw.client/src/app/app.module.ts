@@ -9,6 +9,8 @@ import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -107,11 +109,14 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+
     TabMenuModule,
     MenuModule,
     BadgeModule,
     RippleModule,
     AvatarModule,
+    ButtonModule,
+    TooltipModule,
 
     HttpClientModule,
     MsalModule,
