@@ -10,14 +10,17 @@ type ProfileType = {
   surname?: string;
   userPrincipalName?: string;
   id?: string;
+  displayName?: string;
+  jobTitle?: string;
+  email?: string;
 };
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
 })
-export class ProfileComponent implements OnInit {
+export class HeaderComponent implements OnInit {
   profile!: ProfileType;
   image?: SafeUrl;
   imageUrl: string = '';

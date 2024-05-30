@@ -35,6 +35,8 @@ import {
   MsalInterceptor,
 } from '@azure/msal-angular';
 import { TestApiCallComponent } from './test-api-call/test-api-call.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { AsideComponent } from './layout/aside/aside.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -96,6 +98,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   declarations: [
     AppComponent,
     HomeComponent,
+    HeaderComponent,
+    AsideComponent,
     ProfileComponent,
     TestApiCallComponent,
   ],

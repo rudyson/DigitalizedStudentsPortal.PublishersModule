@@ -1,0 +1,29 @@
+<nav class="header">
+  <div class="header-left">
+    <div class="header-logo"><img src="../../../assets/RE1Mu3b.png" /></div>
+  </div>
+  <div class="header-right">
+    <div class="header-userprofile">
+      <div class="header-avatar">
+        <p-avatar
+          *ngIf="profile"
+          styleClass="mr-2"
+          [label]="profile.userPrincipalName![0].toString().toUpperCase()"
+          size="xlarge"
+          [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }"
+          ><img [src]="image" [alt]="profile.id" />
+        </p-avatar>
+      </div>
+      <div class="header-userprofile-info">
+        <p>{{ profile.displayName }}</p>
+        <p>
+          <span class="email">{{
+            profile.email ?? profile.userPrincipalName
+          }}</span
+          ><span class="job-title">{{ profile.jobTitle }}</span>
+        </p>
+        <p></p>
+      </div>
+    </div>
+  </div>
+</nav>
