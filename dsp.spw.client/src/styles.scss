@@ -4,6 +4,17 @@
 @import "primeicons/primeicons.css";
 
 @import "./assets/fonts/Inter/inter.scss";
+@import "./assets/fonts/SegoeUI/segoe-ui.scss";
+
+:root {
+  font-family: "Inter, Segoe UI", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: "InterVariable", sans-serif;
+    font-optical-sizing: auto;
+  }
+}
 
 /* Order */
 @layer reset, primeng;
