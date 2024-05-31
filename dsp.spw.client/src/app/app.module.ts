@@ -41,6 +41,7 @@ import { TestApiCallComponent } from './components/test-api-call/test-api-call.c
 import { HeaderComponent } from './components/layout/header/header.component';
 import { AsideComponent } from './components/layout/aside/aside.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
+import { LoginPageComponent } from './components/layout/login-page/login-page.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -107,6 +108,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     ProfileComponent,
     TestApiCallComponent,
     AboutMeComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
