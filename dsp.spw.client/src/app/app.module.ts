@@ -6,14 +6,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
+import { CardModule } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
@@ -36,9 +37,10 @@ import {
   MsalModule,
   MsalInterceptor,
 } from '@azure/msal-angular';
-import { TestApiCallComponent } from './test-api-call/test-api-call.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { AsideComponent } from './layout/aside/aside.component';
+import { TestApiCallComponent } from './components/test-api-call/test-api-call.component';
+import { HeaderComponent } from './components/layout/header/header.component';
+import { AsideComponent } from './components/layout/aside/aside.component';
+import { AboutMeComponent } from './components/views/about-me/about-me.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -104,6 +106,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     AsideComponent,
     ProfileComponent,
     TestApiCallComponent,
+    AboutMeComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,6 +120,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     AvatarModule,
     ButtonModule,
     TooltipModule,
+    CardModule,
 
     HttpClientModule,
     MsalModule,

@@ -10,7 +10,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace FPECS.DSP.SPW.Business.Services;
-public record PublisherProfileIdentityModel(string LastName, string FirstName, string Email, AcademicDegrees AcademicDegree);
+public record PublisherProfileIdentityModel(string LastName, string FirstName, string Email);
 
 public class ResearcherGetInformationModel
 {
@@ -46,6 +46,8 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
         var adaptedModel = model.Adapt<Researcher>();
 
         var createdProfile = await context.Researchers.AddAsync(adaptedModel, cancellationToken);
+
+        await context.SaveChangesAsync(cancellationToken);
 
         return createdProfile.Entity.Adapt<ResearcherGetInformationModel>();
     }

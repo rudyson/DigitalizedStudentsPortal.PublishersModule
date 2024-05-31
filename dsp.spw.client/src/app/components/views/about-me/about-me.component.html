@@ -1,0 +1,24 @@
+<p-card *ngIf="profile">
+  <ng-template pTemplate="header">
+    <img src="{{ avatarUrl }}" alt="Avatar" class="avatar" />
+  </ng-template>
+  <div class="card-content">
+    <h2>
+      {{ profile.lastName }} {{ profile.firstName }} {{ profile.middleName }}
+    </h2>
+    <div class="badges">
+      <p-badge
+        *ngFor="let pseudonym of pseudonyms"
+        value="{{ pseudonym }}"
+        class="p-mr-2"
+      ></p-badge>
+    </div>
+    <div class="user-id"><i class="pi pi-id-card"></i> {{ profile.id }}</div>
+    <div class="user-id">
+      <i class="pi pi-id-card"></i> {{ profile.posada }}
+    </div>
+    @if (false) {
+    <div>{{ profile | json }}</div>
+    }
+  </div>
+</p-card>

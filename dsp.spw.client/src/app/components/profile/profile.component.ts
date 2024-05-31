@@ -1,16 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
-
-const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
-
-type ProfileType = {
-  givenName?: string;
-  surname?: string;
-  userPrincipalName?: string;
-  id?: string;
-};
+import {
+  MicrosoftGraphMeResponse,
+  MicrosoftGraphService,
+} from 'src/app/services/microsoft/microsoft-graph.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,11 +12,15 @@ type ProfileType = {
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
-  profile!: ProfileType;
+  profile!: MicrosoftGraphMeResponse;
   image?: SafeUrl;
   imageUrl: string = '';
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private microsoftGraphService: MicrosoftGraphService
+  ) {}
 
   ngOnInit() {
     this.getProfile();
@@ -30,19 +28,13 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfile() {
-    this.http.get(GRAPH_ENDPOINT).subscribe((profile) => {
+    this.microsoftGraphService.getMe().subscribe((profile) => {
       this.profile = profile;
     });
   }
 
-  getImageBlob(): Observable<Blob> {
-    return this.http.get(`${GRAPH_ENDPOINT}/photo/$value`, {
-      responseType: 'blob',
-    });
-  }
-
   getImageUrl(): void {
-    this.getImageBlob().subscribe((blob: any) => {
+    this.microsoftGraphService.getMePhoto().subscribe((blob: any) => {
       let objectURL = URL.createObjectURL(blob);
       this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
       this.imageUrl =

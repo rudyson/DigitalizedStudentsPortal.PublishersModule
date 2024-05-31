@@ -139,8 +139,10 @@
 <div class="page">
   <app-aside></app-aside>
   <main>
+    <!--
     <button *ngIf="loginDisplay" (click)="logout()">Logout</button>
     <a mat-button [routerLink]="['profile']">Profile</a>
+    -->
     <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
     <router-outlet *ngIf="!isIframe"></router-outlet>
   </main>

@@ -20,7 +20,7 @@ public class HomeController(GraphServiceClient graphServiceClient, IResearcherSe
         var user = await graphServiceClient.Me.Request().GetAsync();
 
         var mappedIdentity =
-            new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail, AcademicDegrees.None);
+            new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail);
 
         var mappedUser = await researcherService.GetInformationOnLoginAsync(mappedIdentity);
 
