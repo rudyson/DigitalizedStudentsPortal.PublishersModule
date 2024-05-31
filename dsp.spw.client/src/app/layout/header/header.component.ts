@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import { MicrosoftAuthorizationControllerService } from 'src/app/services/microsoft-authorization-controller.service';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -25,7 +26,11 @@ export class HeaderComponent implements OnInit {
   image?: SafeUrl;
   imageUrl: string = '';
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private microsoftAuthorizationControllerService: MicrosoftAuthorizationControllerService
+  ) {}
 
   ngOnInit() {
     this.getProfile();
@@ -51,5 +56,9 @@ export class HeaderComponent implements OnInit {
       this.imageUrl =
         this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.image) ?? '';
     });
+  }
+
+  logout(): void {
+    this.microsoftAuthorizationControllerService.logout();
   }
 }

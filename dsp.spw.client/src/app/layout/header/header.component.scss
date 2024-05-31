@@ -38,6 +38,7 @@
     &-info {
       p {
         margin: 0;
+        white-space: nowrap;
       }
 
       &-jobtitle {
@@ -46,7 +47,14 @@
 
       &-name {
         font-size: 16px;
+        font-weight: bold;
       }
     }
+  }
+}
+
+@layer primeng {
+  .p-avatar {
+    margin: auto;
   }
 }

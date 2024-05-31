@@ -3,10 +3,9 @@
     <div class="header-logo"><img src="../../../assets/new-logo.svg" /></div>
   </div>
   <div class="header-right">
-    <div class="header-userprofile">
+    <div class="header-userprofile" *ngIf="profile">
       <div class="header-avatar">
         <p-avatar
-          *ngIf="profile"
           styleClass="mr-2"
           [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }"
           ><img
@@ -31,6 +30,7 @@
         [rounded]="true"
         [text]="true"
         severity="primary"
+        (onClick)="logout()"
       />
     </div>
   </div>

@@ -1,8 +1,12 @@
 <aside>
   <ul>
-    <li>Menu1</li>
-    <li>Menu1</li>
-    <li>Menu1</li>
-    <li>Menu1</li>
+    @for (menuItem of sideMenuItems; track $index) {
+
+    <li>
+      <a [routerLink]="menuItem.routerLink" routerLinkActive="current">
+        <i [classList]="menuItem.icon"></i><span>{{ menuItem.label }}</span></a
+      >
+    </li>
+    }
   </ul>
 </aside>
