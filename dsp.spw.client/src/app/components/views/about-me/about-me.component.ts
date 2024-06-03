@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  PublisherProfileIdentityModel,
-  ResearcherGetInformationModel,
-  ResearchersService,
-} from 'src/app/services/api/researchers.service';
+import { ResearchersService } from 'src/app/services/api/researchers.service';
+import { ResearcherGetInformationModel } from 'src/app/services/api/researchers.service.models';
 import { MicrosoftGraphService } from 'src/app/services/microsoft/microsoft-graph.service';
 
 @Component({
@@ -16,7 +13,7 @@ export class AboutMeComponent implements OnInit {
   avatarUrl: string = 'https://via.placeholder.com/150'; // Replace with your avatar URL
   pseudonyms: string[] = ['Дядюшкін Р.С.', 'Ruslan Diadiushkin'];
   userId: string = '123456';
-  profile?: ResearcherGetInformationModel;
+  researcherInformationModel?: ResearcherGetInformationModel;
 
   constructor(
     private researchersService: ResearchersService,
@@ -38,7 +35,7 @@ export class AboutMeComponent implements OnInit {
         });
     }); */
     this.researchersService.getInfo().subscribe((moduleProfile) => {
-      this.profile = moduleProfile;
+      this.researcherInformationModel = moduleProfile;
     });
   }
 }

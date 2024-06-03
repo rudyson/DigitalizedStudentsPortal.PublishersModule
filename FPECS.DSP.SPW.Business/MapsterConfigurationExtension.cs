@@ -16,6 +16,6 @@ public static class MapsterConfigurationExtension
     {
         TypeAdapterConfig<Researcher, ResearcherGetInformationModel>.NewConfig()
             .Map(destination => destination.Pseudonyms, source => source.ResearcherPseudonyms)
-            .Map(d => d, s => s.ResearcherProfiles);
+            .Map(destination => destination.Profiles, s => s.ResearcherProfiles);
     }
 }

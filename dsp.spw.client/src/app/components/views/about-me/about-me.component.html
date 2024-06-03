@@ -1,79 +1,81 @@
-<p-card *ngIf="profile">
+<p-card *ngIf="researcherInformationModel">
   <ng-template pTemplate="header">
     <img src="{{ avatarUrl }}" alt="Avatar" class="avatar" />
   </ng-template>
   <div class="card-content">
     <h2>
-      {{ profile.lastName }}
+      {{ researcherInformationModel.lastName }}
     </h2>
-    <h3>{{ profile.firstName }} {{ profile.middleName }}</h3>
-    <div>{{ profile.academicDegree }}</div>
-    <div>{{ profile.email }}</div>
-    <div>{{ profile.phoneNumber }}</div>
-
-    <p-iconField iconPosition="left">
-      <p-inputIcon styleClass="pi pi-search" />
-      <input
-        type="text"
-        pInputText
-        placeholder="Search"
-        [value]="profile.email"
-      />
-    </p-iconField>
-    <p-iconField iconPosition="left">
-      <p-inputIcon styleClass="pi pi-search" />
-      <input
-        type="text"
-        pInputText
-        placeholder="Search"
-        [value]="profile.phoneNumber"
-      />
-    </p-iconField>
-
-    <p>
-      ORCID:
-      <img
-        src="../../../../assets/icons/profile/orcid.svg"
-        width="16"
-        height="16"
-      />{{ profile.orcidUrl ?? "Не вказано" }}
-    </p>
+    <h3>
+      {{ researcherInformationModel.firstName }}
+      {{ researcherInformationModel.middleName }}
+    </h3>
     <p>
       <p-chip
         pTooltip="ORCID"
-        [label]="profile.orcidUrl ?? 'Не вказано'"
+        [label]="researcherInformationModel.orcidUrl ?? 'Не вказано'"
         image="../../../../assets/icons/profile/orcid.svg"
         alt="ORCID"
       />
     </p>
-    <div>{{ profile.posada }}</div>
-    <div>{{ profile.stepin }}</div>
-    <div>{{ profile.zvannya }}</div>
+    <p>
+      <p-chip
+        *ngFor="let profile of researcherInformationModel.profiles"
+        [label]="profile.internalId"
+        [image]="'../../../../assets/icons/profile/database-profile.type.svg'"
+        alt="profile.type"
+      />
+    </p>
     <div class="badges">
       <p-badge
-        *ngFor="let pseudonym of pseudonyms"
-        value="{{ pseudonym }}"
+        *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
+        [value]="pseudonym.shortName"
+        [pTooltip]="
+          pseudonym.lastName +
+          ' ' +
+          pseudonym.firstName +
+          ' ' +
+          pseudonym.middleName
+        "
         class="p-mr-2"
       ></p-badge>
     </div>
-    <div class="user-id">
-      <i class="pi pi-id-card"></i>Researchers Module ID: {{ profile.id }}
-    </div>
-    <div class="user-id">
-      <i class="pi pi-id-card"></i> {{ profile.posada }}
-    </div>
     <div>
-      {{ profile | json }}
+      <table style="margin: auto">
+        <tr>
+          <td>Researchers Module ID</td>
+          <td>{{ researcherInformationModel.id }}</td>
+        </tr>
+        <tr>
+          <td>Телефон</td>
+          <td>{{ researcherInformationModel.phoneNumber ?? "-" }}</td>
+        </tr>
+        <tr>
+          <td>Пошта</td>
+          <td>{{ researcherInformationModel.email }}</td>
+        </tr>
+        <tr>
+          <td>Академічний рівень</td>
+          <td>
+            {{
+              researcherInformationModel.academicDegree
+                | academicDegreeTransloco
+            }}
+          </td>
+        </tr>
+        <tr>
+          <td>Посада</td>
+          <td>{{ researcherInformationModel.posada ?? "-" }}</td>
+        </tr>
+        <tr>
+          <td>Степінь</td>
+          <td>{{ researcherInformationModel.stepin ?? "-" }}</td>
+        </tr>
+        <tr>
+          <td>Звання</td>
+          <td>{{ researcherInformationModel.zvannya ?? "-" }}</td>
+        </tr>
+      </table>
     </div>
-    <ul>
-      @for (item of profile.Pseudonyms; track $index) {
-      <li>{{ item }}</li>
-      }
-    </ul>
-    <ul>
-      @for (item of profile.Profiles; track $index) {
-      <li>{{ item }}</li>
-      }
-    </ul>
   </div>
 </p-card>

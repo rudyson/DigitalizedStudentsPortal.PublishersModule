@@ -27,8 +27,8 @@ public class ResearcherGetInformationModel
     public required AcademicDegrees AcademicDegree { get; set; }
     public string? Stepin { get; set; }
 
-    public List<ResearcherPseudonymModel> Pseudonyms = [];
-    public List<ResearcherProfileModel> Profiles = [];
+    public List<ResearcherPseudonymModel> Pseudonyms { get; set; } = [];
+    public List<ResearcherProfileModel> Profiles { get; set; } = [];
 }
 
 public class ResearcherPseudonymModel
