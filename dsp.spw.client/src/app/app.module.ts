@@ -47,6 +47,7 @@ import { AsideComponent } from './components/layout/aside/aside.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
 import { LoginPageComponent } from './components/layout/login-page/login-page.component';
 import { TranslocoRootModule } from './transloco-root.module';
+import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -114,6 +115,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     TestApiCallComponent,
     AboutMeComponent,
     LoginPageComponent,
+    PublicationsFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,322 @@
+<h1>Нова публікація</h1>
+<div>
+  <fieldset>
+    <legend>Тип</legend>
+    <select>
+      <option value="article1">Стаття у журналі</option>
+      <option value="article2">Стаття конференції</option>
+      <option value="article3">Патент</option>
+      <option value="article4">Підручник</option>
+      <option value="article5">Навчально-методичний посібник</option>
+      <option value="article6">Тези конференції</option>
+    </select>
+  </fieldset>
+  <fieldset>
+    <legend>Select a publication category:</legend>
+
+    <div>
+      <input type="radio" id="categoryA" name="publicationCategory" value="a" />
+      <label for="categoryA">A</label>
+    </div>
+
+    <div>
+      <input type="radio" id="categoryB" name="publicationCategory" value="b" />
+      <label for="categoryB">B</label>
+    </div>
+
+    <div>
+      <input
+        type="radio"
+        id="categoryC"
+        name="publicationCategory"
+        value="c"
+        checked
+      />
+      <label for="categoryC">C</label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Властивості</legend>
+    <label>
+      <input
+        type="checkbox"
+        name="isInternational"
+        id="isInternationalPublication"
+      />
+      Міжнародна публікація
+    </label>
+    <label
+      ><input type="checkbox" name="isWithStudent" id="isWithStudent" /> Зі
+      студентом</label
+    >
+  </fieldset>
+</div>
+<div>
+  <form action="submit_report.php" method="post">
+    <fieldset>
+      <legend>Інформація про гурток</legend>
+
+      <label for="name">Назва:</label>
+      <input type="text" id="name" name="name" required /><br /><br />
+
+      <label for="leader">Керівник:</label>
+      <input type="text" id="leader" name="leader" required /><br /><br />
+
+      <label for="students">Студенти, які відвідують:</label>
+      <textarea id="students" name="students" required></textarea><br /><br />
+
+      <label for="plan">План на рік:</label>
+      <textarea id="plan" name="plan" required></textarea><br /><br />
+
+      <label for="report">Звіт гуртка:</label>
+      <textarea id="report" name="report" required></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>Публікації викладачів та студентів</legend>
+
+      <label for="publications">Публікації за останні 5 років:</label>
+      <textarea id="publications" name="publications" required></textarea
+      ><br /><br />
+
+      <label for="num_prof_a">Кількість фахових А:</label>
+      <input
+        type="number"
+        id="num_prof_a"
+        name="num_prof_a"
+        required
+      /><br /><br />
+
+      <label for="num_prof_b">Кількість фахових Б:</label>
+      <input
+        type="number"
+        id="num_prof_b"
+        name="num_prof_b"
+        required
+      /><br /><br />
+
+      <label for="num_conferences">Кількість конференцій:</label>
+      <input
+        type="number"
+        id="num_conferences"
+        name="num_conferences"
+        required
+      /><br /><br />
+
+      <label for="discipline_link">Прив'язка дисципліни до публікації:</label>
+      <textarea id="discipline_link" name="discipline_link" required></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>Автори у статтях</legend>
+
+      <label for="authors_order">Актори у порядку в статті:</label>
+      <textarea id="authors_order" name="authors_order" required></textarea
+      ><br /><br />
+
+      <label for="author_alias">Автор зв'язок з НПП (псевдонім):</label>
+      <input
+        type="text"
+        id="author_alias"
+        name="author_alias"
+        required
+      /><br /><br />
+
+      <label for="manual_name">Назва посібника:</label>
+      <input type="text" id="manual_name" name="manual_name" required />
+    </fieldset>
+
+    <fieldset>
+      <legend>Типи публікацій</legend>
+
+      <label for="publication_type">Тип публікації:</label>
+      <select id="publication_type" name="publication_type" required>
+        <option value="pidruchnyk">Підручник</option>
+        <option value="statya">Стаття</option>
+        <option value="statya_conference">Стаття конференції</option>
+        <option value="tez_conference">Тези конференції</option>
+        <option value="patent">Патент</option>
+        <option value="n-met_pos">Н-мет пос...</option></select
+      ><br /><br />
+
+      <label for="publication_with_student">Публікація зі студентом:</label>
+      <input
+        type="checkbox"
+        id="publication_with_student"
+        name="publication_with_student"
+      /><br /><br />
+
+      <fieldset>
+        <legend>Деталі публікації</legend>
+
+        <div id="pidruchnyk_details">
+          <label for="publisher_info">Відомості про типографію:</label>
+          <input
+            type="text"
+            id="publisher_info"
+            name="publisher_info"
+          /><br /><br />
+
+          <label for="pages_count">Кількість сторінок:</label>
+          <input type="number" id="pages_count" name="pages_count" />
+        </div>
+
+        <div id="statya_details">
+          <label for="journal_name">Назва журналу:</label>
+          <input
+            type="text"
+            id="journal_name"
+            name="journal_name"
+          /><br /><br />
+
+          <label for="publication_year">Рік видання:</label>
+          <input
+            type="number"
+            id="publication_year"
+            name="publication_year"
+          /><br /><br />
+
+          <label for="journal_issue">Номер журналу:</label>
+          <input
+            type="text"
+            id="journal_issue"
+            name="journal_issue"
+          /><br /><br />
+
+          <label for="journal_volume">Випуск:</label>
+          <input
+            type="text"
+            id="journal_volume"
+            name="journal_volume"
+          /><br /><br />
+
+          <label for="is_professional">Фахове чи не фахове:</label>
+          <select id="is_professional" name="is_professional">
+            <option value="scopus_web_of_science">
+              Scopus, Web of Science - Категорія А
+            </option>
+            <option value="professional_b">Фахове - Категорія Б</option>
+            <option value="non_professional_v" selected>
+              Нефахове - Категорія В
+            </option>
+          </select>
+        </div>
+
+        <div id="conference_details">
+          <label for="conference_name">Назва конференції:</label>
+          <input
+            type="text"
+            id="conference_name"
+            name="conference_name"
+          /><br /><br />
+
+          <label for="conference_city">Місто:</label>
+          <input
+            type="text"
+            id="conference_city"
+            name="conference_city"
+          /><br /><br />
+
+          <label for="conference_year">Рік:</label>
+          <input
+            type="number"
+            id="conference_year"
+            name="conference_year"
+          /><br /><br />
+
+          <label for="conference_dates">Дати:</label>
+          <input
+            type="text"
+            id="conference_dates"
+            name="conference_dates"
+          /><br /><br />
+
+          <label for="publication_pages">Сторінки публікації (3-5):</label>
+          <input type="text" id="publication_pages" name="publication_pages" />
+        </div>
+
+        <div id="patent_details">
+          <label for="patent_name">Назва патенту:</label>
+          <input type="text" id="patent_name" name="patent_name" /><br /><br />
+
+          <label for="patent_year">Рік:</label>
+          <input
+            type="number"
+            id="patent_year"
+            name="patent_year"
+          /><br /><br />
+
+          <label for="patent_authors">Прізвище авторів:</label>
+          <textarea id="patent_authors" name="patent_authors"></textarea>
+        </div>
+      </fieldset>
+    </fieldset>
+
+    <fieldset>
+      <legend>Статистика публікацій</legend>
+
+      <label for="total_manuals"
+        >Загальна кількість надрукованих підручників:</label
+      >
+      <input
+        type="number"
+        id="total_manuals"
+        name="total_manuals"
+        required
+      /><br /><br />
+
+      <label for="total_articles"
+        >Загальна кількість надрукованих статей:</label
+      >
+      <input
+        type="number"
+        id="total_articles"
+        name="total_articles"
+        required
+      /><br /><br />
+
+      <label for="total_theses">Загальна кількість тез:</label>
+      <input
+        type="number"
+        id="total_theses"
+        name="total_theses"
+        required
+      /><br /><br />
+
+      <label for="total_manuals_published"
+        >Загальна кількість надрукованих підручників:</label
+      >
+      <input
+        type="number"
+        id="total_manuals_published"
+        name="total_manuals_published"
+        required
+      /><br /><br />
+
+      <label for="total_articles_ab">Сума статей Категорії А, Б:</label>
+      <input
+        type="number"
+        id="total_articles_ab"
+        name="total_articles_ab"
+        required
+      /><br /><br />
+
+      <label for="total_international_conferences"
+        >Міжнародні конференції:</label
+      >
+      <input
+        type="number"
+        id="total_international_conferences"
+        name="total_international_conferences"
+        required
+      />
+    </fieldset>
+
+    <fieldset>
+      <legend>Список праць за 5 років</legend>
+      <textarea id="works_list" name="works_list" required></textarea>
+    </fieldset>
+
+    <input type="submit" value="Відправити" />
+  </form>
+</div>

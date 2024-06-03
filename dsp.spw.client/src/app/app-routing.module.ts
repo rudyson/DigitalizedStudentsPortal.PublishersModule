@@ -5,6 +5,7 @@ import { BrowserUtils } from '@azure/msal-browser';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
+import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,11 @@ const routes: Routes = [
     // Needed for Error routing
     path: 'error',
     component: HomeComponent,
+  },
+  {
+    path: 'publications',
+    component: PublicationsFormComponent,
+    canActivate: [MsalGuard],
   },
 ];
 

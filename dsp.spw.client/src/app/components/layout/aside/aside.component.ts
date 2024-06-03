@@ -21,6 +21,7 @@ export class AsideComponent {
     {
       label: 'Publications',
       icon: 'pi pi-file-check',
+      routerLink: 'publications',
     },
     {
       label: 'Reports',
