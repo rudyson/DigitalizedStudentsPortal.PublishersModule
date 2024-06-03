@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MicrosoftAuthorizationControllerService } from 'src/app/services/microsoft-authorization-controller.service';
+import { MicrosoftAuthorizationControllerService } from 'src/app/services/microsoft/microsoft-authorization-controller.service';
 
 @Component({
   selector: 'app-login-page',

@@ -1,8 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
-import { MicrosoftAuthorizationControllerService } from 'src/app/services/microsoft-authorization-controller.service';
+import { MicrosoftAuthorizationControllerService } from 'src/app/services/microsoft/microsoft-authorization-controller.service';
 import {
   MicrosoftGraphMeResponse,
   MicrosoftGraphService,

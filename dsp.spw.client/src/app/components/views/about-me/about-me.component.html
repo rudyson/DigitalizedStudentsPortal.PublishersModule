@@ -1,21 +1,18 @@
 <ng-container *transloco="let t">
   <p-card *ngIf="researcherInformationModel">
     <ng-template pTemplate="header">
-      <img
-        src="{{ avatarUrl }}"
-        [alt]="t('views.about.avatar')"
-        class="avatar"
-      />
+      <h1>
+        {{
+          [
+            researcherInformationModel.lastName,
+            researcherInformationModel.firstName,
+            researcherInformationModel.middleName
+          ].join(" ")
+        }}
+      </h1>
     </ng-template>
     <div class="card-content">
-      <h2>
-        {{ researcherInformationModel.lastName }}
-      </h2>
-      <h3>
-        {{ researcherInformationModel.firstName }}
-        {{ researcherInformationModel.middleName }}
-      </h3>
-      <p>
+      <div class="dbprofiles-wrapper">
         <p-chip
           pTooltip="ORCID"
           [label]="
@@ -24,29 +21,33 @@
           image="../../../../assets/icons/profile/orcid.svg"
           alt="ORCID"
         />
-      </p>
-      <p>
         <p-chip
           *ngFor="let profile of researcherInformationModel.profiles"
+          [pTooltip]="profile.type.toString()"
           [label]="profile.internalId"
+          [image]="
+            '../../../../assets/icons/profile/' +
+            getDatabaseIconName(profile.type)
+          "
         />
-      </p>
+      </div>
       <div class="badges">
+        Also known as:
         <p-badge
           *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
           [value]="pseudonym.shortName"
           [pTooltip]="
-            pseudonym.lastName +
-            ' ' +
-            pseudonym.firstName +
-            ' ' +
-            pseudonym.middleName
+            [
+              pseudonym.lastName,
+              pseudonym.firstName,
+              pseudonym.middleName
+            ].join(' ')
           "
           class="p-mr-2"
         ></p-badge>
       </div>
       <div>
-        <table style="margin: auto">
+        <table class="information">
           <tr>
             <td>Researchers Module ID</td>
             <td>{{ researcherInformationModel.id }}</td>
