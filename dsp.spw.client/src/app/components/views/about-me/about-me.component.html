@@ -4,8 +4,51 @@
   </ng-template>
   <div class="card-content">
     <h2>
-      {{ profile.lastName }} {{ profile.firstName }} {{ profile.middleName }}
+      {{ profile.lastName }}
     </h2>
+    <h3>{{ profile.firstName }} {{ profile.middleName }}</h3>
+    <div>{{ profile.academicDegree }}</div>
+    <div>{{ profile.email }}</div>
+    <div>{{ profile.phoneNumber }}</div>
+
+    <p-iconField iconPosition="left">
+      <p-inputIcon styleClass="pi pi-search" />
+      <input
+        type="text"
+        pInputText
+        placeholder="Search"
+        [value]="profile.email"
+      />
+    </p-iconField>
+    <p-iconField iconPosition="left">
+      <p-inputIcon styleClass="pi pi-search" />
+      <input
+        type="text"
+        pInputText
+        placeholder="Search"
+        [value]="profile.phoneNumber"
+      />
+    </p-iconField>
+
+    <p>
+      ORCID:
+      <img
+        src="../../../../assets/icons/profile/orcid.svg"
+        width="16"
+        height="16"
+      />{{ profile.orcidUrl ?? "Не вказано" }}
+    </p>
+    <p>
+      <p-chip
+        pTooltip="ORCID"
+        [label]="profile.orcidUrl ?? 'Не вказано'"
+        image="../../../../assets/icons/profile/orcid.svg"
+        alt="ORCID"
+      />
+    </p>
+    <div>{{ profile.posada }}</div>
+    <div>{{ profile.stepin }}</div>
+    <div>{{ profile.zvannya }}</div>
     <div class="badges">
       <p-badge
         *ngFor="let pseudonym of pseudonyms"
@@ -13,12 +56,24 @@
         class="p-mr-2"
       ></p-badge>
     </div>
-    <div class="user-id"><i class="pi pi-id-card"></i> {{ profile.id }}</div>
+    <div class="user-id">
+      <i class="pi pi-id-card"></i>Researchers Module ID: {{ profile.id }}
+    </div>
     <div class="user-id">
       <i class="pi pi-id-card"></i> {{ profile.posada }}
     </div>
-    @if (false) {
-    <div>{{ profile | json }}</div>
-    }
+    <div>
+      {{ profile | json }}
+    </div>
+    <ul>
+      @for (item of profile.Pseudonyms; track $index) {
+      <li>{{ item }}</li>
+      }
+    </ul>
+    <ul>
+      @for (item of profile.Profiles; track $index) {
+      <li>{{ item }}</li>
+      }
+    </ul>
   </div>
 </p-card>

@@ -14,7 +14,7 @@ import { MicrosoftGraphService } from 'src/app/services/microsoft/microsoft-grap
 export class AboutMeComponent implements OnInit {
   fullName: string = 'John Doe';
   avatarUrl: string = 'https://via.placeholder.com/150'; // Replace with your avatar URL
-  pseudonyms: string[] = ['A', 'B', 'C'];
+  pseudonyms: string[] = ['Дядюшкін Р.С.', 'Ruslan Diadiushkin'];
   userId: string = '123456';
   profile?: ResearcherGetInformationModel;
 
@@ -24,15 +24,21 @@ export class AboutMeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    /*
     this.microsoftGraphService.getMe().subscribe((graphProfile) => {
       let model: PublisherProfileIdentityModel = {
         firstName: graphProfile.givenName,
         lastName: graphProfile.surname,
         email: graphProfile.mail!,
       };
-      this.researchersService.getInfo(model).subscribe((moduleProfile) => {
-        this.profile = moduleProfile;
-      });
+      this.researchersService
+        .getOrCreateInfo(model)
+        .subscribe((moduleProfile) => {
+          this.profile = moduleProfile;
+        });
+    }); */
+    this.researchersService.getInfo().subscribe((moduleProfile) => {
+      this.profile = moduleProfile;
     });
   }
 }

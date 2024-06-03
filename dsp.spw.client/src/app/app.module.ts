@@ -12,6 +12,9 @@ import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { ChipModule } from 'primeng/chip';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -123,6 +126,9 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     ButtonModule,
     TooltipModule,
     CardModule,
+    ChipModule,
+    IconFieldModule,
+    InputIconModule,
 
     HttpClientModule,
     MsalModule,

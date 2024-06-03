@@ -31,6 +31,33 @@ export interface ResearcherGetInformationModel {
   zvannya?: string;
   academicDegree: AcademicDegrees;
   stepin?: string;
+
+  Pseudonyms: ResearcherPseudonymModel[];
+  Profiles: ResearcherProfileModel[];
+}
+
+export interface ResearcherPseudonymModel {
+  id: number;
+  shortName: string;
+  lastName: string;
+  middleName?: string;
+  firstName: string;
+}
+
+export enum ScienceDatabaseTypes {
+  Faculty, // Фахове
+  Scopus, // https://www.scopus.com/
+  WebOfScience, // https://clarivate.com/cis/solutions/web-of-science/
+  GoogleAcademy, // https://scholar.google.com.ua/
+}
+
+export interface ResearcherProfileModel {
+  id: number;
+
+  type: ScienceDatabaseTypes;
+
+  internalId?: string;
+  url?: string;
 }
 
 @Injectable({
@@ -39,10 +66,16 @@ export interface ResearcherGetInformationModel {
 export class ResearchersService {
   constructor(private http: HttpClient) {}
 
-  getInfo(model: PublisherProfileIdentityModel) {
+  getOrCreateInfo(model: PublisherProfileIdentityModel) {
     return this.http.post<ResearcherGetInformationModel>(
-      `${API_ENDPOINT}/researchers/get`,
+      `${API_ENDPOINT}/researchers/create`,
       model
+    );
+  }
+
+  getInfo() {
+    return this.http.get<ResearcherGetInformationModel>(
+      `${API_ENDPOINT}/researchers/get`
     );
   }
 }

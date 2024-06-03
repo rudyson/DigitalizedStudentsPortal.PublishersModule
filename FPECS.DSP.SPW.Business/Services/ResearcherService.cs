@@ -26,16 +26,43 @@ public class ResearcherGetInformationModel
     public string? Zvannya { get; set; }
     public required AcademicDegrees AcademicDegree { get; set; }
     public string? Stepin { get; set; }
+
+    public List<ResearcherPseudonymModel> Pseudonyms = [];
+    public List<ResearcherProfileModel> Profiles = [];
 }
+
+public class ResearcherPseudonymModel
+{
+    public required long Id { get; set; }
+    public required string ShortName { get; set; }
+    public string? LastName { get; set; }
+    public string? MiddleName { get; set; }
+    public string? FirstName { get; set; }
+}
+
+public class ResearcherProfileModel
+{
+    public required long Id { get; set; }
+
+    public required ScienceDatabaseTypes Type { get; set; }
+
+    // Identifier in science database
+    public string? InternalId { get; set; }
+    public string? Url { get; set; }
+}
+
 public interface IResearcherService
 {
     Task<ResearcherGetInformationModel> GetInformationOnLoginAsync(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default);
+    Task<ResearcherGetInformationModel> GetInformationAsync(string email, CancellationToken cancellationToken = default);
 }
 public class ResearcherService(ApplicationDbContext context) : IResearcherService
 {
     public async Task<ResearcherGetInformationModel> GetInformationOnLoginAsync(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default)
     {
         var researcherFromDatabase = await context.Researchers
+            .Include(x => x.ResearcherProfiles)
+            .Include(x => x.ResearcherPseudonyms)
             .FirstOrDefaultAsync(x => x.Email == model.Email, cancellationToken);
 
         if (researcherFromDatabase is not null)
@@ -50,5 +77,15 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
         await context.SaveChangesAsync(cancellationToken);
 
         return createdProfile.Entity.Adapt<ResearcherGetInformationModel>();
+    }
+
+    public async Task<ResearcherGetInformationModel> GetInformationAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var researcher = await context.Researchers
+            .Include(x => x.ResearcherProfiles)
+            .Include(x => x.ResearcherPseudonyms)
+            .FirstAsync(x => x.Email == email, cancellationToken);
+
+        return researcher.Adapt<ResearcherGetInformationModel>();
     }
 }

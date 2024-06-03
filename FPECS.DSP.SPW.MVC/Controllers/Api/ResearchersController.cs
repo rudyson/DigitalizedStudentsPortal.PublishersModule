@@ -10,10 +10,26 @@ public class ResearchersController(IResearcherService researcherService) : Contr
 {
     [Authorize]
     [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
-    [HttpPost("get")]
-    public async Task<IActionResult> GetOrCreate(PublisherProfileIdentityModel model) //new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail)
+    [HttpPost("create")]
+    public async Task<IActionResult> GetOrCreate(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default) //new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail)
     {
-        var mappedUser = await researcherService.GetInformationOnLoginAsync(model);
+        var mappedUser = await researcherService.GetInformationOnLoginAsync(model, cancellationToken);
         return Ok(mappedUser);
+    }
+
+    [Authorize]
+    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
+    [HttpGet("get")]
+    public async Task<IActionResult> GetInformation(CancellationToken cancellationToken = default)
+    {
+        var email = User.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
+
+        if (string.IsNullOrEmpty(email))
+        {
+            return Unauthorized("Preferred username claim not found.");
+        }
+
+        var researcher = await researcherService.GetInformationAsync(email, cancellationToken);
+        return Ok(researcher);
     }
 }
