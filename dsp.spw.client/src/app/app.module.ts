@@ -15,6 +15,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ChipModule } from 'primeng/chip';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ChipsModule } from 'primeng/chips';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -45,7 +46,7 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { AsideComponent } from './components/layout/aside/aside.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
 import { LoginPageComponent } from './components/layout/login-page/login-page.component';
-import { AcademicDegreeTranslocoPipe } from './pipes/researchers.academic-degree.pipe';
+import { TranslocoRootModule } from './transloco-root.module';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -113,7 +114,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     TestApiCallComponent,
     AboutMeComponent,
     LoginPageComponent,
-    AcademicDegreeTranslocoPipe,
   ],
   imports: [
     BrowserModule,
@@ -131,9 +131,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     ChipModule,
     IconFieldModule,
     InputIconModule,
+    ChipsModule,
 
     HttpClientModule,
     MsalModule,
+    TranslocoRootModule,
   ],
   providers: [
     {

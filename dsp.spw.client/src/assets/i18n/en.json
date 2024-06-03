@@ -1,0 +1,11 @@
+{
+  "test": "Hello, world",
+  "views": {
+    "login": {
+      "signin": {
+        "microsoft": "Sign in with Microsoft"
+      },
+      "description": "This module can used by researchers to store information about publications"
+    }
+  }
+}

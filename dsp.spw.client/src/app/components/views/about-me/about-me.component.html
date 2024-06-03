@@ -1,81 +1,99 @@
-<p-card *ngIf="researcherInformationModel">
-  <ng-template pTemplate="header">
-    <img src="{{ avatarUrl }}" alt="Avatar" class="avatar" />
-  </ng-template>
-  <div class="card-content">
-    <h2>
-      {{ researcherInformationModel.lastName }}
-    </h2>
-    <h3>
-      {{ researcherInformationModel.firstName }}
-      {{ researcherInformationModel.middleName }}
-    </h3>
-    <p>
-      <p-chip
-        pTooltip="ORCID"
-        [label]="researcherInformationModel.orcidUrl ?? 'Не вказано'"
-        image="../../../../assets/icons/profile/orcid.svg"
-        alt="ORCID"
+<ng-container *transloco="let t">
+  <p-card *ngIf="researcherInformationModel">
+    <ng-template pTemplate="header">
+      <img
+        src="{{ avatarUrl }}"
+        [alt]="t('views.about.avatar')"
+        class="avatar"
       />
-    </p>
-    <p>
-      <p-chip
-        *ngFor="let profile of researcherInformationModel.profiles"
-        [label]="profile.internalId"
-        [image]="'../../../../assets/icons/profile/database-profile.type.svg'"
-        alt="profile.type"
-      />
-    </p>
-    <div class="badges">
-      <p-badge
-        *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
-        [value]="pseudonym.shortName"
-        [pTooltip]="
-          pseudonym.lastName +
-          ' ' +
-          pseudonym.firstName +
-          ' ' +
-          pseudonym.middleName
-        "
-        class="p-mr-2"
-      ></p-badge>
+    </ng-template>
+    <div class="card-content">
+      <h2>
+        {{ researcherInformationModel.lastName }}
+      </h2>
+      <h3>
+        {{ researcherInformationModel.firstName }}
+        {{ researcherInformationModel.middleName }}
+      </h3>
+      <p>
+        <p-chip
+          pTooltip="ORCID"
+          [label]="
+            researcherInformationModel.orcidUrl ?? t('views.about.undefined')
+          "
+          image="../../../../assets/icons/profile/orcid.svg"
+          alt="ORCID"
+        />
+      </p>
+      <p>
+        <p-chip
+          *ngFor="let profile of researcherInformationModel.profiles"
+          [label]="profile.internalId"
+        />
+      </p>
+      <div class="badges">
+        <p-badge
+          *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
+          [value]="pseudonym.shortName"
+          [pTooltip]="
+            pseudonym.lastName +
+            ' ' +
+            pseudonym.firstName +
+            ' ' +
+            pseudonym.middleName
+          "
+          class="p-mr-2"
+        ></p-badge>
+      </div>
+      <div>
+        <table style="margin: auto">
+          <tr>
+            <td>Researchers Module ID</td>
+            <td>{{ researcherInformationModel.id }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.phoneNumber") }}</td>
+            <td>{{ researcherInformationModel.phoneNumber ?? "-" }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.email") }}</td>
+            <td>{{ researcherInformationModel.email }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.academicDegree") }}</td>
+            <td>
+              {{
+                "enums.AcademicDegrees." +
+                  researcherInformationModel.academicDegree | transloco
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.posada") }}</td>
+            <td>
+              {{
+                researcherInformationModel.posada ?? t("views.about.undefined")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.stepin") }}</td>
+            <td>
+              {{
+                researcherInformationModel.stepin ?? t("views.about.undefined")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.zvannya") }}</td>
+            <td>
+              {{
+                researcherInformationModel.zvannya ?? t("views.about.undefined")
+              }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <div>
-      <table style="margin: auto">
-        <tr>
-          <td>Researchers Module ID</td>
-          <td>{{ researcherInformationModel.id }}</td>
-        </tr>
-        <tr>
-          <td>Телефон</td>
-          <td>{{ researcherInformationModel.phoneNumber ?? "-" }}</td>
-        </tr>
-        <tr>
-          <td>Пошта</td>
-          <td>{{ researcherInformationModel.email }}</td>
-        </tr>
-        <tr>
-          <td>Академічний рівень</td>
-          <td>
-            {{
-              researcherInformationModel.academicDegree
-                | academicDegreeTransloco
-            }}
-          </td>
-        </tr>
-        <tr>
-          <td>Посада</td>
-          <td>{{ researcherInformationModel.posada ?? "-" }}</td>
-        </tr>
-        <tr>
-          <td>Степінь</td>
-          <td>{{ researcherInformationModel.stepin ?? "-" }}</td>
-        </tr>
-        <tr>
-          <td>Звання</td>
-          <td>{{ researcherInformationModel.zvannya ?? "-" }}</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</p-card>
+  </p-card>
+</ng-container>
