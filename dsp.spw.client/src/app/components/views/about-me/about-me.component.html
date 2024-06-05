@@ -1,5 +1,6 @@
 <ng-container *transloco="let t">
-  <p-card *ngIf="researcherInformationModel">
+  @if (researcherInformationModel) {
+  <p-card>
     <ng-template pTemplate="header">
       <h1>
         {{
@@ -97,4 +98,7 @@
       </div>
     </div>
   </p-card>
+  } @else {
+  <app-loading-page></app-loading-page>
+  }
 </ng-container>

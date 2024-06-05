@@ -16,6 +16,16 @@ import { ChipModule } from 'primeng/chip';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ChipsModule } from 'primeng/chips';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { FormsModule } from '@angular/forms';
+import { FieldsetModule } from 'primeng/fieldset';
+import { PanelModule } from 'primeng/panel';
+import { CalendarModule } from 'primeng/calendar';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -48,6 +58,7 @@ import { AboutMeComponent } from './components/views/about-me/about-me.component
 import { LoginPageComponent } from './components/layout/login-page/login-page.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
+import { LoadingPageComponent } from './components/layout/loading-page/loading-page.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -116,11 +127,13 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     AboutMeComponent,
     LoginPageComponent,
     PublicationsFormComponent,
+    LoadingPageComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FormsModule,
 
     TabMenuModule,
     MenuModule,
@@ -134,6 +147,15 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     IconFieldModule,
     InputIconModule,
     ChipsModule,
+    ProgressSpinnerModule,
+    InputTextModule,
+    InputTextareaModule,
+    DropdownModule,
+    CheckboxModule,
+    FloatLabelModule,
+    FieldsetModule,
+    PanelModule,
+    CalendarModule,
 
     HttpClientModule,
     MsalModule,

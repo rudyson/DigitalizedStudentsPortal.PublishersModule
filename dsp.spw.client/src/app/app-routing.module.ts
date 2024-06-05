@@ -25,7 +25,10 @@ const routes: Routes = [
   },
   {
     path: 'publications',
-    component: PublicationsFormComponent,
+    children: [
+      { path: 'new', component: PublicationsFormComponent },
+      { path: '**', redirectTo: 'new' },
+    ],
     canActivate: [MsalGuard],
   },
 ];

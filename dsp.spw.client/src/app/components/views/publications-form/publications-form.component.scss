@@ -1,0 +1,36 @@
+h1 {
+  text-align: center;
+}
+
+:host {
+  ::ng-deep {
+    input.p-inputtext {
+      min-width: 22rem;
+      max-width: 40rem;
+    }
+
+    .p-float-label {
+      margin: 1rem 0;
+    }
+  }
+
+  .conference-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .metadata-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .p-float-label input:focus ~ label,
+  .p-float-label input.p-filled ~ label,
+  .p-float-label textarea:focus ~ label,
+  .p-float-label textarea.p-filled ~ label,
+  .p-float-label .p-inputwrapper-focus ~ label,
+  .p-float-label .p-inputwrapper-filled ~ label {
+    top: -0.6rem;
+    font-size: 14px;
+  }
+}
