@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
 import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
+import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
   {
     path: 'publications',
     children: [
+      { path: '', component: PublicationsListComponent },
       { path: 'new', component: PublicationsFormComponent },
       { path: '**', redirectTo: 'new' },
     ],

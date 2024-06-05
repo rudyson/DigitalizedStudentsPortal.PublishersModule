@@ -1,13 +1,15 @@
 main {
-  background-color: aliceblue;
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: 0 1rem;
+  padding: 1rem;
+  position: relative;
 }
 
 .page {
+  background-color: aliceblue;
   display: flex;
   flex-direction: row;
   width: 100%;
   height: calc(100% - 48px);
+  position: relative;
 }

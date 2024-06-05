@@ -1,73 +1,75 @@
-<ng-container *transloco="let t"
-  ><h1>{{ t("views.publications.new.title") }}</h1>
+<ng-container *transloco="let t">
   <form>
-    <p-panel header="Створення">
+    <p-panel [header]="t('views.publications.new.title')">
       <ng-template pTemplate="content">
-        <p-floatLabel>
-          <textarea
-            pInputTextarea
-            cols="60"
-            rows="4"
-            required
-            id="dstuReference"
-            name="dstuReference"
-          ></textarea>
-          <label for="dstuReference">{{
-            t("views.publications.new.dstuReference")
-          }}</label>
-        </p-floatLabel>
-        <p-floatLabel>
-          <p-dropdown
-            required
-            [options]="publicationTypes"
-            class="p-inputtext-sm"
-            id="publicationType"
-            name="publicationType"
-          ></p-dropdown>
-          <label for="publicationType">{{
-            t("views.publications.new.publicationTypes")
-          }}</label>
-        </p-floatLabel>
-        <p-floatLabel
-          ><p-dropdown
-            required
-            [options]="publicationCategories"
-            class="p-inputtext-sm"
-            id="publicationCategory"
-            name="publicationCategory"
-          ></p-dropdown>
-          <label for="publicationCategory">{{
-            t("views.publications.new.publicationCategory")
-          }}</label></p-floatLabel
-        >
+        <div class="input-fields-wrapper">
+          <p-floatLabel>
+            <textarea
+              pInputTextarea
+              cols="60"
+              rows="4"
+              required
+              id="dstuReference"
+              name="dstuReference"
+            ></textarea>
+            <label for="dstuReference">{{
+              t("views.publications.new.dstuReference")
+            }}</label>
+          </p-floatLabel>
+          <p-floatLabel>
+            <p-dropdown
+              required
+              [options]="publicationTypes"
+              class="p-inputtext-sm"
+              id="publicationType"
+              name="publicationType"
+            ></p-dropdown>
+            <label for="publicationType">{{
+              t("views.publications.new.publicationTypes")
+            }}</label>
+          </p-floatLabel>
+          <p-floatLabel
+            ><p-dropdown
+              required
+              [options]="publicationCategories"
+              class="p-inputtext-sm"
+              id="publicationCategory"
+              name="publicationCategory"
+            ></p-dropdown>
+            <label for="publicationCategory">{{
+              t("views.publications.new.publicationCategory")
+            }}</label></p-floatLabel
+          >
+        </div>
+
         <h4>{{ t("views.publications.new.properties") }}</h4>
-        <p-checkbox
-          name="isInternational"
-          [(ngModel)]="isInternational"
-          [binary]="true"
-          [label]="t('views.publications.new.isInternational')"
-          id="isInternational"
-        />
-        <br />
-        <br />
-        <p-checkbox
-          id="isWithStudent"
-          name="isWithStudent"
-          [(ngModel)]="isWithStudent"
-          [binary]="true"
-          [label]="t('views.publications.new.isWithStudent')"
-        />
-        <br />
-        <br />
-        <p-checkbox
-          [(ngModel)]="isConferenceInformation"
-          [ngModelOptions]="{ standalone: true }"
-          [binary]="true"
-          [label]="t('views.publications.new.isConferenceInformation')"
-        />
-        <br />
-        <br />
-        <div class="conference-wrapper">
+
+        <div class="input-fields-wrapper vertical">
+          <p-checkbox
+            name="isInternational"
+            [(ngModel)]="isInternational"
+            [binary]="true"
+            [label]="t('views.publications.new.isInternational')"
+            id="isInternational"
+          />
+
+          <p-checkbox
+            id="isWithStudent"
+            name="isWithStudent"
+            [(ngModel)]="isWithStudent"
+            [binary]="true"
+            [label]="t('views.publications.new.isWithStudent')"
+          />
+
+          <p-checkbox
+            [(ngModel)]="isConferenceInformation"
+            [ngModelOptions]="{ standalone: true }"
+            [binary]="true"
+            [label]="t('views.publications.new.isConferenceInformation')"
+          />
+        </div>
+
+        <div class="input-fields-wrapper">
           <p-floatLabel>
             <p-calendar
               class="p-inputtext-sm"
@@ -110,7 +112,7 @@
             }}</label></p-floatLabel
           >
         </div>
-        <div class="conference-wrapper" *ngIf="isConferenceInformation">
+        <div class="input-fields-wrapper" *ngIf="isConferenceInformation">
           <p-floatLabel
             ><input
               class="p-inputtext-sm"
@@ -223,7 +225,7 @@
           >
         </div>
         <h4>{{ t("views.publications.new.metadata") }}</h4>
-        <div class="metadata-wrapper">
+        <div class="input-fields-wrapper">
           <p-floatLabel
             ><input
               class="p-inputtext-sm"

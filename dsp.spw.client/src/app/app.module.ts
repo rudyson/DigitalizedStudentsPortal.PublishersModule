@@ -59,6 +59,7 @@ import { LoginPageComponent } from './components/layout/login-page/login-page.co
 import { TranslocoRootModule } from './transloco-root.module';
 import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
 import { LoadingPageComponent } from './components/layout/loading-page/loading-page.component';
+import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -128,6 +129,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     LoginPageComponent,
     PublicationsFormComponent,
     LoadingPageComponent,
+    PublicationsListComponent,
   ],
   imports: [
     BrowserModule,
