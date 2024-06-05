@@ -1,5 +1,5 @@
 <ng-container *transloco="let t"
-  ><h1>Нова публікація</h1>
+  ><h1>{{ t("views.publications.new.title") }}</h1>
   <form>
     <p-panel header="Створення">
       <ng-template pTemplate="content">
@@ -12,9 +12,9 @@
             id="dstuReference"
             name="dstuReference"
           ></textarea>
-          <label for="dstuReference"
-            >Рядок цитування згідно ДСТУ 8302:2015</label
-          >
+          <label for="dstuReference">{{
+            t("views.publications.new.dstuReference")
+          }}</label>
         </p-floatLabel>
         <p-floatLabel>
           <p-dropdown
@@ -24,7 +24,9 @@
             id="publicationType"
             name="publicationType"
           ></p-dropdown>
-          <label for="publicationType">Тип публікації</label>
+          <label for="publicationType">{{
+            t("views.publications.new.publicationTypes")
+          }}</label>
         </p-floatLabel>
         <p-floatLabel
           ><p-dropdown
@@ -34,16 +36,16 @@
             id="publicationCategory"
             name="publicationCategory"
           ></p-dropdown>
-          <label for="publicationCategory"
-            >Категорія публікації</label
-          ></p-floatLabel
+          <label for="publicationCategory">{{
+            t("views.publications.new.publicationCategory")
+          }}</label></p-floatLabel
         >
-        <h4>Властивості</h4>
+        <h4>{{ t("views.publications.new.properties") }}</h4>
         <p-checkbox
           name="isInternational"
           [(ngModel)]="isInternational"
           [binary]="true"
-          label="Міжнародна публікація"
+          [label]="t('views.publications.new.isInternational')"
           id="isInternational"
         />
         <br />
@@ -53,7 +55,7 @@
           name="isWithStudent"
           [(ngModel)]="isWithStudent"
           [binary]="true"
-          label="Публікація зі студентом"
+          [label]="t('views.publications.new.isWithStudent')"
         />
         <br />
         <br />
@@ -61,7 +63,7 @@
           [(ngModel)]="isConferenceInformation"
           [ngModelOptions]="{ standalone: true }"
           [binary]="true"
-          label="Додати інформацію про конференцію / журнал"
+          [label]="t('views.publications.new.isConferenceInformation')"
         />
         <br />
         <br />
@@ -79,7 +81,9 @@
               [showButtonBar]="true"
               view="year"
             />
-            <label for="publicationYear">Рік</label> </p-floatLabel
+            <label for="publicationYear">{{
+              t("views.publications.new.publicationYear")
+            }}</label> </p-floatLabel
           ><p-floatLabel
             ><input
               class="p-inputtext-sm"
@@ -88,9 +92,9 @@
               [(ngModel)]="totalPages"
               id="totalPages"
               name="totalPages"
-            /><label for="totalPages"
-              >Кількість сторінок (загальна)</label
-            ></p-floatLabel
+            /><label for="totalPages">{{
+              t("views.publications.new.totalPages")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel
@@ -101,9 +105,9 @@
               [(ngModel)]="authorPages"
               id="authorPages"
               name="authorPages"
-            /><label for="authorPages"
-              >Кількість сторінок (авторський доробок)</label
-            ></p-floatLabel
+            /><label for="authorPages">{{
+              t("views.publications.new.authorPages")
+            }}</label></p-floatLabel
           >
         </div>
         <div class="conference-wrapper" *ngIf="isConferenceInformation">
@@ -116,9 +120,9 @@
               placeholder="3-5"
               id="publicationPages"
               name="publicationPages"
-            /><label for="publicationPages"
-              >Сторінки публікації</label
-            ></p-floatLabel
+            /><label for="publicationPages">{{
+              t("views.publications.new.publicationPages")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel
@@ -133,7 +137,9 @@
               [showButtonBar]="true"
               id="conferenceDates"
               name="conferenceDates"
-            /><label>Дати конференції</label></p-floatLabel
+            /><label>{{
+              t("views.publications.new.conferenceDates")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel
@@ -144,7 +150,9 @@
               id="conferenceCity"
               name="conferenceCity"
               [(ngModel)]="conferenceCity"
-            /><label for="conferenceCity">Місто</label></p-floatLabel
+            /><label for="conferenceCity">{{
+              t("views.publications.new.conferenceCity")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel>
@@ -156,7 +164,9 @@
               id="conferenceName"
               name="conferenceName"
             />
-            <label for="conferenceName">Назва конференції</label>
+            <label for="conferenceName">{{
+              t("views.publications.new.conferenceName")
+            }}</label>
           </p-floatLabel>
 
           <p-floatLabel
@@ -167,7 +177,9 @@
               [(ngModel)]="journalIssue"
               id="journalIssue"
               name="journalIssue"
-            /><label for="journalIssue">Випуск </label></p-floatLabel
+            /><label for="journalIssue">{{
+              t("views.publications.new.journalIssue")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel
@@ -179,7 +191,9 @@
               id="journalNumber"
               name="journalNumber"
             />
-            <label>Номер журналу</label></p-floatLabel
+            <label>{{
+              t("views.publications.new.journalNumber")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel
@@ -190,7 +204,9 @@
               id="journalName"
               name="journalName"
               [(ngModel)]="journalName"
-            /><label for="journalName">Назва журналу</label></p-floatLabel
+            /><label for="journalName">{{
+              t("views.publications.new.journalName")
+            }}</label></p-floatLabel
           >
 
           <p-floatLabel
@@ -201,12 +217,12 @@
               id="printingInfo"
               name="printingInfo"
               [(ngModel)]="printingInfo"
-            /><label for="printingInfo"
-              >Відомості про типографію</label
-            ></p-floatLabel
+            /><label for="printingInfo">{{
+              t("views.publications.new.printingInfo")
+            }}</label></p-floatLabel
           >
         </div>
-        <h4>Метаданні</h4>
+        <h4>{{ t("views.publications.new.metadata") }}</h4>
         <div class="metadata-wrapper">
           <p-floatLabel
             ><input
@@ -258,7 +274,7 @@
       ></ng-template>
     </p-panel>
     <br />
-    <p-panel header="Корисні посилання">
+    <p-panel [header]="t('views.publications.new.usefullLinks')">
       <ul>
         <li>
           <a

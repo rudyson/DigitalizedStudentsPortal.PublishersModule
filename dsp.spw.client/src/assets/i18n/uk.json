@@ -16,6 +16,31 @@
       "posada": "Посада",
       "stepin": "Степінь",
       "zvannya": "Звання"
+    },
+    "publications": {
+      "new": {
+        "title": "Нова публікація",
+        "dstuReference": "Рядок цитування згідно ДСТУ 8302:2015",
+        "publicationTypes": "Тип публікації",
+        "publicationCategory": "Категорія публікації",
+        "properties": "Властивості",
+        "isInternational": "Міжнародна публікація",
+        "isWithStudent": "Публікація зі студентом",
+        "isConferenceInformation": "Додати інформацію про конференцію / журнал",
+        "publicationYear": "Рік публікації",
+        "totalPages": "Кількість сторінок (загальна)",
+        "authorPages": "Кількість сторінок (авторський доробок)",
+        "publicationPages": "Сторінки публікації",
+        "conferenceDates": "Дати конференції",
+        "conferenceCity": "Місто",
+        "conferenceName": "Назва конференції",
+        "journalIssue": "Випуск",
+        "journalNumber": "Номер журналу",
+        "journalName": "Назва журналу",
+        "printingInfo": "Відомості про типографію",
+        "metadata": "Метаданні",
+        "usefullLinks": "Корисні посилання"
+      }
     }
   },
   "enums": {
