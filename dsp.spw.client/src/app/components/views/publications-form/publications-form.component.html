@@ -127,6 +127,20 @@
             }}</label></p-floatLabel
           >
 
+          <p-floatLabel>
+            <input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              [(ngModel)]="conferenceName"
+              id="conferenceName"
+              name="conferenceName"
+            />
+            <label for="conferenceName">{{
+              t("views.publications.new.conferenceName")
+            }}</label>
+          </p-floatLabel>
+
           <p-floatLabel
             ><p-calendar
               class="p-inputtext-sm"
@@ -156,20 +170,6 @@
               t("views.publications.new.conferenceCity")
             }}</label></p-floatLabel
           >
-
-          <p-floatLabel>
-            <input
-              class="p-inputtext-sm"
-              pInputText
-              type="text"
-              [(ngModel)]="conferenceName"
-              id="conferenceName"
-              name="conferenceName"
-            />
-            <label for="conferenceName">{{
-              t("views.publications.new.conferenceName")
-            }}</label>
-          </p-floatLabel>
 
           <p-floatLabel
             ><input

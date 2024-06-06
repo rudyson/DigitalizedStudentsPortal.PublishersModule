@@ -19,6 +19,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public required DbSet<PublicationPublisher> PublicationPublishers { get; set; }
     public required DbSet<Chair> Chairs { get; set; }
     public required DbSet<Faculty> Faculties { get; set; }
+    public required DbSet<PublicationDiscipline> PublicationsDisciplines { get; set; }
+    public required DbSet<Discipline> Disciplines { get; set; }
+    public required DbSet<PublicationExternalPublisher> PublicationExternalPublishers { get; set; }
 
     #endregion
 }

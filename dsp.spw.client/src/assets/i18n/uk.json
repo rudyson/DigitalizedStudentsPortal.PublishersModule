@@ -32,12 +32,12 @@
         "authorPages": "Кількість сторінок (авторський доробок)",
         "publicationPages": "Сторінки публікації",
         "conferenceDates": "Дати конференції",
-        "conferenceCity": "Місто",
+        "conferenceCity": "Місто конференції",
         "conferenceName": "Назва конференції",
-        "journalIssue": "Випуск",
+        "journalIssue": "Випуск журналу",
         "journalNumber": "Номер журналу",
         "journalName": "Назва журналу",
-        "printingInfo": "Відомості про типографію",
+        "printingInfo": "Видавництво",
         "metadata": "Метаданні",
         "usefullLinks": "Корисні посилання"
       }

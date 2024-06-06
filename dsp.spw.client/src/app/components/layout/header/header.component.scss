@@ -8,10 +8,6 @@
   flex-direction: row;
   justify-content: space-between;
   box-sizing: border-box;
-  &-left {
-  }
-  &-right {
-  }
   &-avatar {
     aspect-ratio: 1/1;
     height: 100%;
@@ -21,6 +17,7 @@
       aspect-ratio: 1/1;
       height: 100%;
       overflow: hidden;
+      border-radius: 50%;
     }
   }
   &-logo {

@@ -3,6 +3,7 @@ using System;
 using FPECS.DSP.SPW.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FPECS.DSP.SPW.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240606042115_AddedExternalPublishersDisciplines")]
+    partial class AddedExternalPublishersDisciplines
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,37 +116,9 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("category");
 
-                    b.Property<string>("ConferenceCity")
-                        .HasColumnType("text")
-                        .HasColumnName("conference_city");
-
-                    b.Property<string>("ConferenceCountry")
-                        .HasColumnType("text")
-                        .HasColumnName("conference_country");
-
-                    b.Property<DateTime?>("ConferenceEndDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("conference_end_date");
-
-                    b.Property<string>("ConferenceName")
-                        .HasColumnType("text")
-                        .HasColumnName("conference_name");
-
-                    b.Property<DateTime?>("ConferenceStartDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("conference_start_date");
-
                     b.Property<string>("Doi")
                         .HasColumnType("text")
                         .HasColumnName("doi");
-
-                    b.Property<bool>("IsInternational")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_international");
-
-                    b.Property<bool>("IsWithStudent")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_with_student");
 
                     b.Property<string>("Isbn")
                         .HasColumnType("text")
@@ -153,26 +128,6 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("text")
                         .HasColumnName("issn");
 
-                    b.Property<string>("MagazineIssue")
-                        .HasColumnType("text")
-                        .HasColumnName("magazine_issue");
-
-                    b.Property<string>("MagazineName")
-                        .HasColumnType("text")
-                        .HasColumnName("magazine_name");
-
-                    b.Property<string>("MagazineNumber")
-                        .HasColumnType("text")
-                        .HasColumnName("magazine_number");
-
-                    b.Property<short?>("PageFirst")
-                        .HasColumnType("smallint")
-                        .HasColumnName("page_first");
-
-                    b.Property<short?>("PageLast")
-                        .HasColumnType("smallint")
-                        .HasColumnName("page_last");
-
                     b.Property<short?>("Pages")
                         .HasColumnType("smallint")
                         .HasColumnName("pages");
@@ -181,9 +136,13 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("pages_author");
 
-                    b.Property<string>("PublishingName")
+                    b.Property<string>("PublicationOriginSource")
                         .HasColumnType("text")
-                        .HasColumnName("publishing_name");
+                        .HasColumnName("publication_origin_source");
+
+                    b.Property<string>("PublicationOriginSourceUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("publication_origin_source_url");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -193,14 +152,6 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer")
                         .HasColumnName("type");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("text")
-                        .HasColumnName("url");
-
-                    b.Property<DateOnly>("Year")
-                        .HasColumnType("date")
-                        .HasColumnName("year");
 
                     b.HasKey("Id")
                         .HasName("pk_publications");
