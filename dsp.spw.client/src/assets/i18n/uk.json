@@ -54,6 +54,24 @@
       "4": "Старший викладач",
       "5": "Викладач",
       "6": "Професор"
+    },
+    "HighEducationLevels": {
+      "Bachelor": "Б",
+      "Master": "М",
+      "DoctorOfPhilosophy": "ДФ"
+    },
+    "PublicationCategory": {
+      "A": "Категорія А (Scopus, Web of Science)",
+      "B": "Категорія Б (Фахове)",
+      "C": "Категорія В (нефахове)"
+    },
+    "PublicationTypes": {
+      "Article": "Стаття у журналі",
+      "Theses": "Тези конференції",
+      "MethodicalManual": "Методичний посібник",
+      "StudyMethodicalManual": "Навчально-методичний посібник",
+      "Patent": "Патент",
+      "Note": "Замітка"
     }
   }
 }

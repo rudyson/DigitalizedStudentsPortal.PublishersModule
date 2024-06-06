@@ -2,6 +2,22 @@
   <form [formGroup]="publicationsForm" (ngSubmit)="onSubmit()">
     <p-panel [header]="t('views.publications.new.title')">
       <ng-template pTemplate="content">
+        <h4>Автори</h4>
+        <div>
+          <p>
+            <p-chips
+              formControlName="internalAuthors"
+              [placeholder]="'Зареєстровані'"
+            />
+          </p>
+          <p>
+            <p-chips
+              formControlName="externalAuthors"
+              [placeholder]="'Незареєстровані'"
+            />
+          </p>
+        </div>
+        <h4>Інформація</h4>
         <div class="input-fields-wrapper">
           <p-floatLabel>
             <textarea
@@ -12,6 +28,16 @@
               id="dstuReference"
               name="dstuReference"
               formControlName="title"
+              [ngClass]="{
+                'ng-invalid':
+                  publicationsForm.get('title')?.invalid &&
+                  (publicationsForm.get('title')?.dirty ||
+                    publicationsForm.get('title')?.touched),
+                'ng-dirty':
+                  publicationsForm.get('title')?.invalid &&
+                  (publicationsForm.get('title')?.dirty ||
+                    publicationsForm.get('title')?.touched)
+              }"
             ></textarea>
             <label for="dstuReference">{{
               t("views.publications.new.dstuReference")
@@ -20,12 +46,29 @@
           <p-floatLabel>
             <p-dropdown
               required
-              [options]="publicationTypes"
+              [(ngModel)]="selectedPublicationType"
+              [options]="translatedPublicationTypes"
               class="p-inputtext-sm"
               id="publicationType"
               name="publicationType"
               formControlName="type"
-            ></p-dropdown>
+              [loading]="translatedPublicationTypes.length < 1"
+              [ngClass]="{
+                'ng-invalid':
+                  publicationsForm.get('type')?.invalid &&
+                  (publicationsForm.get('type')?.dirty ||
+                    publicationsForm.get('type')?.touched),
+                'ng-dirty':
+                  publicationsForm.get('type')?.invalid &&
+                  (publicationsForm.get('type')?.dirty ||
+                    publicationsForm.get('type')?.touched)
+              }"
+              ><ng-template pTemplate="selectedItem" let-item>
+                {{ t("enums.PublicationTypes." + item.label) }} </ng-template
+              ><ng-template pTemplate="item" let-item>
+                {{ t("enums.PublicationTypes." + item.label) }}
+              </ng-template></p-dropdown
+            >
             <label for="publicationType">{{
               t("views.publications.new.publicationTypes")
             }}</label>
@@ -33,12 +76,29 @@
           <p-floatLabel
             ><p-dropdown
               required
-              [options]="publicationCategories"
+              [(ngModel)]="selectedPublicationCategory"
+              [options]="translatedPublicationCategories"
               class="p-inputtext-sm"
               id="publicationCategory"
               name="publicationCategory"
               formControlName="category"
-            ></p-dropdown>
+              [loading]="translatedPublicationCategories.length < 1"
+              [ngClass]="{
+                'ng-invalid':
+                  publicationsForm.get('category')?.invalid &&
+                  (publicationsForm.get('category')?.dirty ||
+                    publicationsForm.get('category')?.touched),
+                'ng-dirty':
+                  publicationsForm.get('category')?.invalid &&
+                  (publicationsForm.get('category')?.dirty ||
+                    publicationsForm.get('category')?.touched)
+              }"
+              ><ng-template pTemplate="selectedItem" let-item>
+                {{ t("enums.PublicationCategory." + item.label) }} </ng-template
+              ><ng-template pTemplate="item" let-item>
+                {{ t("enums.PublicationCategory." + item.label) }}
+              </ng-template></p-dropdown
+            >
             <label for="publicationCategory">{{
               t("views.publications.new.publicationCategory")
             }}</label></p-floatLabel
@@ -64,13 +124,6 @@
             [(ngModel)]="isWithStudent"
             [binary]="true"
             [label]="t('views.publications.new.isWithStudent')"
-          />
-
-          <p-checkbox
-            [(ngModel)]="isConferenceInformation"
-            [ngModelOptions]="{ standalone: true }"
-            [binary]="true"
-            [label]="t('views.publications.new.isConferenceInformation')"
           />
         </div>
 
@@ -120,7 +173,10 @@
             }}</label></p-floatLabel
           >
         </div>
-        <div class="input-fields-wrapper" *ngIf="isConferenceInformation">
+        <div
+          class="input-fields-wrapper"
+          *ngIf="selectedPublicationType === publicationTypes.Theses"
+        >
           <p-floatLabel
             ><input
               class="p-inputtext-sm"
@@ -195,7 +251,15 @@
               t("views.publications.new.conferenceCity")
             }}</label></p-floatLabel
           >
-
+        </div>
+        <div
+          class="input-fields-wrapper"
+          *ngIf="
+            selectedPublicationType === publicationTypes.Article ||
+            selectedPublicationType === publicationTypes.MethodicalManual ||
+            selectedPublicationType === publicationTypes.StudyMethodicalManual
+          "
+        >
           <p-floatLabel
             ><input
               class="p-inputtext-sm"
@@ -303,7 +367,12 @@
         </div></ng-template
       >
       <ng-template pTemplate="footer"
-        ><button type="submit" pButton [label]="'Створити'"></button
+        ><button
+          type="submit"
+          pButton
+          [label]="'Створити'"
+          [disabled]="publicationsForm.invalid && publicationsForm.touched"
+        ></button
       ></ng-template>
     </p-panel>
     <br />

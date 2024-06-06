@@ -1,10 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import {
+  PublicationCategory,
+  PublicationTypes,
+} from 'src/app/services/api/publications.models';
 
 @Component({
   selector: 'app-publications-form',
@@ -12,27 +16,35 @@ import {
   styleUrl: './publications-form.component.scss',
 })
 export class PublicationsFormComponent implements OnInit {
-  publicationTypes = [
-    { label: 'Стаття у журналі', value: 'article1' },
-    { label: 'Стаття конференції', value: 'article2' },
-    { label: 'Патент', value: 'article3' },
-    { label: 'Підручник', value: 'article4' },
-    { label: 'Навчально-методичний посібник', value: 'article5' },
-    { label: 'Тези конференції', value: 'article6' },
-    { label: 'Замітка', value: 'article7' },
-  ];
+  translatedPublicationCategories: {
+    label: string;
+    value: PublicationCategory;
+  }[] = [];
+  translatedPublicationTypes: { label: string; value: PublicationTypes }[] = [];
 
-  publicationCategories = [
-    {
-      label: 'Категорія А (Scopus, Web of Science)',
-      value: 'category_a',
-    },
-    { label: 'Категорія Б (Фахове)', value: 'category_b' },
-    { label: 'Категорія В (нефахове)', value: 'category_c' },
-  ];
+  publicationTypes = PublicationTypes;
+  publicationCategories = PublicationCategory;
 
-  selectedPublicationType?: string;
-  selectedPublicationCategory?: string;
+  ngOnInit(): void {
+    console.log(Object.entries(PublicationTypes));
+    this.translatedPublicationTypes = Object.values(this.publicationTypes)
+      .filter((key) => !isNaN(+key))
+      .map((type) => ({
+        label: PublicationTypes[type as number] as string,
+        value: type as PublicationTypes,
+      }));
+    this.translatedPublicationCategories = Object.values(
+      this.publicationCategories
+    )
+      .filter((key) => !isNaN(+key))
+      .map((type) => ({
+        label: PublicationCategory[type as number] as string,
+        value: type as PublicationCategory,
+      }));
+  }
+
+  selectedPublicationType: PublicationTypes = PublicationTypes.Article;
+  selectedPublicationCategory: PublicationCategory = PublicationCategory.C;
   isInternational: boolean = false;
   isWithStudent: boolean = false;
   publicationYear?: Date;
@@ -60,8 +72,8 @@ export class PublicationsFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
     this.publicationsForm = this.formBuilder.group({
       title: ['', Validators.required],
-      type: ['', Validators.required],
-      category: ['', Validators.required],
+      type: [PublicationTypes.Article, Validators.required],
+      category: [PublicationCategory.C, Validators.required],
       year: [''],
       pages: [''],
       pagesAuthor: [''],
@@ -86,13 +98,14 @@ export class PublicationsFormComponent implements OnInit {
       isbn: [''],
       issn: [''],
       url: [''],
+
+      internalAuthors: [[]],
+      externalAuthors: [[]],
     });
-  }
-  ngOnInit(): void {
-    console.log('Method not implemented.');
   }
 
   onSubmit(): void {
+    this.publicationsForm.markAllAsTouched();
     if (this.publicationsForm.valid) {
       console.log(this.publicationsForm.value);
     } else {
