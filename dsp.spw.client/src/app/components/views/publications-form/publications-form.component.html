@@ -1,5 +1,5 @@
 <ng-container *transloco="let t">
-  <form>
+  <form [formGroup]="publicationsForm" (ngSubmit)="onSubmit()">
     <p-panel [header]="t('views.publications.new.title')">
       <ng-template pTemplate="content">
         <div class="input-fields-wrapper">
@@ -11,6 +11,7 @@
               required
               id="dstuReference"
               name="dstuReference"
+              formControlName="title"
             ></textarea>
             <label for="dstuReference">{{
               t("views.publications.new.dstuReference")
@@ -23,6 +24,7 @@
               class="p-inputtext-sm"
               id="publicationType"
               name="publicationType"
+              formControlName="type"
             ></p-dropdown>
             <label for="publicationType">{{
               t("views.publications.new.publicationTypes")
@@ -35,6 +37,7 @@
               class="p-inputtext-sm"
               id="publicationCategory"
               name="publicationCategory"
+              formControlName="category"
             ></p-dropdown>
             <label for="publicationCategory">{{
               t("views.publications.new.publicationCategory")
@@ -51,11 +54,13 @@
             [binary]="true"
             [label]="t('views.publications.new.isInternational')"
             id="isInternational"
+            formControlName="isInternational"
           />
 
           <p-checkbox
             id="isWithStudent"
             name="isWithStudent"
+            formControlName="isWithStudent"
             [(ngModel)]="isWithStudent"
             [binary]="true"
             [label]="t('views.publications.new.isWithStudent')"
@@ -75,6 +80,7 @@
               class="p-inputtext-sm"
               id="publicationYear"
               name="publicationYear"
+              formControlName="year"
               [(ngModel)]="publicationYear"
               [dateFormat]="'yy'"
               [iconDisplay]="'input'"
@@ -94,6 +100,7 @@
               [(ngModel)]="totalPages"
               id="totalPages"
               name="totalPages"
+              formControlName="pages"
             /><label for="totalPages">{{
               t("views.publications.new.totalPages")
             }}</label></p-floatLabel
@@ -107,6 +114,7 @@
               [(ngModel)]="authorPages"
               id="authorPages"
               name="authorPages"
+              formControlName="pagesAuthor"
             /><label for="authorPages">{{
               t("views.publications.new.authorPages")
             }}</label></p-floatLabel
@@ -118,12 +126,25 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="publicationPages"
-              placeholder="3-5"
-              id="publicationPages"
-              name="publicationPages"
-            /><label for="publicationPages">{{
-              t("views.publications.new.publicationPages")
+              id="pageFirst"
+              name="pageFirst"
+              formControlName="pageFirst"
+              [(ngModel)]="pageFirst"
+            /><label for="pageFirst">{{
+              t("views.publications.new.pageFirst")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="pageLast"
+              name="pageLast"
+              formControlName="pageLast"
+              [(ngModel)]="pageLast"
+            /><label for="pageLast">{{
+              t("views.publications.new.pageLast")
             }}</label></p-floatLabel
           >
 
@@ -135,6 +156,7 @@
               [(ngModel)]="conferenceName"
               id="conferenceName"
               name="conferenceName"
+              formControlName="conferenceName"
             />
             <label for="conferenceName">{{
               t("views.publications.new.conferenceName")
@@ -153,6 +175,8 @@
               [showButtonBar]="true"
               id="conferenceDates"
               name="conferenceDates"
+              formControlName="conferenceDates"
+              [firstDayOfWeek]="1"
             /><label>{{
               t("views.publications.new.conferenceDates")
             }}</label></p-floatLabel
@@ -165,6 +189,7 @@
               type="text"
               id="conferenceCity"
               name="conferenceCity"
+              formControlName="conferenceCity"
               [(ngModel)]="conferenceCity"
             /><label for="conferenceCity">{{
               t("views.publications.new.conferenceCity")
@@ -176,38 +201,39 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="journalIssue"
-              id="journalIssue"
-              name="journalIssue"
-            /><label for="journalIssue">{{
-              t("views.publications.new.journalIssue")
+              id="magazineName"
+              name="magazineName"
+              formControlName="magazineName"
+              [(ngModel)]="magazineName"
+            /><label for="magazineName">{{
+              t("views.publications.new.magazineName")
             }}</label></p-floatLabel
           >
-
           <p-floatLabel
             ><input
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="journalNumber"
-              id="journalNumber"
-              name="journalNumber"
+              [(ngModel)]="magazineIssue"
+              id="magazineIssue"
+              name="magazineIssue"
+              formControlName="magazineIssue"
+            /><label for="magazineIssue">{{
+              t("views.publications.new.magazineIssue")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              [(ngModel)]="magazineNumber"
+              id="magazineNumber"
+              name="magazineNumber"
+              formControlName="magazineNumber"
             />
             <label>{{
-              t("views.publications.new.journalNumber")
-            }}</label></p-floatLabel
-          >
-
-          <p-floatLabel
-            ><input
-              class="p-inputtext-sm"
-              pInputText
-              type="text"
-              id="journalName"
-              name="journalName"
-              [(ngModel)]="journalName"
-            /><label for="journalName">{{
-              t("views.publications.new.journalName")
+              t("views.publications.new.magazineNumber")
             }}</label></p-floatLabel
           >
 
@@ -218,6 +244,7 @@
               type="text"
               id="printingInfo"
               name="printingInfo"
+              formControlName="publishingName"
               [(ngModel)]="printingInfo"
             /><label for="printingInfo">{{
               t("views.publications.new.printingInfo")
@@ -233,6 +260,7 @@
               type="text"
               id="isbn"
               name="isbn"
+              formControlName="isbn"
               [(ngModel)]="isbn"
             /><label for="isbn">ISBN</label></p-floatLabel
           >
@@ -243,6 +271,7 @@
               type="text"
               id="issn"
               name="issn"
+              formControlName="issn"
               [(ngModel)]="issn"
             />
             <label for="issn">ISSN</label>
@@ -254,6 +283,7 @@
               type="text"
               id="doi"
               name="doi"
+              formControlName="doi"
               [(ngModel)]="doi"
             />
             <label for="doi">DOI</label>
@@ -265,6 +295,7 @@
               type="text"
               id="url"
               name="url"
+              formControlName="url"
               [(ngModel)]="url"
             />
             <label for="url">URL</label>
