@@ -26,6 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PanelModule } from 'primeng/panel';
 import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -159,6 +161,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     FieldsetModule,
     PanelModule,
     CalendarModule,
+    TableModule,
+    AutoCompleteModule,
 
     HttpClientModule,
     MsalModule,

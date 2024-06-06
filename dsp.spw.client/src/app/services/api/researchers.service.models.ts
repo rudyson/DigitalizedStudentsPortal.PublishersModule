@@ -54,3 +54,13 @@ export interface ResearcherProfileModel {
   internalId?: string;
   url?: string;
 }
+
+export interface ResearcherPseudonymSearchModel {
+  id: number;
+  shortName: string;
+}
+
+export interface ResearcherSearchModel {
+  id: number;
+  shortName: string;
+}

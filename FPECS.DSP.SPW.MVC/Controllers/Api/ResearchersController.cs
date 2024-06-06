@@ -1,6 +1,7 @@
 ﻿using FPECS.DSP.SPW.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web.Resource;
 
 namespace FPECS.DSP.SPW.MVC.Controllers.Api;
@@ -30,6 +31,32 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         }
 
         var researcher = await researcherService.GetInformationAsync(email, cancellationToken);
+
+        if (researcher is null)
+        {
+            return NotFound();
+        }
+
         return Ok(researcher);
+    }
+
+    [Authorize]
+    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchResearchers(string query, CancellationToken cancellationToken = default)
+    {
+        var researchers = await researcherService.SearchResearchersAsync(query, cancellationToken);
+
+        return Ok(researchers);
+    }
+
+    [Authorize]
+    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
+    [HttpGet("pseudonyms/{researcherId}")]
+    public async Task<IActionResult> GetPseudonyms(long researcherId, CancellationToken cancellationToken = default)
+    {
+        var pseudonyms = await researcherService.GetResearcherPseudonymsAsync(researcherId, cancellationToken);
+
+        return Ok(pseudonyms);
     }
 }

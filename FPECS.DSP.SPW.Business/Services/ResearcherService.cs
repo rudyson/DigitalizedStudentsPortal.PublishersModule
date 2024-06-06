@@ -40,6 +40,9 @@ public class ResearcherPseudonymModel
     public string? FirstName { get; set; }
 }
 
+public record ResearcherPseudonymSearchModel(long Id, string ShortName);
+public record ResearcherSearchModel(long Id, string ShortName);
+
 public class ResearcherProfileModel
 {
     public required long Id { get; set; }
@@ -54,7 +57,9 @@ public class ResearcherProfileModel
 public interface IResearcherService
 {
     Task<ResearcherGetInformationModel> GetInformationOnLoginAsync(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default);
-    Task<ResearcherGetInformationModel> GetInformationAsync(string email, CancellationToken cancellationToken = default);
+    Task<ResearcherGetInformationModel?> GetInformationAsync(string email, CancellationToken cancellationToken = default);
+    Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default);
+    Task<List<ResearcherPseudonymSearchModel>> GetResearcherPseudonymsAsync(long researcherId, CancellationToken cancellationToken = default);
 }
 public class ResearcherService(ApplicationDbContext context) : IResearcherService
 {
@@ -79,13 +84,32 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
         return createdProfile.Entity.Adapt<ResearcherGetInformationModel>();
     }
 
-    public async Task<ResearcherGetInformationModel> GetInformationAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<ResearcherGetInformationModel?> GetInformationAsync(string email, CancellationToken cancellationToken = default)
     {
         var researcher = await context.Researchers
             .Include(x => x.ResearcherProfiles)
             .Include(x => x.ResearcherPseudonyms)
-            .FirstAsync(x => x.Email == email, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
 
-        return researcher.Adapt<ResearcherGetInformationModel>();
+        return researcher?.Adapt<ResearcherGetInformationModel>();
+    }
+
+    public async Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default)
+    {
+        var clearedQuery = query.Trim().ToLower();
+        var researchers = await context.Researchers
+            .Where(r => r.FirstName.ToLower().Contains(clearedQuery) || r.LastName.ToLower().Contains(clearedQuery) || r.Email.ToLower().Contains(clearedQuery))
+            .ToListAsync(cancellationToken);
+
+        return researchers.Adapt<List<ResearcherSearchModel>>();
+    }
+
+    public async Task<List<ResearcherPseudonymSearchModel>> GetResearcherPseudonymsAsync(long researcherId, CancellationToken cancellationToken = default)
+    {
+        var pseudonyms = await context.ResearcherPseudonyms
+            .Where(p => p.ResearcherId == researcherId)
+            .ToListAsync(cancellationToken);
+
+        return pseudonyms.Adapt<List<ResearcherPseudonymSearchModel>>();
     }
 }
