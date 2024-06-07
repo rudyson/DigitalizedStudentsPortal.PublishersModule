@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FPECS.DSP.SPW.Business.Models;
 using FPECS.DSP.SPW.DataAccess;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ public interface IResearcherService
     Task<ResearcherGetInformationModel> GetInformationOnLoginAsync(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default);
     Task<ResearcherGetInformationModel?> GetInformationByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<ResearcherGetInformationModel?> GetInformationByIdAsync(long id, CancellationToken cancellationToken = default);
-    Task<List<ResearcherGetInformationModel>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+    Task<PaginationWrapper<List<ResearcherGetInformationModel>>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
     Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default);
     Task<List<ResearcherPseudonymSearchModel>> GetResearcherPseudonymsAsync(long researcherId, CancellationToken cancellationToken = default);
 }
@@ -69,19 +70,27 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
         return researcher?.Adapt<ResearcherGetInformationModel>();
     }
 
-    public async Task<List<ResearcherGetInformationModel>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+    public async Task<PaginationWrapper<List<ResearcherGetInformationModel>>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
     {
-        var researchers = await context.Researchers
+        var queryable = context.Researchers
             .Include(x => x.ResearcherPseudonyms)
+            .Include(x => x.Chair)
+            .Include(x => x.Chair!.Faculty)
+            .OrderBy(x => x.Id);
 
-            .OrderBy(x => x.Id)
-            .Skip(skip)
+        var count = await queryable.CountAsync(cancellationToken);
+
+        var researchers = await queryable.Skip(skip)
             .Take(take)
-
             .ToListAsync(cancellationToken);
 
-
-        return researchers.Adapt<List<ResearcherGetInformationModel>>();
+        return new PaginationWrapper<List<ResearcherGetInformationModel>>
+        {
+            Data = researchers.Adapt<List<ResearcherGetInformationModel>>(),
+            Skip = skip,
+            Take = take,
+            Total = count
+        };
     }
 
     public async Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default)

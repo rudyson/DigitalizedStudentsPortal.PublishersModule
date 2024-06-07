@@ -21,7 +21,7 @@ public class ResearchersController(IResearcherService researcherService) : Contr
 
     [Authorize]
     [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
-    [HttpGet("get")]
+    [HttpGet("me")]
     public async Task<IActionResult> GetInformation(CancellationToken cancellationToken = default)
     {
         var email = User.Claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value;
@@ -40,6 +40,16 @@ public class ResearchersController(IResearcherService researcherService) : Contr
 
         return Ok(researcher);
     }
+
+    [Authorize]
+    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
+    [HttpGet]
+    public async Task<IActionResult> GetAllPaginatedInformation(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+    {
+        var researchers = await researcherService.GetAllAsync(skip, take, cancellationToken);
+        return Ok(researchers);
+    }
+
 
     [Authorize]
     [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]

@@ -7,6 +7,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
 import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
 import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
+import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,14 @@ const routes: Routes = [
     // Needed for Error routing
     path: 'error',
     component: HomeComponent,
+  },
+  {
+    path: 'researchers',
+    children: [
+      { path: '', component: ResearchersListComponent },
+      { path: 'me', component: AboutMeComponent },
+    ],
+    canActivate: [MsalGuard],
   },
   {
     path: 'publications',

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  PaginationWrapper,
   PublisherProfileIdentityModel,
   ResearcherGetInformationModel,
   ResearcherPseudonymSearchModel,
@@ -25,7 +26,16 @@ export class ResearchersService {
 
   getInfo() {
     return this.http.get<ResearcherGetInformationModel>(
-      `${API_ENDPOINT}/researchers/get`
+      `${API_ENDPOINT}/researchers/me`
+    );
+  }
+
+  getAllPaginated(skip: number = 0, take: number = 10) {
+    return this.http.get<PaginationWrapper<ResearcherGetInformationModel[]>>(
+      `${API_ENDPOINT}/researchers`,
+      {
+        params: { skip, take },
+      }
     );
   }
 

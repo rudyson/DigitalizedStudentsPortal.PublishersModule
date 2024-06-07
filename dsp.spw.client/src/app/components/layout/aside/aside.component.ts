@@ -16,7 +16,12 @@ export class AsideComponent {
     {
       label: 'About me',
       icon: 'pi pi-user',
-      routerLink: 'about-me',
+      routerLink: 'researchers/me',
+    },
+    {
+      label: 'Researchers',
+      icon: 'pi pi-users',
+      routerLink: 'researchers',
     },
     {
       label: 'Publications',
