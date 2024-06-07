@@ -13,6 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" NoWarn="NU1605" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" NoWarn="NU1605" />
         <PackageReference Include="Microsoft.Identity.Web" Version="2.15.2" />
@@ -36,6 +37,10 @@
         <ProjectReference Include="..\fpecs.dsp.spw.client.client\fpecs.dsp.spw.client.client.esproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\files\" />
     </ItemGroup>
 
 </Project>
