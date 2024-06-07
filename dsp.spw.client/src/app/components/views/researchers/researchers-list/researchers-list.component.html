@@ -22,12 +22,11 @@
       <td>{{ researcher.id }}</td>
       <td>
         {{
-          researcher.lastName +
-            " " +
-            researcher.firstName[0].toString() +
-            ". " +
-            researcher.middleName[0].toString() +
-            ". "
+          [
+            researcher.lastName,
+            researcher.firstName,
+            researcher.middleName
+          ].join(" ")
         }}
       </td>
       <td>{{ researcher.email }}</td>
