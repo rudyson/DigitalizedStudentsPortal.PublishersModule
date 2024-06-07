@@ -10,7 +10,8 @@ namespace FPECS.DSP.SPW.DataAccess.Entities;
 public class Publication
 {
     public required long Id { get; set; }
-    public required string Title { get; set; } // DSTU
+    public required string Title { get; set; }
+    public required string Reference { get; set; } // DSTU
     public required PublicationTypes Type { get; set; }
     public required PublicationCategory Category { get; set; }
     public DateOnly Year { get; set; }
@@ -47,6 +48,7 @@ public class Publication
     public string? Isbn { get; set; }
     public string? Issn { get; set; }
     public string? Url { get; set; }
+    public ScienceDatabaseTypes? DatabaseType { get; set; } // If DOI provided
 
     #endregion
 
