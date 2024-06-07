@@ -1,5 +1,4 @@
 ﻿using FPECS.DSP.SPW.DataAccess.Entities;
-using FPECS.DSP.SPW.DataAccess.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,56 +7,16 @@ using System.Threading.Tasks;
 using FPECS.DSP.SPW.DataAccess;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using FPECS.DSP.SPW.Business.Models.Researcher;
 
 namespace FPECS.DSP.SPW.Business.Services;
-public record PublisherProfileIdentityModel(string LastName, string FirstName, string Email);
-
-public class ResearcherGetInformationModel
-{
-    public required long Id { get; set; }
-    public required string LastName { get; set; }
-    public string? MiddleName { get; set; }
-    public required string FirstName { get; set; }
-    public required string Email { get; set; }
-    public string? PhoneNumber { get; set; }
-    public string? OrcidUrl { get; set; }
-
-    public string? Posada { get; set; }
-    public string? Zvannya { get; set; }
-    public required AcademicDegrees AcademicDegree { get; set; }
-    public string? Stepin { get; set; }
-
-    public List<ResearcherPseudonymModel> Pseudonyms { get; set; } = [];
-    public List<ResearcherProfileModel> Profiles { get; set; } = [];
-}
-
-public class ResearcherPseudonymModel
-{
-    public required long Id { get; set; }
-    public required string ShortName { get; set; }
-    public string? LastName { get; set; }
-    public string? MiddleName { get; set; }
-    public string? FirstName { get; set; }
-}
-
-public record ResearcherPseudonymSearchModel(long Id, string ShortName);
-public record ResearcherSearchModel(long Id, string ShortName);
-
-public class ResearcherProfileModel
-{
-    public required long Id { get; set; }
-
-    public required ScienceDatabaseTypes Type { get; set; }
-
-    // Identifier in science database
-    public string? InternalId { get; set; }
-    public string? Url { get; set; }
-}
 
 public interface IResearcherService
 {
     Task<ResearcherGetInformationModel> GetInformationOnLoginAsync(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default);
-    Task<ResearcherGetInformationModel?> GetInformationAsync(string email, CancellationToken cancellationToken = default);
+    Task<ResearcherGetInformationModel?> GetInformationByEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<ResearcherGetInformationModel?> GetInformationByIdAsync(long id, CancellationToken cancellationToken = default);
+    Task<List<ResearcherGetInformationModel>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
     Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default);
     Task<List<ResearcherPseudonymSearchModel>> GetResearcherPseudonymsAsync(long researcherId, CancellationToken cancellationToken = default);
 }
@@ -84,14 +43,45 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
         return createdProfile.Entity.Adapt<ResearcherGetInformationModel>();
     }
 
-    public async Task<ResearcherGetInformationModel?> GetInformationAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<ResearcherGetInformationModel?> GetInformationByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var researcher = await context.Researchers
             .Include(x => x.ResearcherProfiles)
             .Include(x => x.ResearcherPseudonyms)
+            .Include(x => x.Chair)
+            .Include(x => x.Chair!.Faculty)
+
             .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
 
         return researcher?.Adapt<ResearcherGetInformationModel>();
+    }
+
+    public async Task<ResearcherGetInformationModel?> GetInformationByIdAsync(long id, CancellationToken cancellationToken = default)
+    {
+        var researcher = await context.Researchers
+            .Include(x => x.ResearcherProfiles)
+            .Include(x => x.ResearcherPseudonyms)
+            .Include(x => x.Chair)
+            .Include(x => x.Chair!.Faculty)
+
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        return researcher?.Adapt<ResearcherGetInformationModel>();
+    }
+
+    public async Task<List<ResearcherGetInformationModel>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+    {
+        var researchers = await context.Researchers
+            .Include(x => x.ResearcherPseudonyms)
+
+            .OrderBy(x => x.Id)
+            .Skip(skip)
+            .Take(take)
+
+            .ToListAsync(cancellationToken);
+
+
+        return researchers.Adapt<List<ResearcherGetInformationModel>>();
     }
 
     public async Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default)

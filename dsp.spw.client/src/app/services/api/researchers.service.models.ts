@@ -27,6 +27,8 @@ export interface ResearcherGetInformationModel {
   academicDegree: AcademicDegrees;
   stepin?: string;
 
+  chair?: ChairGetInformationModel;
+
   pseudonyms: ResearcherPseudonymModel[];
   profiles: ResearcherProfileModel[];
 }
@@ -63,4 +65,12 @@ export interface ResearcherPseudonymSearchModel {
 export interface ResearcherSearchModel {
   id: number;
   shortName: string;
+}
+
+export interface ChairGetInformationModel {
+  chairName: string;
+  chairAbbreviation: string;
+  facultyTitle: string;
+  chairId: number;
+  facultyId: number;
 }

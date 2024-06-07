@@ -15,7 +15,10 @@
       "academicDegree": "Академічний рівень",
       "posada": "Посада",
       "stepin": "Степінь",
-      "zvannya": "Звання"
+      "zvannya": "Звання",
+      "faculty": "Факультет",
+      "chair": "Кафедра",
+      "pseudonyms": "Також відомий як:"
     },
     "publications": {
       "new": {

@@ -11,6 +11,7 @@ public static class LayerRegistrationExtension
     public static IServiceCollection AddBusinessLayer(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IResearcherService, ResearcherService>();
+        services.AddScoped<IPublicationService, PublicationService>();
         
         services.AddMapster();
         services.RegisterMapsterConfiguration();

@@ -11,7 +11,7 @@
   >
     <ng-template pTemplate="content">
       <div class="badges">
-        <p>Also known as:</p>
+        <p>{{ t("views.about.pseudonyms") }}</p>
         <p-badge
           *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
           [value]="pseudonym.shortName"
@@ -59,6 +59,20 @@
             <td>{{ t("views.about.email") }}</td>
             <td>{{ researcherInformationModel.email }}</td>
           </tr>
+          @if (researcherInformationModel.chair) {
+          <tr>
+            <td>{{ t("views.about.faculty") }}</td>
+            <td>{{ researcherInformationModel.chair.facultyTitle }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.chair") }}</td>
+            <td>
+              {{ researcherInformationModel.chair.chairName }} ({{
+                researcherInformationModel.chair.chairAbbreviation
+              }})
+            </td>
+          </tr>
+          }
           <tr>
             <td>{{ t("views.about.academicDegree") }}</td>
             <td>

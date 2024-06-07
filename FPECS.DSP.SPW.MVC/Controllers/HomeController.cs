@@ -2,6 +2,7 @@ using FPECS.DSP.SPW.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using FPECS.DSP.SPW.Business.Models.Researcher;
 using FPECS.DSP.SPW.Business.Services;
 using FPECS.DSP.SPW.DataAccess;
 using FPECS.DSP.SPW.DataAccess.Entities.Enums;

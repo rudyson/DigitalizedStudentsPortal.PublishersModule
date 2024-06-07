@@ -1,4 +1,5 @@
-﻿using FPECS.DSP.SPW.Business.Services;
+﻿using FPECS.DSP.SPW.Business.Models.Researcher;
+using FPECS.DSP.SPW.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ public class ResearchersController(IResearcherService researcherService) : Contr
             return Unauthorized("Preferred username claim not found.");
         }
 
-        var researcher = await researcherService.GetInformationAsync(email, cancellationToken);
+        var researcher = await researcherService.GetInformationByEmailAsync(email, cancellationToken);
 
         if (researcher is null)
         {
