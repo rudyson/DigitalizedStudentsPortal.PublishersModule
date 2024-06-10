@@ -18,6 +18,9 @@ public static class MapsterConfigurationExtension
             .Map(destination => destination.Pseudonyms, source => source.ResearcherPseudonyms)
             .Map(destination => destination.Profiles, s => s.ResearcherProfiles);
 
+        TypeAdapterConfig<Researcher, ResearcherSearchModel>.NewConfig()
+            .Map(destination => destination.ShortName, source => string.Join(' ', source.LastName, source.FirstName, source.MiddleName));
+
 
         TypeAdapterConfig<Chair, ChairGetInformationModel>.NewConfig()
             .Map(destination => destination.ChairName, source => source.Name)

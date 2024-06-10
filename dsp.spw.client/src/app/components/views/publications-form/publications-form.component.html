@@ -4,19 +4,76 @@
       <ng-template pTemplate="content">
         <h4>Автори</h4>
         <div>
-          <!--
-          <p>
-            <p-chips
-              formControlName="internalAuthors"
-              [placeholder]="'Зареєстровані'"
-            />
-          </p>
+          <table formArrayName="internalAuthors">
+            <tr>
+              <th>Author</th>
+              <th>Pseudonym</th>
+              <th>
+                <button
+                  type="button"
+                  pButton
+                  [label]="'Create'"
+                  (click)="addNewInternalAuthorFormControl()"
+                ></button>
+              </th>
+            </tr>
+            @for (internalAuthor of
+            publicationsForm.controls.internalAuthors.controls; track
+            internalAuthorIndex; let internalAuthorIndex = $index) {
+            <tr [formGroupName]="internalAuthorIndex">
+              <td>
+                <p-autoComplete
+                  formControlName="author"
+                  [forceSelection]="true"
+                  [suggestions]="foundResearchers"
+                  optionLabel="shortName"
+                  (completeMethod)="onAuthorSearch($event)"
+                />
+              </td>
+              <td>
+                <p-autoComplete
+                  formControlName="pseudonym"
+                  [forceSelection]="true"
+                  [suggestions]="foundResearcherPseudonyms"
+                  optionLabel="shortName"
+                  [disabled]="
+                    !publicationsForm.controls.internalAuthors.controls.at(
+                      internalAuthorIndex
+                    )?.controls?.author?.value
+                  "
+                  (completeMethod)="
+                    onAuthorPseudonymSearch(
+                      publicationsForm.controls.internalAuthors.controls.at(
+                        internalAuthorIndex
+                      )?.controls?.author?.value?.id ?? 0
+                    )
+                  "
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  pButton
+                  [label]="'Delete'"
+                  (click)="deleteInternalAuthorFormControl(internalAuthorIndex)"
+                ></button>
+              </td>
+            </tr>
+            }
+          </table>
+          <p-table
+            [styleClass]="'p-datatable-sm'"
+            formArrayName="internalAuthors"
+          >
+            <ng-template pTemplate="header"> </ng-template>
+            <ng-template pTemplate="body" let-author> </ng-template>
+          </p-table>
           <p>
             <p-chips
               formControlName="externalAuthors"
               [placeholder]="'Незареєстровані'"
             />
-          </p>-->
+          </p>
         </div>
         <h4>Інформація</h4>
         <div class="input-fields-wrapper">

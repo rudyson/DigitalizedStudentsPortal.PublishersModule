@@ -7,10 +7,16 @@ import {
   Validators,
   ValidationErrors,
 } from '@angular/forms';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import {
   PublicationCategory,
   PublicationTypes,
 } from 'src/app/services/api/publications.models';
+import { ResearchersService } from 'src/app/services/api/researchers.service';
+import {
+  ResearcherPseudonymSearchModel,
+  ResearcherSearchModel,
+} from 'src/app/services/api/researchers.service.models';
 
 type PublicationForm = FormGroup<{
   title: FormControl<string | null>;
@@ -42,12 +48,12 @@ type PublicationForm = FormGroup<{
   url: FormControl<string | null>;
 
   internalAuthors: FormArray<InternalAuthorFormControl>;
-  externalAuthors: FormArray<FormControl<string | null>>;
+  externalAuthors: FormControl<string[] | null>;
 }>;
 
 type InternalAuthorFormControl = FormGroup<{
-  authorId: FormControl<number | null>;
-  shortName: FormControl<string | null>;
+  author: FormControl<ResearcherSearchModel | null>;
+  pseudonym: FormControl<string | null>;
 }>;
 
 @Component({
@@ -64,6 +70,29 @@ export class PublicationsFormComponent implements OnInit {
 
   publicationTypes = PublicationTypes;
   publicationCategories = PublicationCategory;
+
+  foundResearchers: ResearcherSearchModel[] = [];
+  foundResearcherPseudonyms: ResearcherPseudonymSearchModel[] = [];
+
+  onAuthorSearch($event: AutoCompleteCompleteEvent) {
+    if ($event.query) {
+      this.researchersService
+        .searchResearchers($event.query)
+        .subscribe((response) => {
+          this.foundResearchers = response;
+        });
+    } else {
+      this.foundResearchers = [];
+    }
+  }
+
+  onAuthorPseudonymSearch(researcherId: number) {
+    this.researchersService
+      .getPseudonyms(researcherId)
+      .subscribe((response) => {
+        this.foundResearcherPseudonyms = response;
+      });
+  }
 
   ngOnInit(): void {
     this.translatedPublicationTypes = Object.values(this.publicationTypes)
@@ -131,11 +160,34 @@ export class PublicationsFormComponent implements OnInit {
     issn: this.formBuilder.control<string | null>(null),
     url: this.formBuilder.control<string | null>(null),
 
-    internalAuthors: this.formBuilder.array<InternalAuthorFormControl>([]),
-    externalAuthors: this.formBuilder.array<FormControl<string | null>>([]),
+    internalAuthors: this.formBuilder.array<InternalAuthorFormControl>([
+      this.generateInternalAuthorFormControl(),
+    ]),
+    externalAuthors: this.formBuilder.control<string[] | null>(null),
   }) as PublicationForm;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private researchersService: ResearchersService
+  ) {}
+
+  generateInternalAuthorFormControl(): InternalAuthorFormControl {
+    return this.formBuilder.group({
+      author: this.formBuilder.control<ResearcherSearchModel | null>(null),
+      pseudonym:
+        this.formBuilder.control<ResearcherPseudonymSearchModel | null>(null),
+    }) as InternalAuthorFormControl;
+  }
+
+  addNewInternalAuthorFormControl(): void {
+    this.publicationsForm.controls.internalAuthors.push(
+      this.generateInternalAuthorFormControl()
+    );
+  }
+
+  deleteInternalAuthorFormControl(index: number): void {
+    this.publicationsForm.controls.internalAuthors.removeAt(index);
+  }
 
   onSubmit(): void {
     this.publicationsForm.markAllAsTouched();

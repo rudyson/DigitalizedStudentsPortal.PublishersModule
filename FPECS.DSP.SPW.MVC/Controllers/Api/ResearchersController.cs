@@ -7,11 +7,11 @@ using Microsoft.Identity.Web.Resource;
 
 namespace FPECS.DSP.SPW.MVC.Controllers.Api;
 [ApiController]
+[Authorize]
+[RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
 [Route("api/[controller]")]
 public class ResearchersController(IResearcherService researcherService) : ControllerBase
 {
-    [Authorize]
-    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
     [HttpPost("create")]
     public async Task<IActionResult> GetOrCreate(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default) //new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail)
     {
@@ -19,8 +19,6 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         return Ok(mappedUser);
     }
 
-    [Authorize]
-    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
     [HttpGet("me")]
     public async Task<IActionResult> GetInformation(CancellationToken cancellationToken = default)
     {
@@ -41,8 +39,6 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         return Ok(researcher);
     }
 
-    [Authorize]
-    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
     [HttpGet]
     public async Task<IActionResult> GetAllPaginatedInformation(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
     {
@@ -50,9 +46,6 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         return Ok(researchers);
     }
 
-
-    [Authorize]
-    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
     [HttpGet("search")]
     public async Task<IActionResult> SearchResearchers(string query, CancellationToken cancellationToken = default)
     {
@@ -61,8 +54,6 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         return Ok(researchers);
     }
 
-    [Authorize]
-    [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
     [HttpGet("pseudonyms/{researcherId}")]
     public async Task<IActionResult> GetPseudonyms(long researcherId, CancellationToken cancellationToken = default)
     {
