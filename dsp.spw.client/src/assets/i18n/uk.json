@@ -1,6 +1,16 @@
 {
   "test": "Привіт, світ",
   "views": {
+    "layout": {
+      "aside": {
+        "aboutme": "Про мене",
+        "researchers": "НПП",
+        "publications": "Публікації",
+        "newpublication": "Нова публікація",
+        "reports": "Звіти",
+        "disciplines": "Дисципліни"
+      }
+    },
     "login": {
       "signin": {
         "microsoft": "Увійти за допомогою Microsoft"
@@ -22,7 +32,18 @@
     },
     "publications": {
       "new": {
+        "addPublication": "Створити публікацію",
         "title": "Нова публікація",
+        "publicationTitle": "Назва публікації",
+        "internalAuthors": "НПП, зо зареєстровані у системі",
+        "externalAuthors": "Незареєстровані автори",
+        "deleteAuthor": "Видалити автора",
+        "addAuthor": "Додати автора",
+        "authors": "Автори",
+        "author": "Автор",
+        "authorPlaceholder": "Іваненко Марія Петрівна",
+        "pseudonym": "Псевдонім",
+        "pseudonymPlaceholder": "Ivanenko M.P.",
         "dstuReference": "Рядок цитування згідно ДСТУ 8302:2015",
         "publicationTypes": "Тип публікації",
         "publicationCategory": "Категорія публікації",
@@ -38,13 +59,19 @@
         "pageLast": "Кінцева сторінка",
         "conferenceDates": "Дати конференції",
         "conferenceCity": "Місто конференції",
+        "conferenceCountry": "Країна конференції",
         "conferenceName": "Назва конференції",
         "magazineIssue": "Випуск журналу",
         "magazineNumber": "Номер журналу",
         "magazineName": "Назва журналу",
         "printingInfo": "Видавництво",
         "metadata": "Метаданні",
-        "usefullLinks": "Корисні посилання"
+        "usefullLinks": "Корисні посилання",
+        "information": "Інформація",
+        "tips": {
+          "dstuReference": "Як оформити цитування згідно ДСТУ 8302:2015 «Інформація та документація. Бібліографічне посилання. Загальні положення та правила складання»?",
+          "publicationCategory": "Як визначити категорію публікації (А,Б,В)?"
+        }
       }
     }
   },

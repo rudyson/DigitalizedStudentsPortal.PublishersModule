@@ -3,8 +3,15 @@
     @for (menuItem of sideMenuItems; track $index) {
 
     <li>
-      <a [routerLink]="menuItem.routerLink" routerLinkActive="current">
-        <i [classList]="menuItem.icon"></i><span>{{ menuItem.label }}</span></a
+      <a
+        [routerLink]="menuItem.routerLink"
+        [routerLinkActive]="'current'"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
+        <i [classList]="menuItem.icon"></i
+        ><span>{{
+          "views.layout.aside." + menuItem.label | transloco
+        }}</span></a
       >
     </li>
     }

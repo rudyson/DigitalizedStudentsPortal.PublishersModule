@@ -2,17 +2,18 @@
   <form [formGroup]="publicationsForm" (ngSubmit)="onSubmit()">
     <p-panel [header]="t('views.publications.new.title')">
       <ng-template pTemplate="content">
-        <h4>Автори</h4>
+        <h4>{{ t("views.publications.new.authors") }}</h4>
         <div>
           <table formArrayName="internalAuthors">
             <tr>
-              <th>Author</th>
-              <th>Pseudonym</th>
+              <th>{{ t("views.publications.new.author") }}</th>
+              <th>{{ t("views.publications.new.pseudonym") }}</th>
               <th>
                 <button
                   type="button"
                   pButton
-                  [label]="'Create'"
+                  [pTooltip]="t('views.publications.new.addAuthor')"
+                  icon="pi pi-plus"
                   (click)="addNewInternalAuthorFormControl()"
                 ></button>
               </th>
@@ -28,6 +29,7 @@
                   [suggestions]="foundResearchers"
                   optionLabel="shortName"
                   (completeMethod)="onAuthorSearch($event)"
+                  [placeholder]="t('views.publications.new.authorPlaceholder')"
                 />
               </td>
               <td>
@@ -36,11 +38,7 @@
                   [forceSelection]="true"
                   [suggestions]="foundResearcherPseudonyms"
                   optionLabel="shortName"
-                  [disabled]="
-                    !publicationsForm.controls.internalAuthors.controls.at(
-                      internalAuthorIndex
-                    )?.controls?.author?.value
-                  "
+                  [disabled]="true"
                   (completeMethod)="
                     onAuthorPseudonymSearch(
                       publicationsForm.controls.internalAuthors.controls.at(
@@ -48,43 +46,43 @@
                       )?.controls?.author?.value?.id ?? 0
                     )
                   "
+                  [placeholder]="
+                    t('views.publications.new.pseudonymPlaceholder')
+                  "
                 />
               </td>
               <td>
                 <button
                   type="button"
                   pButton
-                  [label]="'Delete'"
+                  [pTooltip]="t('views.publications.new.deleteAuthor')"
+                  icon="pi pi-trash"
                   (click)="deleteInternalAuthorFormControl(internalAuthorIndex)"
                 ></button>
               </td>
             </tr>
             }
           </table>
-          <p-table
-            [styleClass]="'p-datatable-sm'"
-            formArrayName="internalAuthors"
-          >
-            <ng-template pTemplate="header"> </ng-template>
-            <ng-template pTemplate="body" let-author> </ng-template>
+          <p-table [styleClass]="'p-datatable-sm'">
+            <ng-template pTemplate="header"></ng-template>
+            <ng-template pTemplate="body" let-author>
+              <ng-container formArrayName="internalAuthors"></ng-container>
+            </ng-template>
           </p-table>
           <p>
             <p-chips
               formControlName="externalAuthors"
-              [placeholder]="'Незареєстровані'"
+              [placeholder]="t('views.publications.new.externalAuthors')"
             />
           </p>
         </div>
-        <h4>Інформація</h4>
+        <h4>{{ t("views.publications.new.information") }}</h4>
         <div class="input-fields-wrapper">
-          <p-floatLabel>
-            <textarea
-              pInputTextarea
-              cols="60"
-              rows="4"
-              required
-              id="dstuReference"
-              name="dstuReference"
+          <p-floatLabel
+            ><input
+              pInputText
+              id="title"
+              name="title"
               formControlName="title"
               [ngClass]="{
                 'ng-invalid':
@@ -96,11 +94,30 @@
                   (publicationsForm.get('title')?.dirty ||
                     publicationsForm.get('title')?.touched)
               }"
+            />
+            <label for="title">{{
+              t("views.publications.new.publicationTitle")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel>
+            <textarea
+              pInputTextarea
+              cols="60"
+              rows="4"
+              required
+              id="dstuReference"
+              name="dstuReference"
+              formControlName="reference"
+              [ngClass]="{
+                'ng-invalid': isNotValid('reference'),
+                'ng-dirty': isNotValid('reference')
+              }"
             ></textarea>
             <label for="dstuReference">{{
               t("views.publications.new.dstuReference")
             }}</label>
           </p-floatLabel>
+
           <p-floatLabel>
             <p-dropdown
               required
@@ -113,13 +130,9 @@
               [loading]="translatedPublicationTypes.length < 1"
               [ngClass]="{
                 'ng-invalid':
-                  publicationsForm.get('type')?.invalid &&
-                  (publicationsForm.get('type')?.dirty ||
-                    publicationsForm.get('type')?.touched),
+                isNotValid('type'),
                 'ng-dirty':
-                  publicationsForm.get('type')?.invalid &&
-                  (publicationsForm.get('type')?.dirty ||
-                    publicationsForm.get('type')?.touched)
+                isNotValid('type'),
               }"
               ><ng-template pTemplate="selectedItem" let-item>
                 {{ t("enums.PublicationTypes." + item.label) }} </ng-template
@@ -143,13 +156,10 @@
               [loading]="translatedPublicationCategories.length < 1"
               [ngClass]="{
                 'ng-invalid':
-                  publicationsForm.get('category')?.invalid &&
-                  (publicationsForm.get('category')?.dirty ||
-                    publicationsForm.get('category')?.touched),
+                isNotValid('category'),
                 'ng-dirty':
-                  publicationsForm.get('category')?.invalid &&
-                  (publicationsForm.get('category')?.dirty ||
-                    publicationsForm.get('category')?.touched)
+                 
+                  isNotValid('category'),
               }"
               ><ng-template pTemplate="selectedItem" let-item>
                 {{ t("enums.PublicationCategory." + item.label) }} </ng-template
@@ -189,8 +199,8 @@
           <p-floatLabel>
             <p-calendar
               class="p-inputtext-sm"
-              id="publicationYear"
               name="publicationYear"
+              id="publicationYear"
               formControlName="year"
               [(ngModel)]="publicationYear"
               [dateFormat]="'yy'"
@@ -198,7 +208,15 @@
               [showIcon]="true"
               [readonlyInput]="true"
               [showButtonBar]="true"
+              [maxDate]="currentDate"
               view="year"
+              [ngClass]="{
+                'ng-invalid':
+                isNotValid('year'),
+                'ng-dirty':
+                 
+                  isNotValid('year'),
+              }"
             />
             <label for="publicationYear">{{
               t("views.publications.new.publicationYear")
@@ -284,12 +302,26 @@
               [showIcon]="true"
               [readonlyInput]="true"
               [showButtonBar]="true"
+              [maxDate]="currentDate"
               id="conferenceDates"
               name="conferenceDates"
               formControlName="conferenceDates"
               [firstDayOfWeek]="1"
             /><label>{{
               t("views.publications.new.conferenceDates")
+            }}</label></p-floatLabel
+          >
+
+          <p-floatLabel *ngIf="isInternational"
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="conferenceCountry"
+              name="conferenceCountry"
+              formControlName="conferenceCountry"
+            /><label for="conferenceCountry">{{
+              t("views.publications.new.conferenceCountry")
             }}</label></p-floatLabel
           >
 
@@ -416,7 +448,7 @@
         ><button
           type="submit"
           pButton
-          [label]="'Створити'"
+          [label]="t('views.publications.new.addPublication')"
           [disabled]="publicationsForm.invalid && publicationsForm.touched"
         ></button
       ></ng-template>
@@ -428,16 +460,14 @@
           <a
             target="_blank"
             href="https://www.grafiati.com/uk/blogs/dstu-8302-2015-referencing-generator/"
-            >Як оформити цитування згідно ДСТУ 8302:2015 «Інформація та
-            документація. Бібліографічне посилання. Загальні положення та
-            правила складання»?</a
+            >{{ t("views.publications.new.tips.dstuReference") }}</a
           >
         </li>
         <li>
           <a
             target="_blank"
             href="https://nauka.gov.ua/information/naukovi-publikatsii-v-zhurnalakh-iaki-vkhodiat-do-katehorii-a-b/"
-            >Як визначити категорію публікації (А,Б,В)?</a
+            >{{ t("views.publications.new.tips.publicationCategory") }}</a
           >
         </li>
       </ul>

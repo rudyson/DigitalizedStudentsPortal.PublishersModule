@@ -8,6 +8,7 @@ import { AboutMeComponent } from './components/views/about-me/about-me.component
 import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
 import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
 import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
+import { LoginPageComponent } from './components/layout/login-page/login-page.component';
 
 const routes: Routes = [
   {
@@ -16,10 +17,14 @@ const routes: Routes = [
     canActivate: [MsalGuard],
   },
   {
-    path: '',
+    path: 'home',
     component: HomeComponent,
+    canActivate: [MsalGuard],
   },
-  { path: 'about-me', component: AboutMeComponent },
+  {
+    path: 'login',
+    component: LoginPageComponent,
+  },
   {
     // Needed for Error routing
     path: 'error',
@@ -28,21 +33,22 @@ const routes: Routes = [
   {
     path: 'researchers',
     children: [
-      { path: '', component: ResearchersListComponent },
+      { path: 'all', component: ResearchersListComponent },
       { path: 'me', component: AboutMeComponent },
+      { path: '**', redirectTo: 'all' },
     ],
     canActivate: [MsalGuard],
   },
   {
     path: 'publications',
     children: [
-      { path: '', component: PublicationsListComponent },
+      { path: 'all', component: PublicationsListComponent },
       { path: 'new', component: PublicationsFormComponent },
-      { path: '**', redirectTo: 'new' },
+      { path: '**', redirectTo: 'all' },
     ],
     canActivate: [MsalGuard],
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'researchers/me' },
 ];
 
 @NgModule({

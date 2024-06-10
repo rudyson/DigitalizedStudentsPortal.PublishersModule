@@ -20,6 +20,7 @@ import {
 
 type PublicationForm = FormGroup<{
   title: FormControl<string | null>;
+  reference: FormControl<string | null>;
   type: FormControl<PublicationTypes | null>;
   category: FormControl<PublicationCategory | null>;
   year: FormControl<Date | null>;
@@ -30,8 +31,6 @@ type PublicationForm = FormGroup<{
   isWithStudent: FormControl<boolean | null>;
   isInternational: FormControl<boolean | null>;
   conferenceName: FormControl<string | null>;
-  conferenceStartDate: FormControl<Date | null>;
-  conferenceEndDate: FormControl<Date | null>;
   conferenceDates: FormControl<Date[] | null>;
   conferenceCountry: FormControl<string | null>;
   conferenceCity: FormControl<string | null>;
@@ -73,6 +72,11 @@ export class PublicationsFormComponent implements OnInit {
 
   foundResearchers: ResearcherSearchModel[] = [];
   foundResearcherPseudonyms: ResearcherPseudonymSearchModel[] = [];
+
+  isNotValid(formControlName: string): boolean {
+    const control = this.publicationsForm.get(formControlName);
+    return ((control?.invalid && control?.dirty) || control?.touched) ?? true;
+  }
 
   onAuthorSearch($event: AutoCompleteCompleteEvent) {
     if ($event.query) {
@@ -120,10 +124,13 @@ export class PublicationsFormComponent implements OnInit {
   publicationPages?: string;
   conferenceDates?: Date[];
 
+  currentDate = new Date();
+
   isConferenceInformation: boolean = false;
 
   publicationsForm: PublicationForm = this.formBuilder.group({
     title: this.formBuilder.control<string | null>('', Validators.required),
+    reference: this.formBuilder.control<string | null>('', Validators.required),
     type: this.formBuilder.control<PublicationTypes | null>(
       PublicationTypes.Article,
       Validators.required
@@ -143,8 +150,6 @@ export class PublicationsFormComponent implements OnInit {
     isWithStudent: this.formBuilder.control<boolean | null>(false),
     isInternational: this.formBuilder.control<boolean | null>(false),
     conferenceName: this.formBuilder.control<string | null>(null),
-    conferenceStartDate: this.formBuilder.control<Date | null>(null),
-    conferenceEndDate: this.formBuilder.control<Date | null>(null),
     conferenceDates: this.formBuilder.control<Date[] | null>(null),
     conferenceCountry: this.formBuilder.control<string | null>(null),
     conferenceCity: this.formBuilder.control<string | null>(null),
