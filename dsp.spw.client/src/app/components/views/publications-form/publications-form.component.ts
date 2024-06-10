@@ -1,19 +1,59 @@
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
-  ValidationErrors,
+  FormArray,
   Validators,
+  ValidationErrors,
 } from '@angular/forms';
 import {
   PublicationCategory,
   PublicationTypes,
 } from 'src/app/services/api/publications.models';
 
+type PublicationForm = FormGroup<{
+  title: FormControl<string | null>;
+  type: FormControl<PublicationTypes | null>;
+  category: FormControl<PublicationCategory | null>;
+  year: FormControl<Date | null>;
+  pages: FormControl<number[] | null>;
+  pagesAuthor: FormControl<number | null>;
+  publishingName: FormControl<string | null>;
+
+  isWithStudent: FormControl<boolean | null>;
+  isInternational: FormControl<boolean | null>;
+  conferenceName: FormControl<string | null>;
+  conferenceStartDate: FormControl<Date | null>;
+  conferenceEndDate: FormControl<Date | null>;
+  conferenceDates: FormControl<Date[] | null>;
+  conferenceCountry: FormControl<string | null>;
+  conferenceCity: FormControl<string | null>;
+
+  magazineName: FormControl<string | null>;
+  magazineIssue: FormControl<string | null>;
+  magazineNumber: FormControl<number | null>;
+  pageFirst: FormControl<number | null>;
+  pageLast: FormControl<number | null>;
+
+  doi: FormControl<string | null>;
+  isbn: FormControl<string | null>;
+  issn: FormControl<string | null>;
+  url: FormControl<string | null>;
+
+  internalAuthors: FormArray<InternalAuthorFormControl>;
+  externalAuthors: FormArray<FormControl<string | null>>;
+}>;
+
+type InternalAuthorFormControl = FormGroup<{
+  authorId: FormControl<number | null>;
+  shortName: FormControl<string | null>;
+}>;
+
 @Component({
   selector: 'app-publications-form',
   templateUrl: './publications-form.component.html',
-  styleUrl: './publications-form.component.scss',
+  styleUrls: ['./publications-form.component.scss'],
 })
 export class PublicationsFormComponent implements OnInit {
   translatedPublicationCategories: {
@@ -26,13 +66,13 @@ export class PublicationsFormComponent implements OnInit {
   publicationCategories = PublicationCategory;
 
   ngOnInit(): void {
-    console.log(Object.entries(PublicationTypes));
     this.translatedPublicationTypes = Object.values(this.publicationTypes)
       .filter((key) => !isNaN(+key))
       .map((type) => ({
         label: PublicationTypes[type as number] as string,
         value: type as PublicationTypes,
       }));
+
     this.translatedPublicationCategories = Object.values(
       this.publicationCategories
     )
@@ -49,60 +89,53 @@ export class PublicationsFormComponent implements OnInit {
   isWithStudent: boolean = false;
   publicationYear?: Date;
   publicationPages?: string;
-  pageFirst?: number;
-  pageLast?: number;
   conferenceDates?: Date[];
-  conferenceCity?: string;
-  conferenceName?: string;
-  magazineIssue?: string;
-  magazineNumber?: string;
-  magazineName?: string;
-  totalPages?: string;
-  authorPages?: string;
-  printingInfo?: string;
-  isbn?: string;
-  issn?: string;
-  doi?: string;
-  url?: string;
 
   isConferenceInformation: boolean = false;
 
-  publicationsForm: FormGroup;
+  publicationsForm: PublicationForm = this.formBuilder.group({
+    title: this.formBuilder.control<string | null>('', Validators.required),
+    type: this.formBuilder.control<PublicationTypes | null>(
+      PublicationTypes.Article,
+      Validators.required
+    ),
+    category: this.formBuilder.control<PublicationCategory | null>(
+      PublicationCategory.C,
+      Validators.required
+    ),
+    year: this.formBuilder.control<Date | null>(
+      new Date(),
+      Validators.required
+    ),
+    pages: this.formBuilder.control<number[] | null>(null),
+    pagesAuthor: this.formBuilder.control<number | null>(null),
+    publishingName: this.formBuilder.control<string | null>(null),
 
-  constructor(private formBuilder: FormBuilder) {
-    this.publicationsForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      type: [PublicationTypes.Article, Validators.required],
-      category: [PublicationCategory.C, Validators.required],
-      year: [''],
-      pages: [''],
-      pagesAuthor: [''],
-      publishingName: [''],
+    isWithStudent: this.formBuilder.control<boolean | null>(false),
+    isInternational: this.formBuilder.control<boolean | null>(false),
+    conferenceName: this.formBuilder.control<string | null>(null),
+    conferenceStartDate: this.formBuilder.control<Date | null>(null),
+    conferenceEndDate: this.formBuilder.control<Date | null>(null),
+    conferenceDates: this.formBuilder.control<Date[] | null>(null),
+    conferenceCountry: this.formBuilder.control<string | null>(null),
+    conferenceCity: this.formBuilder.control<string | null>(null),
 
-      isWithStudent: [false],
-      isInternational: [false],
-      conferenceName: [''],
-      conferenceStartDate: [''],
-      conferenceEndDate: [''],
-      conferenceDates: [''],
-      conferenceCountry: [''],
-      conferenceCity: [''],
+    magazineName: this.formBuilder.control<string | null>(null),
+    magazineIssue: this.formBuilder.control<string | null>(null),
+    magazineNumber: this.formBuilder.control<number | null>(null),
+    pageFirst: this.formBuilder.control<number | null>(null),
+    pageLast: this.formBuilder.control<number | null>(null),
 
-      magazineName: [''],
-      magazineIssue: [''],
-      magazineNumber: [''],
-      pageFirst: [''],
-      pageLast: [''],
+    doi: this.formBuilder.control<string | null>(null),
+    isbn: this.formBuilder.control<string | null>(null),
+    issn: this.formBuilder.control<string | null>(null),
+    url: this.formBuilder.control<string | null>(null),
 
-      doi: [''],
-      isbn: [''],
-      issn: [''],
-      url: [''],
+    internalAuthors: this.formBuilder.array<InternalAuthorFormControl>([]),
+    externalAuthors: this.formBuilder.array<FormControl<string | null>>([]),
+  }) as PublicationForm;
 
-      internalAuthors: [[]],
-      externalAuthors: [[]],
-    });
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   onSubmit(): void {
     this.publicationsForm.markAllAsTouched();

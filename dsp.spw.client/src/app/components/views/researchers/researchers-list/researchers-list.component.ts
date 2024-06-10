@@ -13,6 +13,7 @@ export class ResearchersListComponent implements OnInit {
   researchers: ResearcherGetInformationModel[] = [];
   first: number = 0;
   totalRecords: number = this.rows;
+  loading: boolean = false;
 
   constructor(private researchersService: ResearchersService) {}
   ngOnInit(): void {
@@ -20,12 +21,14 @@ export class ResearchersListComponent implements OnInit {
   }
 
   loadItems() {
+    this.loading = true;
     this.researchersService
       .getAllPaginated(this.first, this.rows)
       .subscribe((response) => {
         if (response.data) {
           this.researchers = response.data;
           this.totalRecords = response.total;
+          this.loading = false;
         }
       });
   }

@@ -4,6 +4,7 @@
       <ng-template pTemplate="content">
         <h4>Автори</h4>
         <div>
+          <!--
           <p>
             <p-chips
               formControlName="internalAuthors"
@@ -15,7 +16,7 @@
               formControlName="externalAuthors"
               [placeholder]="'Незареєстровані'"
             />
-          </p>
+          </p>-->
         </div>
         <h4>Інформація</h4>
         <div class="input-fields-wrapper">
@@ -150,7 +151,6 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="totalPages"
               id="totalPages"
               name="totalPages"
               formControlName="pages"
@@ -164,7 +164,6 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="authorPages"
               id="authorPages"
               name="authorPages"
               formControlName="pagesAuthor"
@@ -177,29 +176,29 @@
           class="input-fields-wrapper"
           *ngIf="selectedPublicationType === publicationTypes.Theses"
         >
-          <p-floatLabel
-            ><input
+          <p-floatLabel>
+            <p-inputNumber
               class="p-inputtext-sm"
-              pInputText
-              type="text"
               id="pageFirst"
               name="pageFirst"
               formControlName="pageFirst"
-              [(ngModel)]="pageFirst"
-            /><label for="pageFirst">{{
+              [min]="0"
+              [max]="100000"
+            ></p-inputNumber>
+            <label for="pageFirst">{{
               t("views.publications.new.pageFirst")
             }}</label></p-floatLabel
           >
-          <p-floatLabel
-            ><input
+          <p-floatLabel>
+            <p-inputNumber
               class="p-inputtext-sm"
-              pInputText
-              type="text"
               id="pageLast"
               name="pageLast"
               formControlName="pageLast"
-              [(ngModel)]="pageLast"
-            /><label for="pageLast">{{
+              [min]="0"
+              [max]="100000"
+            ></p-inputNumber>
+            <label for="pageLast">{{
               t("views.publications.new.pageLast")
             }}</label></p-floatLabel
           >
@@ -209,7 +208,6 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="conferenceName"
               id="conferenceName"
               name="conferenceName"
               formControlName="conferenceName"
@@ -246,7 +244,6 @@
               id="conferenceCity"
               name="conferenceCity"
               formControlName="conferenceCity"
-              [(ngModel)]="conferenceCity"
             /><label for="conferenceCity">{{
               t("views.publications.new.conferenceCity")
             }}</label></p-floatLabel
@@ -268,7 +265,6 @@
               id="magazineName"
               name="magazineName"
               formControlName="magazineName"
-              [(ngModel)]="magazineName"
             /><label for="magazineName">{{
               t("views.publications.new.magazineName")
             }}</label></p-floatLabel
@@ -278,7 +274,6 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="magazineIssue"
               id="magazineIssue"
               name="magazineIssue"
               formControlName="magazineIssue"
@@ -291,7 +286,6 @@
               class="p-inputtext-sm"
               pInputText
               type="text"
-              [(ngModel)]="magazineNumber"
               id="magazineNumber"
               name="magazineNumber"
               formControlName="magazineNumber"
@@ -309,7 +303,6 @@
               id="printingInfo"
               name="printingInfo"
               formControlName="publishingName"
-              [(ngModel)]="printingInfo"
             /><label for="printingInfo">{{
               t("views.publications.new.printingInfo")
             }}</label></p-floatLabel
@@ -325,7 +318,6 @@
               id="isbn"
               name="isbn"
               formControlName="isbn"
-              [(ngModel)]="isbn"
             /><label for="isbn">ISBN</label></p-floatLabel
           >
           <p-floatLabel>
@@ -336,7 +328,6 @@
               id="issn"
               name="issn"
               formControlName="issn"
-              [(ngModel)]="issn"
             />
             <label for="issn">ISSN</label>
           </p-floatLabel>
@@ -348,7 +339,6 @@
               id="doi"
               name="doi"
               formControlName="doi"
-              [(ngModel)]="doi"
             />
             <label for="doi">DOI</label>
           </p-floatLabel>
@@ -360,7 +350,6 @@
               id="url"
               name="url"
               formControlName="url"
-              [(ngModel)]="url"
             />
             <label for="url">URL</label>
           </p-floatLabel>
