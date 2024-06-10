@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import {
+  Publication,
   PublicationCategory,
   PublicationTypes,
 } from 'src/app/services/api/publications.models';
@@ -201,7 +202,7 @@ export class PublicationsFormComponent implements OnInit {
     if (this.publicationsForm.valid) {
       console.log(this.publicationsForm.value);
       this.publicationsService
-        .createPublication(this.publicationsForm.getRawValue())
+        .createPublication(this.publicationsForm.getRawValue() as Publication)
         .subscribe((response) => {
           console.log(response);
         });

@@ -36,7 +36,9 @@ public static class MapsterConfigurationExtension
         TypeAdapterConfig<PublicationCreateRequest, Publication>.NewConfig()
             .Map(destination => destination.ConferenceStartDate, source => source.ConferenceDates[0])
             .Map(destination => destination.ConferenceEndDate, source => source.ConferenceDates[1])
-            .Map(destination => destination.PublicationExternalPublishers, source => source.ExternalAuthors);
+            .Map(destination => destination.PublicationExternalPublishers, source => source.ExternalAuthors)
+            .Map(destination => destination.Year, source => DateOnly.FromDateTime(source.Year));
+            
 
         TypeAdapterConfig<InternalAuthorModel, PublicationPublisher>.NewConfig()
             .Map(destination => destination.PseudonymId, source => source.Pseudonym.Id)
