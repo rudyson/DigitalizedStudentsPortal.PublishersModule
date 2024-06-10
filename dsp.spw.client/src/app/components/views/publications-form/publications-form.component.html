@@ -222,27 +222,27 @@
               t("views.publications.new.publicationYear")
             }}</label> </p-floatLabel
           ><p-floatLabel
-            ><input
+            ><p-inputNumber
               class="p-inputtext-sm"
-              pInputText
-              type="text"
               id="totalPages"
               name="totalPages"
               formControlName="pages"
+              [min]="0"
+              [max]="100000"
             /><label for="totalPages">{{
               t("views.publications.new.totalPages")
             }}</label></p-floatLabel
           >
 
-          <p-floatLabel
-            ><input
+          <p-floatLabel>
+            <p-inputNumber
               class="p-inputtext-sm"
-              pInputText
-              type="text"
-              id="authorPages"
-              name="authorPages"
+              id="pagesAuthor"
+              name="pagesAuthor"
               formControlName="pagesAuthor"
-            /><label for="authorPages">{{
+              [min]="0"
+              [max]="100000"
+            /><label for="pagesAuthor">{{
               t("views.publications.new.authorPages")
             }}</label></p-floatLabel
           >
@@ -259,7 +259,7 @@
               formControlName="pageFirst"
               [min]="0"
               [max]="100000"
-            ></p-inputNumber>
+            />
             <label for="pageFirst">{{
               t("views.publications.new.pageFirst")
             }}</label></p-floatLabel
@@ -272,7 +272,7 @@
               formControlName="pageLast"
               [min]="0"
               [max]="100000"
-            ></p-inputNumber>
+            />
             <label for="pageLast">{{
               t("views.publications.new.pageLast")
             }}</label></p-floatLabel

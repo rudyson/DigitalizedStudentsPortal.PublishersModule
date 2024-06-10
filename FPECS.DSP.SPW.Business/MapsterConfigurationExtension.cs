@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FPECS.DSP.SPW.Business.Models.Publication;
 using FPECS.DSP.SPW.DataAccess.Entities;
 using Mapster;
 using FPECS.DSP.SPW.Business.Models.Researcher;
@@ -28,5 +29,17 @@ public static class MapsterConfigurationExtension
             .Map(destination => destination.FacultyTitle, source => source.Faculty!.Title)
             .Map(destination => destination.ChairId, source => source.Id)
             .Map(destination => destination.FacultyId, s => s.FacultyId);
+
+        TypeAdapterConfig<string, PublicationExternalPublisher>.NewConfig()
+            .Map(destination => destination.Pseudonym, source => source);
+
+        TypeAdapterConfig<PublicationCreateRequest, Publication>.NewConfig()
+            .Map(destination => destination.ConferenceStartDate, source => source.ConferenceDates[0])
+            .Map(destination => destination.ConferenceEndDate, source => source.ConferenceDates[1])
+            .Map(destination => destination.PublicationExternalPublishers, source => source.ExternalAuthors);
+
+        TypeAdapterConfig<InternalAuthorModel, PublicationPublisher>.NewConfig()
+            .Map(destination => destination.PseudonymId, source => source.Pseudonym.Id)
+            .Map(destination => destination.PublisherId, source => source.Author.Id);
     }
 }

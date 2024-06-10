@@ -12,6 +12,7 @@ import {
   PublicationCategory,
   PublicationTypes,
 } from 'src/app/services/api/publications.models';
+import { PublicationsService } from 'src/app/services/api/publications.service';
 import { ResearchersService } from 'src/app/services/api/researchers.service';
 import {
   ResearcherPseudonymSearchModel,
@@ -173,7 +174,8 @@ export class PublicationsFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private researchersService: ResearchersService
+    private researchersService: ResearchersService,
+    private publicationsService: PublicationsService
   ) {}
 
   generateInternalAuthorFormControl(): InternalAuthorFormControl {
@@ -198,6 +200,11 @@ export class PublicationsFormComponent implements OnInit {
     this.publicationsForm.markAllAsTouched();
     if (this.publicationsForm.valid) {
       console.log(this.publicationsForm.value);
+      this.publicationsService
+        .createPublication(this.publicationsForm.getRawValue())
+        .subscribe((response) => {
+          console.log(response);
+        });
     } else {
       this.logValidationErrors(this.publicationsForm);
     }
