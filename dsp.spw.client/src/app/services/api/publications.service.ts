@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Publication } from './publications.models';
+import {
+  Publication,
+  PublicationGetInformationModel,
+} from './publications.models';
+import { PaginationWrapper } from './researchers.service.models';
 
 const API_ENDPOINT = 'https://localhost:7239/api';
 
@@ -15,6 +19,15 @@ export class PublicationsService {
     return this.http.post<Publication>(
       `${API_ENDPOINT}/publication/create`,
       model
+    );
+  }
+
+  getAllPaginated(skip: number = 0, take: number = 10) {
+    return this.http.get<PaginationWrapper<PublicationGetInformationModel[]>>(
+      `${API_ENDPOINT}/publication/`,
+      {
+        params: { skip, take },
+      }
     );
   }
 }

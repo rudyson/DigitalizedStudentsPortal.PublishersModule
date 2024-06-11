@@ -3,6 +3,23 @@ import {
   ResearcherSearchModel,
 } from './researchers.service.models';
 
+export interface PublicationGetInformationModel {
+  id: number;
+  title: string;
+  reference: string;
+  type: PublicationTypes;
+  category: PublicationCategory;
+  year: Date;
+  url: string | null;
+  contributors: PublicationContributorModel[];
+}
+
+export interface PublicationContributorModel {
+  researcherId: number | null;
+  pseudonymId: number;
+  shortName: string;
+}
+
 export enum PublicationTypes {
   Article = 1, // стаття
   Theses = 2, // тези
@@ -39,16 +56,16 @@ export interface InternalAuthor {
 export interface Publication {
   title: string;
   reference: string;
-  type: PublicationTypes; // Use specific enum type if available, e.g., PublicationTypes
-  category: PublicationCategory; // Use specific enum type if available, e.g., PublicationCategory
-  year: Date; // Use Date if the backend handles Date serialization/deserialization
+  type: PublicationTypes;
+  category: PublicationCategory;
+  year: Date;
   pages: number | null;
   pagesAuthor: string | null;
   publishingName: string | null;
   isWithStudent: boolean | null;
   isInternational: boolean | null;
   conferenceName: string | null;
-  conferenceDates: Date[] | null; // Use Date[] if the backend handles Date serialization/deserialization
+  conferenceDates: Date[] | null;
   conferenceCountry: string | null;
   conferenceCity: string | null;
   magazineName: string | null;

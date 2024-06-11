@@ -18,4 +18,11 @@ public class PublicationController(IPublicationService publicationService) : Con
         var createdPublication = await publicationService.CreateAsync(model, cancellationToken);
         return Ok(createdPublication);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllPaginatedInformation(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+    {
+        var publications = await publicationService.GetAllAsync(skip, take, cancellationToken);
+        return Ok(publications);
+    }
 }

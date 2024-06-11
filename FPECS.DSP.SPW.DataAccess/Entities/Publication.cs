@@ -1,9 +1,4 @@
 ﻿using FPECS.DSP.SPW.DataAccess.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FPECS.DSP.SPW.DataAccess.Entities;
 
@@ -55,6 +50,7 @@ public class Publication
     #region Relations
 
     public virtual List<PublicationPublisher>? PublicationPublishers { get; set; }
+    public virtual List<Researcher>? Researchers { get; set; }
     public virtual List<PublicationExternalPublisher>? PublicationExternalPublishers { get; set; }
     public virtual List<Discipline>? Disciplines { get; set; }
 
