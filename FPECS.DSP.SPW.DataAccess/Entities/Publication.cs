@@ -50,7 +50,6 @@ public class Publication
     #region Relations
 
     public virtual List<PublicationPublisher>? PublicationPublishers { get; set; }
-    public virtual List<Researcher>? Researchers { get; set; }
     public virtual List<PublicationExternalPublisher>? PublicationExternalPublishers { get; set; }
     public virtual List<Discipline>? Disciplines { get; set; }
 

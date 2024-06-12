@@ -33,7 +33,6 @@ public class PublicationService(ApplicationDbContext context) : IPublicationServ
     public async Task<PaginationWrapper<List<PublicationGetInformationModel>>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
     {
         var queryable = context.Publications
-            .Include(x => x.Researchers)
             .Include(x => x.PublicationPublishers)!
                 .ThenInclude(x => x.Pseudonym)
             .Include(x => x.PublicationExternalPublishers)

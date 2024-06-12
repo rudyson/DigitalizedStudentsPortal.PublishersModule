@@ -15,4 +15,5 @@ public record PublicationGetInformationModel(
     PublicationCategory Category,
     DateOnly Year,
     string? Url,
-    List<PublicationContributorModel> Contributors);
+    List<PublicationContributorModel> Contributors,
+    List<PublicationContributorModel> ExternalContributors);

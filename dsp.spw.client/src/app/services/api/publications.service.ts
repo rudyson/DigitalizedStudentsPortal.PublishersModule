@@ -17,14 +17,14 @@ export class PublicationsService {
 
   createPublication(model: Publication): Observable<Publication> {
     return this.http.post<Publication>(
-      `${API_ENDPOINT}/publication/create`,
+      `${API_ENDPOINT}/publications/create`,
       model
     );
   }
 
   getAllPaginated(skip: number = 0, take: number = 10) {
     return this.http.get<PaginationWrapper<PublicationGetInformationModel[]>>(
-      `${API_ENDPOINT}/publication/`,
+      `${API_ENDPOINT}/publications`,
       {
         params: { skip, take },
       }

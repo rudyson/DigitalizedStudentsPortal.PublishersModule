@@ -29,6 +29,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -167,6 +168,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     TableModule,
     AutoCompleteModule,
     InputNumberModule,
+    PaginatorModule,
 
     HttpClientModule,
     MsalModule,

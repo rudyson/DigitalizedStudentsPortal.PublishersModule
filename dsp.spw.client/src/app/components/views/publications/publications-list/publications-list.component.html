@@ -1,25 +1,43 @@
-<p-table
-  [value]="publications"
-  [tableStyle]="{ 'min-width': '50rem' }"
-  [paginator]="true"
-  [rows]="rows"
-  [first]="first"
-  [totalRecords]="totalRecords"
-  (onPage)="onPageChanged($event)"
-  [lazy]="true"
-  [showCurrentPageReport]="true"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th>ID</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-publication>
-    <tr>
-      <td>{{ publication.id }}</td>
-      <td>
-        {{ [publication.contributors].join(" ") }}
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+<ng-container *transloco="let t">
+  @for (publication of publications; track $index) {
+  <p-card
+    [header]="publication.title"
+    [subheader]="getPublicationAuthors(publication).join(', ')"
+  >
+    <ng-template pTemplate="content">
+      {{ publication.reference }}
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <table>
+        <tr>
+          <td>{{ t("views.publications.new.publicationTypes") }}</td>
+          <td>
+            {{ t("enum.PublicationTypes." + publication.type.toString()) }}
+          </td>
+        </tr>
+        <tr>
+          <td>{{ t("views.publications.new.publicationYear") }}</td>
+          <td>{{ publication.year | date : "y" }}</td>
+        </tr>
+        <tr>
+          <td>{{ t("views.publications.new.publicationCategory") }}</td>
+          <td>
+            {{
+              t("enum.PublicationCategory." + publication.category.toString())
+            }}
+          </td>
+        </tr>
+      </table>
+    </ng-template>
+  </p-card>
+  }
+  <div class="card flex justify-content-center">
+    <p-paginator
+      (onPageChange)="onPaginatorPageChanged($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [showCurrentPageReport]="true"
+    />
+  </div>
+</ng-container>

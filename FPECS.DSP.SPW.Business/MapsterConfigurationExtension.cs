@@ -37,11 +37,11 @@ public static class MapsterConfigurationExtension
             .Map(destination => destination.ConferenceEndDate, source => source.ConferenceDates[1])
             .Map(destination => destination.PublicationExternalPublishers,
                 source => source.ExternalAuthors!
-                    .Select(x => new PublicationExternalPublisher{Id = 0, PublicationId = 0, Pseudonym = x}),
+                    .Select(x => new PublicationExternalPublisher { Id = 0, PublicationId = 0, Pseudonym = x }),
                 shouldMap => shouldMap.ExternalAuthors != null)
             .Map(destination => destination.PublicationPublishers,
                 source => source.InternalAuthors
-                    .Select(x => new PublicationPublisher { PublicationId = 0, PublisherId = x.Author.Id,  PseudonymId = x.Pseudonym.Id }))
+                    .Select(x => new PublicationPublisher { PublicationId = 0, PublisherId = x.Author.Id, PseudonymId = x.Pseudonym.Id }))
             .Map(destination => destination.Year, source => DateOnly.FromDateTime(source.Year));
 
         TypeAdapterConfig<InternalAuthorModel, PublicationPublisher>.NewConfig()
@@ -53,19 +53,20 @@ public static class MapsterConfigurationExtension
                 destination => destination.Contributors,
                 source => source.PublicationPublishers!
                     .Select(x => new PublicationContributorModel(
-                        x.PublisherId, 
+                        x.PublisherId,
                         x.PseudonymId!.Value,
                         x.Pseudonym!.ShortName))
                     .ToList()
-                );
-        /*
-                    .AddRange(
-                        source.PublicationExternalPublishers!
+                )
+            .Map(
+                destination => destination.ExternalContributors,
+                source => source.PublicationExternalPublishers!
                             .Select(x => new PublicationContributorModel(
                                 null,
                                 x.Id,
                                 x.Pseudonym))
                             .ToList()
-                        ));*/
+                    )
+            ;
     }
 }

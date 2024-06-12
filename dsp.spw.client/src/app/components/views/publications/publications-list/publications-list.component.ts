@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { PaginatorState } from 'primeng/paginator';
 import { TablePageEvent } from 'primeng/table';
 import { PublicationGetInformationModel } from 'src/app/services/api/publications.models';
 import { PublicationsService } from 'src/app/services/api/publications.service';
-
 @Component({
   selector: 'app-publications-list',
   templateUrl: './publications-list.component.html',
@@ -37,5 +37,17 @@ export class PublicationsListComponent implements OnInit {
     this.first = $event.first;
     this.rows = $event.rows;
     this.loadItems();
+  }
+
+  onPaginatorPageChanged($event: PaginatorState) {
+    this.first = $event.first ?? this.first;
+    this.rows = $event.rows ?? this.rows;
+    this.loadItems();
+  }
+
+  getPublicationAuthors(publication: PublicationGetInformationModel): string[] {
+    const internal = publication.contributors.map((x) => x.shortName);
+    const external = publication.externalContributors.map((x) => x.shortName);
+    return internal.concat(external);
   }
 }

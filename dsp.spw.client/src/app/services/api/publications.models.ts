@@ -12,6 +12,7 @@ export interface PublicationGetInformationModel {
   year: Date;
   url: string | null;
   contributors: PublicationContributorModel[];
+  externalContributors: PublicationContributorModel[];
 }
 
 export interface PublicationContributorModel {
