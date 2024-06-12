@@ -9,6 +9,7 @@ using FPECS.DSP.SPW.DataAccess;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using FPECS.DSP.SPW.Business.Models.Researcher;
+using FPECS.DSP.SPW.Business.Helpers;
 
 namespace FPECS.DSP.SPW.Business.Services;
 
@@ -36,6 +37,16 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
         }
 
         var adaptedModel = model.Adapt<Researcher>();
+        var newPseudonymModel = new ResearcherPseudonym
+        {
+            Id = 0,
+            ResearcherId = 0,
+            ShortName = ResearcherHelper.GetResearcherShortName(adaptedModel),
+            FirstName = adaptedModel.FirstName,
+            MiddleName = adaptedModel.MiddleName,
+            LastName = adaptedModel.LastName,
+        };
+        adaptedModel.ResearcherPseudonyms?.Add(newPseudonymModel);
 
         var createdProfile = await context.Researchers.AddAsync(adaptedModel, cancellationToken);
 

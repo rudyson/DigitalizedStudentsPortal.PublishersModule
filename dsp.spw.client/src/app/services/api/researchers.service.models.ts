@@ -1,6 +1,7 @@
 export interface PublisherProfileIdentityModel {
   lastName: string;
   firstName: string;
+  middleName?: string;
   email: string;
 }
 

@@ -1,5 +1,5 @@
 <ng-container *transloco="let t">
-  @if (researcherInformationModel) {
+  @if (!loading){ @if (researcherInformationModel) {
   <p-panel
     [header]="
       [
@@ -115,7 +115,62 @@
       </div>
     </ng-template>
   </p-panel>
+  } @else { @if(needsRegistration){
+  <h2>Вашого профілю не знайдено у системі</h2>
+  <p>Ви не зможете створювати публікації</p>
+  <div *ngIf="registrationModel">
+    <table>
+      <tr>
+        <td><label for="lastName">Прізвище</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="lastName"
+            [(ngModel)]="registrationModel.lastName"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="firstName">Ім'я</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="firstName"
+            [(ngModel)]="registrationModel.firstName"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="middleName">По-батькові</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="middleName"
+            [(ngModel)]="registrationModel.middleName"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="email">Email</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="email"
+            [disabled]="true"
+            [(ngModel)]="registrationModel.email"
+          />
+        </td>
+      </tr>
+    </table>
+    <p><p-button label="Зареєструватся" (onClick)="register()" /></p>
+  </div>
   } @else {
+  <h1>404. Користувача не знайдено</h1>
+  } } } @else {
   <app-loading-page></app-loading-page>
   }
 </ng-container>

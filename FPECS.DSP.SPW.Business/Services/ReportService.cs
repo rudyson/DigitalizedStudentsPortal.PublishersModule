@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FPECS.DSP.SPW.Business.Helpers;
 using FPECS.DSP.SPW.DataAccess;
 using FPECS.DSP.SPW.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +77,7 @@ public class ReportService(ApplicationDbContext context) : IReportService
         authorParagraph.Append(justifyCenterParagraphProperties.CloneNode(true));
         Run authorRun = new Run();
         authorRun.Append(boldCapsRunProperties.CloneNode(true));
-        authorRun.Append(new Text(GetResearcherShortName(author).ToUpper()));
+        authorRun.Append(new Text(ResearcherHelper.GetResearcherShortName(author).ToUpper()));
         authorParagraph.Append(authorRun);
         body.Append(authorParagraph);
 
@@ -98,17 +99,6 @@ public class ReportService(ApplicationDbContext context) : IReportService
     }
 
     private static string GenerateReportName() => $"report_{Guid.NewGuid()}.docx";
-
-    private static string GetResearcherShortName(Researcher researcher)
-    {
-        var result = new StringBuilder(researcher.LastName);
-        result.Append($" {researcher.FirstName.ToUpper()[0]}.");
-        if (!string.IsNullOrEmpty(researcher.MiddleName))
-        {
-            result.Append($" {researcher.MiddleName.ToUpper()[0]}.");
-        }
-        return result.ToString();
-    }
 
     static void SetFontTimesNewRoman(Body body)
     {
