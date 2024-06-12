@@ -9,6 +9,7 @@ import { PublicationsFormComponent } from './components/views/publications-form/
 import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
 import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
 import { LoginPageComponent } from './components/layout/login-page/login-page.component';
+import { ReportsPageComponent } from './components/views/reports/reports-page/reports-page.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     canActivate: [MsalGuard],
+  },
+  {
+    path: 'reports',
+    component: ReportsPageComponent,
   },
   {
     path: 'login',
@@ -35,6 +40,7 @@ const routes: Routes = [
     children: [
       { path: 'all', component: ResearchersListComponent },
       { path: 'me', component: AboutMeComponent },
+      { path: ':id', component: AboutMeComponent },
       { path: '**', redirectTo: 'all' },
     ],
     canActivate: [MsalGuard],

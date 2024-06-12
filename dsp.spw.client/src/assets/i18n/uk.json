@@ -76,6 +76,14 @@
     }
   },
   "enums": {
+    "ScienceDatabaseTypes": {
+      "Scopus": "Scopus",
+      "WebOfScience": "WebOfScience",
+      "GoogleAcademy": "Google Scholar",
+      "1": "Scopus",
+      "2": "WebOfScience",
+      "3": "Google Scholar"
+    },
     "AcademicDegrees": {
       "0": "Не встановлений",
       "1": "Студент",

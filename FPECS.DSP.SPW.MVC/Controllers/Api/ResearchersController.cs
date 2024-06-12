@@ -2,7 +2,6 @@
 using FPECS.DSP.SPW.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web.Resource;
 
 namespace FPECS.DSP.SPW.MVC.Controllers.Api;
@@ -30,6 +29,19 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         }
 
         var researcher = await researcherService.GetInformationByEmailAsync(email, cancellationToken);
+
+        if (researcher is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(researcher);
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetInformationById(long id, CancellationToken cancellationToken = default)
+    {
+        var researcher = await researcherService.GetInformationByIdAsync(id, cancellationToken);
 
         if (researcher is null)
         {

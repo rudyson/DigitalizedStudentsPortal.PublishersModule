@@ -89,6 +89,8 @@ public class Startup(IConfiguration configuration)
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseStaticFiles();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

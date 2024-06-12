@@ -10,7 +10,10 @@
     "
   >
     <ng-template pTemplate="content">
-      <div class="badges">
+      <div
+        class="badges"
+        *ngIf="researcherInformationModel.pseudonyms.length > 0"
+      >
         <p>{{ t("views.about.pseudonyms") }}</p>
         <p-badge
           *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
@@ -36,7 +39,9 @@
         />
         <p-chip
           *ngFor="let profile of researcherInformationModel.profiles"
-          [pTooltip]="profile.type.toString()"
+          [pTooltip]="
+            t('enums.ScienceDatabaseTypes.' + profile.type.toString())
+          "
           [label]="profile.internalId"
           [image]="
             '../../../../assets/icons/profile/' +

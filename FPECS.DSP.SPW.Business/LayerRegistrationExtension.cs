@@ -12,6 +12,8 @@ public static class LayerRegistrationExtension
     {
         services.AddScoped<IResearcherService, ResearcherService>();
         services.AddScoped<IPublicationService, PublicationService>();
+        services.AddScoped<IReportService, ReportService>();
+        services.AddScoped<IDisciplineService, DisciplineService>();
         
         services.AddMapster();
         services.RegisterMapsterConfiguration();

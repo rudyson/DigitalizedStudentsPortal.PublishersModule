@@ -24,7 +24,13 @@ export class ResearchersService {
     );
   }
 
-  getInfo() {
+  getInfoById(id: number) {
+    return this.http.get<ResearcherGetInformationModel>(
+      `${API_ENDPOINT}/researchers/${id}`
+    );
+  }
+
+  getMyInfo() {
     return this.http.get<ResearcherGetInformationModel>(
       `${API_ENDPOINT}/researchers/me`
     );

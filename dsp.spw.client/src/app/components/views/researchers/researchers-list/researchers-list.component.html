@@ -18,7 +18,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-researcher>
-    <tr>
+    <tr [routerLink]="['/researchers/' + researcher.id]">
       <td>{{ researcher.id }}</td>
       <td>
         {{

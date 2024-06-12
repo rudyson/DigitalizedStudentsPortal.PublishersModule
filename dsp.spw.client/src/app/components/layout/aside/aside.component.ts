@@ -31,6 +31,7 @@ export class AsideComponent {
     {
       label: 'reports',
       icon: 'pi pi-receipt',
+      routerLink: 'reports',
     },
     { label: 'disciplines', icon: 'pi pi-briefcase' },
   ];

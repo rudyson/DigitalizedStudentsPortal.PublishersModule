@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ResearchersService } from 'src/app/services/api/researchers.service';
 import {
   ResearcherGetInformationModel,
@@ -14,10 +15,12 @@ import { MicrosoftGraphService } from 'src/app/services/microsoft/microsoft-grap
 export class AboutMeComponent implements OnInit {
   researcherInformationModel?: ResearcherGetInformationModel;
   profileAvatar: string = '';
+  id: string | null = null;
 
   constructor(
     private researchersService: ResearchersService,
-    private microsoftGraphService: MicrosoftGraphService
+    private microsoftGraphService: MicrosoftGraphService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -34,9 +37,19 @@ export class AboutMeComponent implements OnInit {
           this.profile = moduleProfile;
         });
     }); */
-    this.researchersService.getInfo().subscribe((moduleProfile) => {
-      this.researcherInformationModel = moduleProfile;
-    });
+    this.id = this.route.snapshot.paramMap.get('id');
+
+    if (this.id) {
+      this.researchersService
+        .getInfoById(Number(this.id))
+        .subscribe((response) => {
+          this.researcherInformationModel = response;
+        });
+    } else {
+      this.researchersService.getMyInfo().subscribe((response) => {
+        this.researcherInformationModel = response;
+      });
+    }
   }
 
   getDatabaseIconName(type: ScienceDatabaseTypes): string {

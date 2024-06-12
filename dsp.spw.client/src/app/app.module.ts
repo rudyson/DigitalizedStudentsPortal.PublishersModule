@@ -65,6 +65,7 @@ import { PublicationsFormComponent } from './components/views/publications-form/
 import { LoadingPageComponent } from './components/layout/loading-page/loading-page.component';
 import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
 import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
+import { ReportsPageComponent } from './components/views/reports/reports-page/reports-page.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
 
@@ -136,6 +137,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     LoadingPageComponent,
     PublicationsListComponent,
     ResearchersListComponent,
+    ReportsPageComponent,
   ],
   imports: [
     BrowserModule,
