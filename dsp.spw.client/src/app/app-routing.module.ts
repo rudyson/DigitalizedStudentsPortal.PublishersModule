@@ -10,6 +10,7 @@ import { PublicationsListComponent } from './components/views/publications/publi
 import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
 import { LoginPageComponent } from './components/layout/login-page/login-page.component';
 import { ReportsPageComponent } from './components/views/reports/reports-page/reports-page.component';
+import { canDeactivateIfNotSavedChangesGuard } from './guards/deactivate/if-not-unsaved-changes.guard';
 
 const routes: Routes = [
   {
@@ -49,7 +50,11 @@ const routes: Routes = [
     path: 'publications',
     children: [
       { path: 'all', component: PublicationsListComponent },
-      { path: 'new', component: PublicationsFormComponent },
+      {
+        path: 'new',
+        component: PublicationsFormComponent,
+        canDeactivate: [canDeactivateIfNotSavedChangesGuard],
+      },
       { path: '**', redirectTo: 'all' },
     ],
     canActivate: [MsalGuard],

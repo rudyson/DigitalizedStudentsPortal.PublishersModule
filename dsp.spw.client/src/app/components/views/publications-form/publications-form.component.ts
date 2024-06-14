@@ -7,7 +7,12 @@ import {
   Validators,
   ValidationErrors,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { Observable, Subject } from 'rxjs';
+import { CanComponentDeactivate } from 'src/app/guards/deactivate/if-not-unsaved-changes.guard';
 import {
   Publication,
   PublicationCategory,
@@ -62,7 +67,9 @@ type InternalAuthorFormControl = FormGroup<{
   templateUrl: './publications-form.component.html',
   styleUrls: ['./publications-form.component.scss'],
 })
-export class PublicationsFormComponent implements OnInit {
+export class PublicationsFormComponent
+  implements OnInit, CanComponentDeactivate
+{
   translatedPublicationCategories: {
     label: string;
     value: PublicationCategory;
@@ -176,8 +183,40 @@ export class PublicationsFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private researchersService: ResearchersService,
-    private publicationsService: PublicationsService
+    private publicationsService: PublicationsService,
+    private confirmationService: ConfirmationService,
+    private translocoService: TranslocoService,
+    private messageService: MessageService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
+
+  public canDeactivate():
+    | boolean
+    | Observable<boolean>
+    | Promise<boolean>
+    | Subject<boolean> {
+    const isChangesSaved = !this.publicationsForm.touched;
+    if (isChangesSaved) {
+      return isChangesSaved;
+    }
+    const deactivateSubject = new Subject<boolean>();
+    this.confirmationService.confirm({
+      header: this.translocoService.translate(
+        'messages.warn.unsavedChanges.title'
+      ),
+      message: this.translocoService.translate(
+        'messages.warn.unsavedChanges.description'
+      ),
+      accept: () => {
+        deactivateSubject.next(true);
+      },
+      reject: () => {
+        deactivateSubject.next(false);
+      },
+    });
+    return deactivateSubject;
+  }
 
   generateInternalAuthorFormControl(): InternalAuthorFormControl {
     return this.formBuilder.group({

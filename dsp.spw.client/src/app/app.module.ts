@@ -30,6 +30,9 @@ import { TableModule } from 'primeng/table';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { PaginatorModule } from 'primeng/paginator';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -67,6 +70,7 @@ import { PublicationsListComponent } from './components/views/publications/publi
 import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
 import { ReportsPageComponent } from './components/views/reports/reports-page/reports-page.component';
 import { environment } from 'src/environments/environment';
+import { errorInterceptor } from './interceptors/error.interceptor';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -167,6 +171,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     AutoCompleteModule,
     InputNumberModule,
     PaginatorModule,
+    ConfirmDialogModule,
+    ToastModule,
 
     HttpClientModule,
     MsalModule,
@@ -193,6 +199,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
+    ConfirmationService,
+    MessageService,
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
