@@ -6,25 +6,25 @@ import {
   PublicationGetInformationModel,
 } from './publications.models';
 import { PaginationWrapper } from './researchers.service.models';
-
-const API_ENDPOINT = 'https://localhost:7239/api';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PublicationsService {
+  api: string = `${environment.api}/api`;
   constructor(private http: HttpClient) {}
 
   createPublication(model: Publication): Observable<Publication> {
     return this.http.post<Publication>(
-      `${API_ENDPOINT}/publications/create`,
+      `${this.api}/publications/create`,
       model
     );
   }
 
   getAllPaginated(skip: number = 0, take: number = 10) {
     return this.http.get<PaginationWrapper<PublicationGetInformationModel[]>>(
-      `${API_ENDPOINT}/publications`,
+      `${this.api}/publications`,
       {
         params: { skip, take },
       }

@@ -8,37 +8,37 @@ import {
   ResearcherSearchModel,
 } from './researchers.service.models';
 import { Observable } from 'rxjs';
-
-const API_ENDPOINT = 'https://localhost:7239/api';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResearchersService {
+  api: string = `${environment.api}/api`;
   constructor(private http: HttpClient) {}
 
   getOrCreateInfo(model: PublisherProfileIdentityModel) {
     return this.http.post<ResearcherGetInformationModel>(
-      `${API_ENDPOINT}/researchers/create`,
+      `${this.api}/researchers/create`,
       model
     );
   }
 
   getInfoById(id: number) {
     return this.http.get<ResearcherGetInformationModel>(
-      `${API_ENDPOINT}/researchers/${id}`
+      `${this.api}/researchers/${id}`
     );
   }
 
   getMyInfo() {
     return this.http.get<ResearcherGetInformationModel>(
-      `${API_ENDPOINT}/researchers/me`
+      `${this.api}/researchers/me`
     );
   }
 
   getAllPaginated(skip: number = 0, take: number = 10) {
     return this.http.get<PaginationWrapper<ResearcherGetInformationModel[]>>(
-      `${API_ENDPOINT}/researchers`,
+      `${this.api}/researchers`,
       {
         params: { skip, take },
       }
@@ -47,7 +47,7 @@ export class ResearchersService {
 
   searchResearchers(query: string): Observable<ResearcherSearchModel[]> {
     return this.http.get<ResearcherSearchModel[]>(
-      `${API_ENDPOINT}/researchers/search`,
+      `${this.api}/researchers/search`,
       {
         params: { query },
       }
@@ -58,7 +58,7 @@ export class ResearchersService {
     researcherId: number
   ): Observable<ResearcherPseudonymSearchModel[]> {
     return this.http.get<ResearcherPseudonymSearchModel[]>(
-      `${API_ENDPOINT}/researchers/pseudonyms/${researcherId}`
+      `${this.api}/researchers/pseudonyms/${researcherId}`
     );
   }
 }

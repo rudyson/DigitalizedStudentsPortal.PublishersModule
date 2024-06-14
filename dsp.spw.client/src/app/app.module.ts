@@ -66,8 +66,7 @@ import { LoadingPageComponent } from './components/layout/loading-page/loading-p
 import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
 import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
 import { ReportsPageComponent } from './components/views/reports/reports-page/reports-page.component';
-
-const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
+import { environment } from 'src/environments/environment';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -77,16 +76,12 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
   console.log(message);
 }
 
-const microsoftEntraIdPreferences = {
-  tenantId: '72e42a61-9cee-4b78-8828-29b226163bd7',
-};
-
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
-      clientId: '95e3fcdb-5f1c-4a70-ae15-56e68a9337ed',
-      authority: `https://login.microsoftonline.com/${microsoftEntraIdPreferences.tenantId}`,
-      redirectUri: 'http://localhost:4200/',
+      clientId: environment.microsoft.entraId.clientId,
+      authority: `https://login.microsoftonline.com/${environment.microsoft.entraId.tenantId}`,
+      redirectUri: environment.microsoft.entraId.redirectUri,
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
@@ -104,10 +99,11 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
-  protectedResourceMap.set(GRAPH_ENDPOINT, ['user.read']);
-  protectedResourceMap.set('localhost', [
-    'api://95e3fcdb-5f1c-4a70-ae15-56e68a9337ed/api.scope',
-  ]);
+  protectedResourceMap.set(environment.microsoft.graph, ['user.read']);
+  protectedResourceMap.set(
+    'localhost',
+    environment.microsoft.entraId.exposedApis
+  );
 
   return {
     interactionType: InteractionType.Redirect,
@@ -119,7 +115,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: ['user.read'],
+      scopes: environment.microsoft.entraId.scopes,
     },
   };
 }

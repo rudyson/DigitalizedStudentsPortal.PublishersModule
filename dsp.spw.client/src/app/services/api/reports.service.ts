@@ -1,11 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-const BACKEND = {
-  HOST: 'https://localhost:7239/',
-  API: 'https://localhost:7239/api',
-  REPORTS: 'https://localhost:7239/files/reports',
-};
-const API_ENDPOINT = 'https://localhost:7239/api';
+import { environment } from 'src/environments/environment';
 
 export interface ResponseWrapper<T> {
   data?: T;
@@ -15,15 +10,15 @@ export interface ResponseWrapper<T> {
   providedIn: 'root',
 })
 export class ReportsService {
+  api: string = `${environment.api}/api`;
+  reports: string = `${environment.api}/files/reports`;
   constructor(private http: HttpClient) {}
 
   getSimpleReport() {
-    return this.http.get<ResponseWrapper<string>>(
-      `${API_ENDPOINT}/report/simple`
-    );
+    return this.http.get<ResponseWrapper<string>>(`${this.api}/report/simple`);
   }
 
   getReportFile(fileName: string): string {
-    return `${BACKEND.REPORTS}/${fileName}`;
+    return `${this.reports}/${fileName}`;
   }
 }
