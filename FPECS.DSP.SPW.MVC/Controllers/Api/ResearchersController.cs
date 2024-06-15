@@ -1,5 +1,6 @@
 ﻿using FPECS.DSP.SPW.Business.Models.Researcher;
 using FPECS.DSP.SPW.Business.Services;
+using FPECS.DSP.SPW.Common.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
@@ -15,7 +16,7 @@ public class ResearchersController(IResearcherService researcherService) : Contr
     public async Task<IActionResult> GetOrCreate(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default) //new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail)
     {
         var mappedUser = await researcherService.GetInformationOnLoginAsync(model, cancellationToken);
-        return Ok(mappedUser);
+        return mappedUser.WrapToActionResult();
     }
 
     [HttpGet("me")]
@@ -30,12 +31,7 @@ public class ResearchersController(IResearcherService researcherService) : Contr
 
         var researcher = await researcherService.GetInformationByEmailAsync(email, cancellationToken);
 
-        if (researcher is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(researcher);
+        return researcher.WrapToActionResult();
     }
 
     [HttpGet("{id:long}")]
@@ -43,19 +39,14 @@ public class ResearchersController(IResearcherService researcherService) : Contr
     {
         var researcher = await researcherService.GetInformationByIdAsync(id, cancellationToken);
 
-        if (researcher is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(researcher);
+        return researcher.WrapToActionResult();
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllPaginatedInformation(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
     {
         var researchers = await researcherService.GetAllAsync(skip, take, cancellationToken);
-        return Ok(researchers);
+        return researchers.WrapToPaginatedActionResult(researchers.Data!, researchers.Total);
     }
 
     [HttpGet("search")]
@@ -63,7 +54,7 @@ public class ResearchersController(IResearcherService researcherService) : Contr
     {
         var researchers = await researcherService.SearchResearchersAsync(query, cancellationToken);
 
-        return Ok(researchers);
+        return researchers.WrapToActionResult();
     }
 
     [HttpGet("pseudonyms/{researcherId}")]
@@ -71,6 +62,6 @@ public class ResearchersController(IResearcherService researcherService) : Contr
     {
         var pseudonyms = await researcherService.GetResearcherPseudonymsAsync(researcherId, cancellationToken);
 
-        return Ok(pseudonyms);
+        return pseudonyms.WrapToActionResult();
     }
 }

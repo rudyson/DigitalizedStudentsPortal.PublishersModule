@@ -149,7 +149,9 @@ export class PublicationsFormComponent
           if (response.data) {
             this.router.navigate(['/publications/all']);
             this.messageService.add({
-              summary: 'Публікацію створено',
+              summary: this.translocoService.translate(
+                'views.publications.new.messages.successSubmit'
+              ),
               severity: 'success',
               detail: response.data.reference,
             });
@@ -235,8 +237,8 @@ export class PublicationsFormComponent
     if ($event.query) {
       this.researchersService
         .searchResearchers($event.query)
-        .subscribe((response) => {
-          this.foundResearchers = response;
+        .then((response) => {
+          this.foundResearchers = response.data ?? [];
         });
     } else {
       this.foundResearchers = [];
@@ -244,11 +246,9 @@ export class PublicationsFormComponent
   }
 
   onAuthorPseudonymSearch(researcherId: number) {
-    this.researchersService
-      .getPseudonyms(researcherId)
-      .subscribe((response) => {
-        this.foundResearcherPseudonyms = response;
-      });
+    this.researchersService.getPseudonyms(researcherId).then((response) => {
+      this.foundResearcherPseudonyms = response.data ?? [];
+    });
   }
 
   generateInternalAuthorFormControl(): InternalAuthorFormControl {

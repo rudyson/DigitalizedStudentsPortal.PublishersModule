@@ -24,12 +24,14 @@ export class PublicationsListComponent implements OnInit {
     this.loading = true;
     this.publicationsService
       .getAllPaginated(this.first, this.rows)
-      .subscribe((response) => {
+      .then((response) => {
         if (response.data) {
           this.publications = response.data;
-          this.totalRecords = response.total;
-          this.loading = false;
+          this.totalRecords = response.count ?? this.rows;
         }
+      })
+      .finally(() => {
+        this.loading = false;
       });
   }
 

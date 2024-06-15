@@ -7,6 +7,7 @@ using Mapster;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using System.Globalization;
 
 namespace FPECS.DSP.SPW.Business;
 
@@ -15,6 +16,7 @@ public static class LayerRegistrationExtension
     public static IServiceCollection AddBusinessLayer(this IServiceCollection services, IConfiguration configuration)
     {
         ValidatorOptions.Global.LanguageManager.Enabled = true;
+        //ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("uk");
         services.AddValidatorsFromAssemblyContaining<PublicationCreateRequestValidator>();
         services.AddFluentValidationAutoValidation(options =>
         {

@@ -11,7 +11,7 @@ export class ReportsPageComponent {
   constructor(private reportsService: ReportsService) {}
 
   generateSimpleReport() {
-    this.reportsService.getSimpleReport().subscribe((response) => {
+    this.reportsService.getSimpleReport().then((response) => {
       if (response.data) {
         this.report = response.data;
       }

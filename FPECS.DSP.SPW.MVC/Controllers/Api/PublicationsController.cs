@@ -19,7 +19,7 @@ public class PublicationsController(IPublicationService publicationService/*, IV
     public async Task<IActionResult> GetAllPaginatedInformation(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
     {
         var publications = await publicationService.GetAllAsync(skip, take, cancellationToken);
-        return Ok(publications);
+        return publications.WrapToPaginatedActionResult(publications.Data, publications.Total);
     }
 
     [HttpPost("create")]

@@ -25,12 +25,17 @@ export class PublicationsService {
     );
   }
 
-  getAllPaginated(skip: number = 0, take: number = 10) {
-    return this.http.get<PaginationWrapper<PublicationGetInformationModel[]>>(
-      `${this.api}/publications`,
-      {
-        params: { skip, take },
-      }
+  getAllPaginated(
+    skip: number = 0,
+    take: number = 10
+  ): Promise<ResponseWrapper<PublicationGetInformationModel[]>> {
+    return lastValueFrom(
+      this.http.get<ResponseWrapper<PublicationGetInformationModel[]>>(
+        `${this.api}/publications`,
+        {
+          params: { skip, take },
+        }
+      )
     );
   }
 }

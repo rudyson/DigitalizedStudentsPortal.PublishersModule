@@ -32,29 +32,34 @@ export class AboutMeComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
 
     if (this.id) {
-      this.researchersService.getInfoById(Number(this.id)).subscribe(
-        (response) => {
-          this.researcherInformationModel = response;
+      this.researchersService
+        .getInfoById(Number(this.id))
+        .then((response) => {
+          if (response.data) {
+            this.researcherInformationModel = response.data;
+          }
+        })
+        .finally(() => {
           this.loading = false;
-        },
-        (error: HttpErrorResponse) => {
-          this.loading = false;
-        }
-      );
+        });
     } else {
-      this.researchersService.getMyInfo().subscribe(
-        (response) => {
-          this.researcherInformationModel = response;
-          this.loading = false;
-        },
-        (error: HttpErrorResponse) => {
+      this.researchersService
+        .getMyInfo()
+        .then((response) => {
+          if (response.data) {
+            this.researcherInformationModel = response.data;
+          }
+        })
+        .catch((error: HttpErrorResponse) => {
           this.loading = false;
           if (error.status === 404) {
             this.needsRegistration = true;
             this.getGraphInfo();
           }
-        }
-      );
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 
@@ -90,7 +95,7 @@ export class AboutMeComponent implements OnInit {
     if (this.registrationModel) {
       this.researchersService
         .getOrCreateInfo(this.registrationModel)
-        .subscribe((moduleProfile) => {
+        .then((response) => {
           window.location.reload();
         });
     }
