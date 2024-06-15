@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Security;
-using FPECS.DSP.SPW.MVC.Infrastructure.Responses;
+using FPECS.DSP.SPW.Common.Responses;
 
-namespace FPECS.DSP.SPW.MVC.Infrastructure.Extensions;
+namespace FPECS.DSP.SPW.Common.Extensions;
 
 public static class WrapToCustomActionResultExtension
 {

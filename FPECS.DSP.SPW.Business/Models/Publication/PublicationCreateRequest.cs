@@ -13,7 +13,7 @@ public record PublicationCreateRequest(
     bool IsWithStudent,
     bool IsInternational,
     string? ConferenceName,
-    List<DateTime> ConferenceDates,
+    List<DateTime>? ConferenceDates,
     string? ConferenceCountry,
     string? ConferenceCity,
     string? MagazineName,

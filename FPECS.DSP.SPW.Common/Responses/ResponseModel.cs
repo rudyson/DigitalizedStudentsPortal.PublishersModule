@@ -1,4 +1,4 @@
-﻿namespace FPECS.DSP.SPW.MVC.Infrastructure.Responses;
+﻿namespace FPECS.DSP.SPW.Common.Responses;
 
 public class ResponseModel<T> where T : class
 {

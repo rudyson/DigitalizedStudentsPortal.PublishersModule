@@ -33,8 +33,8 @@ public static class MapsterConfigurationExtension
             .Map(destination => destination.FacultyId, s => s.FacultyId);
 
         TypeAdapterConfig<PublicationCreateRequest, Publication>.NewConfig()
-            .Map(destination => destination.ConferenceStartDate, source => source.ConferenceDates[0])
-            .Map(destination => destination.ConferenceEndDate, source => source.ConferenceDates[1])
+            .Map(destination => destination.ConferenceStartDate, source => source.ConferenceDates![0],shouldMap => shouldMap.ConferenceDates != null && shouldMap.ConferenceDates.Count > 0)
+            .Map(destination => destination.ConferenceEndDate, source => source.ConferenceDates![1], shouldMap => shouldMap.ConferenceDates != null && shouldMap.ConferenceDates.Count > 1)
             .Map(destination => destination.PublicationExternalPublishers,
                 source => source.ExternalAuthors!
                     .Select(x => new PublicationExternalPublisher { Id = 0, PublicationId = 0, Pseudonym = x }),

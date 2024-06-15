@@ -1,0 +1,9 @@
+:host {
+  ::ng-deep {
+    .p-component {
+      &.p-card {
+        margin-block-end: 0.5rem;
+      }
+    }
+  }
+}

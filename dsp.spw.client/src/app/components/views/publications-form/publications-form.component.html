@@ -30,6 +30,10 @@
                   optionLabel="shortName"
                   (completeMethod)="onAuthorSearch($event)"
                   [placeholder]="t('views.publications.new.authorPlaceholder')"
+                  [ngClass]="{
+                    'ng-invalid': isAuthorControlInvalid(),
+                    'ng-dirty': isAuthorControlInvalid()
+                  }"
                 />
               </td>
               <td>
@@ -38,7 +42,6 @@
                   [forceSelection]="true"
                   [suggestions]="foundResearcherPseudonyms"
                   optionLabel="shortName"
-                  [disabled]="true"
                   (completeMethod)="
                     onAuthorPseudonymSearch(
                       publicationsForm.controls.internalAuthors.controls.at(
@@ -49,6 +52,10 @@
                   [placeholder]="
                     t('views.publications.new.pseudonymPlaceholder')
                   "
+                  [ngClass]="{
+                    'ng-invalid': isAuthorControlInvalid(),
+                    'ng-dirty': isAuthorControlInvalid()
+                  }"
                 />
               </td>
               <td>
@@ -73,6 +80,10 @@
             <p-chips
               formControlName="externalAuthors"
               [placeholder]="t('views.publications.new.externalAuthors')"
+              [ngClass]="{
+                'ng-invalid': isAuthorControlInvalid(),
+                'ng-dirty': isAuthorControlInvalid()
+              }"
             />
           </p>
         </div>
@@ -85,14 +96,8 @@
               name="title"
               formControlName="title"
               [ngClass]="{
-                'ng-invalid':
-                  publicationsForm.get('title')?.invalid &&
-                  (publicationsForm.get('title')?.dirty ||
-                    publicationsForm.get('title')?.touched),
-                'ng-dirty':
-                  publicationsForm.get('title')?.invalid &&
-                  (publicationsForm.get('title')?.dirty ||
-                    publicationsForm.get('title')?.touched)
+                'ng-invalid': isControlInvalid('title'),
+                'ng-dirty': isControlDirty('title')
               }"
             />
             <label for="title">{{
@@ -109,8 +114,8 @@
               name="dstuReference"
               formControlName="reference"
               [ngClass]="{
-                'ng-invalid': isNotValid('reference'),
-                'ng-dirty': isNotValid('reference')
+                'ng-invalid': isControlInvalid('reference'),
+                'ng-dirty': isControlDirty('reference')
               }"
             ></textarea>
             <label for="dstuReference">{{
@@ -121,7 +126,6 @@
           <p-floatLabel>
             <p-dropdown
               required
-              [(ngModel)]="selectedPublicationType"
               [options]="translatedPublicationTypes"
               class="p-inputtext-sm"
               id="publicationType"
@@ -130,9 +134,9 @@
               [loading]="translatedPublicationTypes.length < 1"
               [ngClass]="{
                 'ng-invalid':
-                isNotValid('type'),
+                isControlInvalid('type'),
                 'ng-dirty':
-                isNotValid('type'),
+                isControlDirty('type'),
               }"
               ><ng-template pTemplate="selectedItem" let-item>
                 {{ t("enums.PublicationTypes." + item.label) }} </ng-template
@@ -147,7 +151,6 @@
           <p-floatLabel
             ><p-dropdown
               required
-              [(ngModel)]="selectedPublicationCategory"
               [options]="translatedPublicationCategories"
               class="p-inputtext-sm"
               id="publicationCategory"
@@ -156,10 +159,9 @@
               [loading]="translatedPublicationCategories.length < 1"
               [ngClass]="{
                 'ng-invalid':
-                isNotValid('category'),
+                isControlInvalid('category'),
                 'ng-dirty':
-                 
-                  isNotValid('category'),
+                  isControlDirty('category'),
               }"
               ><ng-template pTemplate="selectedItem" let-item>
                 {{ t("enums.PublicationCategory." + item.label) }} </ng-template
@@ -178,7 +180,6 @@
         <div class="input-fields-wrapper vertical">
           <p-checkbox
             name="isInternational"
-            [(ngModel)]="isInternational"
             [binary]="true"
             [label]="t('views.publications.new.isInternational')"
             id="isInternational"
@@ -189,7 +190,6 @@
             id="isWithStudent"
             name="isWithStudent"
             formControlName="isWithStudent"
-            [(ngModel)]="isWithStudent"
             [binary]="true"
             [label]="t('views.publications.new.isWithStudent')"
           />
@@ -202,7 +202,6 @@
               name="publicationYear"
               id="publicationYear"
               formControlName="year"
-              [(ngModel)]="publicationYear"
               [dateFormat]="'yy'"
               [iconDisplay]="'input'"
               [showIcon]="true"
@@ -212,10 +211,9 @@
               view="year"
               [ngClass]="{
                 'ng-invalid':
-                isNotValid('year'),
+                isControlInvalid('year'),
                 'ng-dirty':
-                 
-                  isNotValid('year'),
+                  isControlDirty('year'),
               }"
             />
             <label for="publicationYear">{{
@@ -249,7 +247,9 @@
         </div>
         <div
           class="input-fields-wrapper"
-          *ngIf="selectedPublicationType === publicationTypes.Theses"
+          *ngIf="
+            publicationsForm.controls.type.value === publicationTypes.Theses
+          "
         >
           <p-floatLabel>
             <p-inputNumber
@@ -295,7 +295,6 @@
           <p-floatLabel
             ><p-calendar
               class="p-inputtext-sm"
-              [(ngModel)]="conferenceDates"
               selectionMode="range"
               [dateFormat]="'dd.mm.yy'"
               [iconDisplay]="'input'"
@@ -312,7 +311,7 @@
             }}</label></p-floatLabel
           >
 
-          <p-floatLabel *ngIf="isInternational"
+          <p-floatLabel *ngIf="publicationsForm.controls.isInternational.value"
             ><input
               class="p-inputtext-sm"
               pInputText
@@ -341,9 +340,11 @@
         <div
           class="input-fields-wrapper"
           *ngIf="
-            selectedPublicationType === publicationTypes.Article ||
-            selectedPublicationType === publicationTypes.MethodicalManual ||
-            selectedPublicationType === publicationTypes.StudyMethodicalManual
+            publicationsForm.controls.type.value === publicationTypes.Article ||
+            publicationsForm.controls.type.value ===
+              publicationTypes.MethodicalManual ||
+            publicationsForm.controls.type.value ===
+              publicationTypes.StudyMethodicalManual
           "
         >
           <p-floatLabel
@@ -449,7 +450,6 @@
           type="submit"
           pButton
           [label]="t('views.publications.new.addPublication')"
-          [disabled]="publicationsForm.invalid && publicationsForm.touched"
         ></button
       ></ng-template>
     </p-panel>

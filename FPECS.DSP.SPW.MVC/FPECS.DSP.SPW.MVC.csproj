@@ -34,9 +34,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\FPECS.DSP.SPW.Business\FPECS.DSP.SPW.Business.csproj" />
-        <ProjectReference Include="..\fpecs.dsp.spw.client.client\fpecs.dsp.spw.client.client.esproj">
-            <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-        </ProjectReference>
+        <ProjectReference Include="..\FPECS.DSP.SPW.Common\FPECS.DSP.SPW.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

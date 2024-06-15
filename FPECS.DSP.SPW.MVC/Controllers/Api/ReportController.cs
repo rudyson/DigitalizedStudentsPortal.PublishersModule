@@ -1,5 +1,5 @@
 ﻿using FPECS.DSP.SPW.Business.Services;
-using FPECS.DSP.SPW.MVC.Infrastructure.Extensions;
+using FPECS.DSP.SPW.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FPECS.DSP.SPW.MVC.Controllers.Api;

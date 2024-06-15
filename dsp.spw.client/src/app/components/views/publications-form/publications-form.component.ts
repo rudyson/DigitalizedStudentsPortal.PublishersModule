@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -28,8 +28,8 @@ import {
 type PublicationForm = FormGroup<{
   title: FormControl<string | null>;
   reference: FormControl<string | null>;
-  type: FormControl<PublicationTypes | null>;
-  category: FormControl<PublicationCategory | null>;
+  type: FormControl<PublicationTypes>;
+  category: FormControl<PublicationCategory>;
   year: FormControl<Date | null>;
   pages: FormControl<number[] | null>;
   pagesAuthor: FormControl<number | null>;
@@ -68,8 +68,10 @@ type InternalAuthorFormControl = FormGroup<{
   styleUrls: ['./publications-form.component.scss'],
 })
 export class PublicationsFormComponent
-  implements OnInit, CanComponentDeactivate
+  implements OnInit, OnDestroy, CanComponentDeactivate
 {
+  destroy$ = new Subject<void>();
+
   translatedPublicationCategories: {
     label: string;
     value: PublicationCategory;
@@ -82,69 +84,16 @@ export class PublicationsFormComponent
   foundResearchers: ResearcherSearchModel[] = [];
   foundResearcherPseudonyms: ResearcherPseudonymSearchModel[] = [];
 
-  isNotValid(formControlName: string): boolean {
-    const control = this.publicationsForm.get(formControlName);
-    return ((control?.invalid && control?.dirty) || control?.touched) ?? true;
-  }
-
-  onAuthorSearch($event: AutoCompleteCompleteEvent) {
-    if ($event.query) {
-      this.researchersService
-        .searchResearchers($event.query)
-        .subscribe((response) => {
-          this.foundResearchers = response;
-        });
-    } else {
-      this.foundResearchers = [];
-    }
-  }
-
-  onAuthorPseudonymSearch(researcherId: number) {
-    this.researchersService
-      .getPseudonyms(researcherId)
-      .subscribe((response) => {
-        this.foundResearcherPseudonyms = response;
-      });
-  }
-
-  ngOnInit(): void {
-    this.translatedPublicationTypes = Object.values(this.publicationTypes)
-      .filter((key) => !isNaN(+key))
-      .map((type) => ({
-        label: PublicationTypes[type as number] as string,
-        value: type as PublicationTypes,
-      }));
-
-    this.translatedPublicationCategories = Object.values(
-      this.publicationCategories
-    )
-      .filter((key) => !isNaN(+key))
-      .map((type) => ({
-        label: PublicationCategory[type as number] as string,
-        value: type as PublicationCategory,
-      }));
-  }
-
-  selectedPublicationType: PublicationTypes = PublicationTypes.Article;
-  selectedPublicationCategory: PublicationCategory = PublicationCategory.C;
-  isInternational: boolean = false;
-  isWithStudent: boolean = false;
-  publicationYear?: Date;
-  publicationPages?: string;
-  conferenceDates?: Date[];
-
   currentDate = new Date();
-
-  isConferenceInformation: boolean = false;
 
   publicationsForm: PublicationForm = this.formBuilder.group({
     title: this.formBuilder.control<string | null>('', Validators.required),
     reference: this.formBuilder.control<string | null>('', Validators.required),
-    type: this.formBuilder.control<PublicationTypes | null>(
+    type: this.formBuilder.control<PublicationTypes>(
       PublicationTypes.Article,
       Validators.required
     ),
-    category: this.formBuilder.control<PublicationCategory | null>(
+    category: this.formBuilder.control<PublicationCategory>(
       PublicationCategory.C,
       Validators.required
     ),
@@ -191,6 +140,26 @@ export class PublicationsFormComponent
     private activatedRoute: ActivatedRoute
   ) {}
 
+  onSubmit(): void {
+    this.publicationsForm.markAllAsTouched();
+    if (this.publicationsForm.valid) {
+      this.publicationsService
+        .createPublication(this.publicationsForm.getRawValue() as Publication)
+        .then((response) => {
+          if (response.data) {
+            this.router.navigate(['/publications/all']);
+            this.messageService.add({
+              summary: 'Публікацію створено',
+              severity: 'success',
+              detail: response.data.reference,
+            });
+          }
+        });
+    } else {
+      this.logValidationErrors(this.publicationsForm);
+    }
+  }
+
   public canDeactivate():
     | boolean
     | Observable<boolean>
@@ -218,11 +187,78 @@ export class PublicationsFormComponent
     return deactivateSubject;
   }
 
+  ngOnInit(): void {
+    this.translatedPublicationTypes = Object.values(this.publicationTypes)
+      .filter((key) => !isNaN(+key))
+      .map((type) => ({
+        label: PublicationTypes[type as number] as string,
+        value: type as PublicationTypes,
+      }));
+
+    this.translatedPublicationCategories = Object.values(
+      this.publicationCategories
+    )
+      .filter((key) => !isNaN(+key))
+      .map((type) => ({
+        label: PublicationCategory[type as number] as string,
+        value: type as PublicationCategory,
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.unsubscribe();
+  }
+
+  totalAuthorsCount(): number {
+    const formModel = this.publicationsForm.getRawValue();
+    return (
+      formModel.externalAuthors?.length ?? 0 + formModel.internalAuthors.length
+    );
+  }
+
+  isAuthorControlInvalid(): boolean {
+    return this.totalAuthorsCount() === 0;
+  }
+
+  isControlInvalid(formControlName: string): boolean {
+    const control = this.publicationsForm.get(formControlName);
+    return control?.invalid ?? true;
+  }
+
+  isControlDirty(formControlName: string): boolean {
+    const control = this.publicationsForm.get(formControlName);
+    return (control?.dirty || control?.touched) ?? true;
+  }
+
+  onAuthorSearch($event: AutoCompleteCompleteEvent) {
+    if ($event.query) {
+      this.researchersService
+        .searchResearchers($event.query)
+        .subscribe((response) => {
+          this.foundResearchers = response;
+        });
+    } else {
+      this.foundResearchers = [];
+    }
+  }
+
+  onAuthorPseudonymSearch(researcherId: number) {
+    this.researchersService
+      .getPseudonyms(researcherId)
+      .subscribe((response) => {
+        this.foundResearcherPseudonyms = response;
+      });
+  }
+
   generateInternalAuthorFormControl(): InternalAuthorFormControl {
     return this.formBuilder.group({
       author: this.formBuilder.control<ResearcherSearchModel | null>(null),
       pseudonym:
-        this.formBuilder.control<ResearcherPseudonymSearchModel | null>(null),
+        this.formBuilder.control<ResearcherPseudonymSearchModel | null>({
+          value: null,
+          disabled: false,
+        }),
     }) as InternalAuthorFormControl;
   }
 
@@ -234,20 +270,6 @@ export class PublicationsFormComponent
 
   deleteInternalAuthorFormControl(index: number): void {
     this.publicationsForm.controls.internalAuthors.removeAt(index);
-  }
-
-  onSubmit(): void {
-    this.publicationsForm.markAllAsTouched();
-    if (this.publicationsForm.valid) {
-      console.log(this.publicationsForm.value);
-      this.publicationsService
-        .createPublication(this.publicationsForm.getRawValue() as Publication)
-        .subscribe((response) => {
-          console.log(response);
-        });
-    } else {
-      this.logValidationErrors(this.publicationsForm);
-    }
   }
 
   logValidationErrors(formGroup: FormGroup): void {

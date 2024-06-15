@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FPECS.DSP.SPW.MVC.Infrastructure.Responses;
+namespace FPECS.DSP.SPW.Common.Responses;
 
 public class CustomActionResult : IActionResult
 {
