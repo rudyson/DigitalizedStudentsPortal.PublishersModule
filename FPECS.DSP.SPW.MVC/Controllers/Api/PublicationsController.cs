@@ -13,7 +13,7 @@ namespace FPECS.DSP.SPW.MVC.Controllers.Api;
 [Authorize]
 [RequiredScope(RequiredScopesConfigurationKey = "api.scope")]
 [Route("api/[controller]")]
-public class PublicationsController(IPublicationService publicationService/*, IValidator<PublicationCreateRequest> publicationCreateRequestValidator*/) : ControllerBase
+public class PublicationsController(IPublicationService publicationService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllPaginatedInformation(int skip = 0, int take = 10, CancellationToken cancellationToken = default)
@@ -22,16 +22,16 @@ public class PublicationsController(IPublicationService publicationService/*, IV
         return publications.WrapToPaginatedActionResult(publications.Data, publications.Total);
     }
 
-    [HttpPost("create")]
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchAllPaginated(string query, CancellationToken cancellationToken = default)
+    {
+        var publications = await publicationService.SearchAsync(query, cancellationToken);
+        return publications.WrapToPaginatedActionResult(publications.Data, publications.Total);
+    }
+
+    [HttpPost]
     public async Task<IActionResult> Create(PublicationCreateRequest model, CancellationToken cancellationToken = default)
     {
-        /*
-        var validationResult = await publicationCreateRequestValidator.ValidateAsync(model, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            return UnprocessableEntity(validationResult.Errors);
-        }*/
-
         var createdPublication = await publicationService.CreateAsync(model, cancellationToken);
         return createdPublication.WrapToActionResult();
     }

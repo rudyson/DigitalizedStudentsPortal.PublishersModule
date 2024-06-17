@@ -81,3 +81,11 @@ export interface Publication {
   internalAuthors: InternalAuthor[] | null;
   externalAuthors: string[] | null;
 }
+
+export interface ResearcherCreatePseudonymModel {
+  researcherId: number;
+  shortName: string;
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
+}

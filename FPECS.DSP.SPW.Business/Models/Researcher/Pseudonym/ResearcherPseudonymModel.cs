@@ -1,4 +1,4 @@
-﻿namespace FPECS.DSP.SPW.Business.Models.Researcher;
+﻿namespace FPECS.DSP.SPW.Business.Models.Researcher.Pseudonym;
 
 public class ResearcherPseudonymModel
 {

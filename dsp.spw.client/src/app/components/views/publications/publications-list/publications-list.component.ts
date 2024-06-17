@@ -14,10 +14,28 @@ export class PublicationsListComponent implements OnInit {
   first: number = 0;
   totalRecords: number = this.rows;
   loading: boolean = false;
+  searchQuery: string = '';
 
   constructor(private publicationsService: PublicationsService) {}
   ngOnInit(): void {
     this.loadItems();
+  }
+
+  onPublicationSearch() {
+    this.loading = true;
+    if (this.searchQuery) {
+      this.publicationsService
+        .search(this.searchQuery)
+        .then((response) => {
+          this.publications = response.data ?? [];
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    } else {
+      this.searchQuery = '';
+      this.loadItems();
+    }
   }
 
   loadItems() {

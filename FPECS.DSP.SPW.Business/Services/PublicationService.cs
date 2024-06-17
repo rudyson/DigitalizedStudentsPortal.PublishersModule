@@ -17,6 +17,7 @@ public interface IPublicationService
 {
     Task<PublicationCreateRequest> CreateAsync(PublicationCreateRequest request, CancellationToken cancellationToken = default);
     Task<PaginationWrapper<List<PublicationGetInformationModel>>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+    Task<PaginationWrapper<List<PublicationGetInformationModel>>> SearchAsync(string query, CancellationToken cancellationToken = default);
 }
 
 public class PublicationService(ApplicationDbContext context) : IPublicationService
@@ -50,6 +51,32 @@ public class PublicationService(ApplicationDbContext context) : IPublicationServ
             Skip = skip,
             Take = take,
             Total = count
+        };
+    }
+
+    public async Task<PaginationWrapper<List<PublicationGetInformationModel>>> SearchAsync(string query, CancellationToken cancellationToken = default)
+    {
+        var queryable = context.Publications
+            .Include(x => x.PublicationPublishers)!
+            .ThenInclude(x => x.Pseudonym)
+            .Include(x => x.PublicationExternalPublishers);
+
+        var filtered = queryable
+            .Where(x => EF.Functions
+                .ToTsVector(x.Title + ' ' + x.Reference)
+                .Matches(query))
+            .OrderBy(x => EF.Functions.ToTsVector(x.Title + ' ' + x.Reference).Rank(EF.Functions.PlainToTsQuery(query)));
+
+        var publications = await filtered
+            .Take(5)
+            .ToListAsync(cancellationToken);
+
+        return new PaginationWrapper<List<PublicationGetInformationModel>>
+        {
+            Data = publications.Adapt<List<PublicationGetInformationModel>>(),
+            Skip = 0,
+            Take = 5,
+            Total = publications.Count
         };
     }
 }

@@ -10,6 +10,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using FPECS.DSP.SPW.Business.Models.Researcher;
 using FPECS.DSP.SPW.Business.Helpers;
+using FPECS.DSP.SPW.Business.Models.Researcher.Pseudonym;
 
 namespace FPECS.DSP.SPW.Business.Services;
 
@@ -21,6 +22,8 @@ public interface IResearcherService
     Task<PaginationWrapper<List<ResearcherGetInformationModel>>> GetAllAsync(int skip = 0, int take = 10, CancellationToken cancellationToken = default);
     Task<List<ResearcherSearchModel>> SearchResearchersAsync(string query, CancellationToken cancellationToken = default);
     Task<List<ResearcherPseudonymSearchModel>> GetResearcherPseudonymsAsync(long researcherId, CancellationToken cancellationToken = default);
+    Task<ResearcherPseudonymModel> CreateResearcherPseudonymAsync(ResearcherCreatePseudonymModel model, CancellationToken cancellationToken = default);
+    Task<ResearcherPseudonymModel?> DeleteResearcherPseudonymAsync(long pseudonymId, CancellationToken cancellationToken = default);
 }
 public class ResearcherService(ApplicationDbContext context) : IResearcherService
 {
@@ -121,5 +124,28 @@ public class ResearcherService(ApplicationDbContext context) : IResearcherServic
             .ToListAsync(cancellationToken);
 
         return pseudonyms.Adapt<List<ResearcherPseudonymSearchModel>>();
+    }
+
+    public async Task<ResearcherPseudonymModel> CreateResearcherPseudonymAsync(ResearcherCreatePseudonymModel model,
+        CancellationToken cancellationToken = default)
+    {
+        var newPseudonym = model.Adapt<ResearcherPseudonym>();
+        var createdPseudonym = await context.ResearcherPseudonyms.AddAsync(newPseudonym, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+
+        return createdPseudonym.Entity.Adapt<ResearcherPseudonymModel>();
+    }
+
+    public async Task<ResearcherPseudonymModel?> DeleteResearcherPseudonymAsync(long pseudonymId, CancellationToken cancellationToken = default)
+    {
+        var pseudonymToDelete = await context.ResearcherPseudonyms.FirstOrDefaultAsync(x => x.Id == pseudonymId, cancellationToken);
+        if (pseudonymToDelete is null)
+        {
+            return null;
+        }
+
+        context.ResearcherPseudonyms.Remove(pseudonymToDelete);
+        await context.SaveChangesAsync(cancellationToken);
+        return pseudonymToDelete.Adapt<ResearcherPseudonymModel>();
     }
 }

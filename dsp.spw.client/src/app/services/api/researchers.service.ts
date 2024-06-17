@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  PaginationWrapper,
   PublisherProfileIdentityModel,
   ResearcherGetInformationModel,
+  ResearcherPseudonymModel,
   ResearcherPseudonymSearchModel,
   ResearcherSearchModel,
 } from './researchers.service.models';
-import { Observable, last, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ResponseWrapper } from './common.models';
+import { ResearcherCreatePseudonymModel } from './publications.models';
 
 @Injectable({
   providedIn: 'root',
@@ -79,7 +80,37 @@ export class ResearchersService {
   ): Promise<ResponseWrapper<ResearcherPseudonymSearchModel[]>> {
     return lastValueFrom(
       this.http.get<ResponseWrapper<ResearcherPseudonymSearchModel[]>>(
-        `${this.api}/researchers/pseudonyms/${researcherId}`
+        `${this.api}/researchers/${researcherId}/pseudonyms/search`
+      )
+    );
+  }
+
+  createPseudonym(
+    researcherId: number,
+    model: ResearcherCreatePseudonymModel
+  ): Promise<ResponseWrapper<ResearcherPseudonymModel>> {
+    return lastValueFrom(
+      this.http.post<ResponseWrapper<ResearcherPseudonymModel>>(
+        `${this.api}/researchers/${researcherId}/pseudonyms`,
+        model
+      )
+    );
+  }
+
+  deletePseudonym(
+    researcherId: number,
+    pseudonymId: number,
+    model: ResearcherCreatePseudonymModel
+  ): Promise<ResponseWrapper<ResearcherPseudonymModel>> {
+    return lastValueFrom(
+      this.http.post<ResponseWrapper<ResearcherPseudonymModel>>(
+        `${this.api}/researchers/${researcherId}/pseudonyms`,
+        model,
+        {
+          params: {
+            pseudonymId,
+          },
+        }
       )
     );
   }

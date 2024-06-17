@@ -30,7 +30,18 @@
       "chair": "Кафедра",
       "pseudonyms": "Також відомий як:"
     },
+    "researchers": {
+      "fullName": "ПІБ",
+      "email": "Пошта",
+      "chair": "Кафедра",
+      "faculty": "Факультет",
+      "profile": "Профіль"
+    },
     "publications": {
+      "list": {
+        "searchPlaceholder": "Пошук",
+        "noResults": "Результатів не знайдено"
+      },
       "new": {
         "addPublication": "Створити публікацію",
         "title": "Нова публікація",

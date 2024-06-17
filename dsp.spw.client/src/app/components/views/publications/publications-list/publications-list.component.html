@@ -1,5 +1,19 @@
 <ng-container *transloco="let t">
-  @for (publication of publications; track $index) {
+  <p-card>
+    <p-iconField iconPosition="left">
+      <p-inputIcon styleClass="pi pi-search" />
+      <input
+        type="text"
+        pInputText
+        [placeholder]="t('views.publications.list.searchPlaceholder')"
+        [(ngModel)]="searchQuery"
+        (change)="onPublicationSearch()"
+      />
+    </p-iconField>
+  </p-card>
+  @if (searchQuery.length && !publications.length) {
+  <p>{{ t("views.publications.list.noResults") }}</p>
+  } @for (publication of publications; track $index) {
   <p-card
     [header]="publication.title"
     [subheader]="getPublicationAuthors(publication).join(', ')"
@@ -32,6 +46,7 @@
   </p-card>
   }
   <div class="card flex justify-content-center">
+    @if (!searchQuery && publications.length) {
     <p-paginator
       (onPageChange)="onPaginatorPageChanged($event)"
       [first]="first"
@@ -39,5 +54,6 @@
       [totalRecords]="totalRecords"
       [showCurrentPageReport]="true"
     />
+    }
   </div>
 </ng-container>

@@ -1,4 +1,5 @@
 ﻿using FPECS.DSP.SPW.Business.Models.Researcher;
+using FPECS.DSP.SPW.Business.Models.Researcher.Pseudonym;
 using FPECS.DSP.SPW.Business.Services;
 using FPECS.DSP.SPW.Common.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -57,10 +58,26 @@ public class ResearchersController(IResearcherService researcherService) : Contr
         return researchers.WrapToActionResult();
     }
 
-    [HttpGet("pseudonyms/{researcherId}")]
-    public async Task<IActionResult> GetPseudonyms(long researcherId, CancellationToken cancellationToken = default)
+    [HttpGet("{researcherId}/pseudonyms/search")]
+    public async Task<IActionResult> SearchPseudonyms(long researcherId, CancellationToken cancellationToken = default)
     {
         var pseudonyms = await researcherService.GetResearcherPseudonymsAsync(researcherId, cancellationToken);
+
+        return pseudonyms.WrapToActionResult();
+    }
+
+    [HttpPost("{researcherId}/pseudonyms")]
+    public async Task<IActionResult> CreatePseudonym(ResearcherCreatePseudonymModel model, CancellationToken cancellationToken = default)
+    {
+        var pseudonyms = await researcherService.CreateResearcherPseudonymAsync(model, cancellationToken);
+
+        return pseudonyms.WrapToActionResult();
+    }
+
+    [HttpDelete("{researcherId}/pseudonyms/{pseudonymId}")]
+    public async Task<IActionResult> DeletePseudonym(long pseudonymId, CancellationToken cancellationToken = default)
+    {
+        var pseudonyms = await researcherService.DeleteResearcherPseudonymAsync(pseudonymId, cancellationToken);
 
         return pseudonyms.WrapToActionResult();
     }

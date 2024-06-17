@@ -1,4 +1,5 @@
-﻿using FPECS.DSP.SPW.DataAccess.Entities.Enums;
+﻿using FPECS.DSP.SPW.Business.Models.Researcher.Pseudonym;
+using FPECS.DSP.SPW.DataAccess.Entities.Enums;
 
 namespace FPECS.DSP.SPW.Business.Models.Researcher;
 

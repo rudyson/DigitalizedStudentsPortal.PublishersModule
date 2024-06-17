@@ -75,10 +75,3 @@ export interface ChairGetInformationModel {
   chairId: number;
   facultyId: number;
 }
-
-export interface PaginationWrapper<TModel> {
-  data?: TModel;
-  skip: number;
-  take: number;
-  total: number;
-}

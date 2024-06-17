@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import {
   Publication,
   PublicationGetInformationModel,
 } from './publications.models';
-import { PaginationWrapper } from './researchers.service.models';
 import { environment } from 'src/environments/environment';
 import { ResponseWrapper } from './common.models';
 
@@ -19,8 +18,21 @@ export class PublicationsService {
   createPublication(model: Publication): Promise<ResponseWrapper<Publication>> {
     return lastValueFrom(
       this.http.post<ResponseWrapper<Publication>>(
-        `${this.api}/publications/create`,
+        `${this.api}/publications`,
         model
+      )
+    );
+  }
+
+  search(
+    query: string
+  ): Promise<ResponseWrapper<PublicationGetInformationModel[]>> {
+    return lastValueFrom(
+      this.http.get<ResponseWrapper<PublicationGetInformationModel[]>>(
+        `${this.api}/publications/search`,
+        {
+          params: { query },
+        }
       )
     );
   }
