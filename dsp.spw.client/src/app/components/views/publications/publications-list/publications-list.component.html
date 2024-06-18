@@ -1,0 +1,59 @@
+<ng-container *transloco="let t">
+  <p-card>
+    <p-iconField iconPosition="left">
+      <p-inputIcon styleClass="pi pi-search" />
+      <input
+        type="text"
+        pInputText
+        [placeholder]="t('views.publications.list.searchPlaceholder')"
+        [(ngModel)]="searchQuery"
+        (change)="onPublicationSearch()"
+      />
+    </p-iconField>
+  </p-card>
+  @if (searchQuery.length && !publications.length) {
+  <p>{{ t("views.publications.list.noResults") }}</p>
+  } @for (publication of publications; track $index) {
+  <p-card
+    [header]="publication.title"
+    [subheader]="getPublicationAuthors(publication).join(', ')"
+  >
+    <ng-template pTemplate="content">
+      {{ publication.reference }}
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <table>
+        <tr>
+          <td>{{ t("views.publications.new.publicationTypes") }}</td>
+          <td>
+            {{ t("enums.PublicationTypes." + publication.type.toString()) }}
+          </td>
+        </tr>
+        <tr>
+          <td>{{ t("views.publications.new.publicationYear") }}</td>
+          <td>{{ publication.year | date : "y" }}</td>
+        </tr>
+        <tr>
+          <td>{{ t("views.publications.new.publicationCategory") }}</td>
+          <td>
+            {{
+              t("enums.PublicationCategory." + publication.category.toString())
+            }}
+          </td>
+        </tr>
+      </table>
+    </ng-template>
+  </p-card>
+  }
+  <div class="card flex justify-content-center">
+    @if (!searchQuery && publications.length) {
+    <p-paginator
+      (onPageChange)="onPaginatorPageChanged($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [showCurrentPageReport]="true"
+    />
+    }
+  </div>
+</ng-container>

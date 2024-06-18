@@ -1,0 +1,182 @@
+<ng-container *transloco="let t">
+  @if (!loading){ @if (researcherInformationModel) {
+  <p-panel
+    [header]="
+      [
+        researcherInformationModel.lastName,
+        researcherInformationModel.firstName,
+        researcherInformationModel.middleName
+      ].join(' ')
+    "
+  >
+    <ng-template pTemplate="content">
+      <div
+        class="badges"
+        *ngIf="researcherInformationModel.pseudonyms.length > 0"
+      >
+        <p>{{ t("views.about.pseudonyms") }}</p>
+        <p-badge
+          *ngFor="let pseudonym of researcherInformationModel.pseudonyms"
+          [value]="pseudonym.shortName"
+          [pTooltip]="
+            [
+              pseudonym.lastName,
+              pseudonym.firstName,
+              pseudonym.middleName
+            ].join(' ')
+          "
+          class="p-mr-2"
+        ></p-badge>
+        <p-button
+          *ngIf="!id"
+          icon="pi pi-plus"
+          size="small"
+          (onClick)="onPseudonymCreateButtonClick()"
+        />
+      </div>
+      <div class="dbprofiles-wrapper">
+        <p-chip
+          pTooltip="ORCID"
+          [label]="
+            researcherInformationModel.orcidUrl ?? t('views.about.undefined')
+          "
+          image="../../../../assets/icons/profile/orcid.svg"
+          alt="ORCID"
+        />
+        <p-chip
+          *ngFor="let profile of researcherInformationModel.profiles"
+          [pTooltip]="
+            t('enums.ScienceDatabaseTypes.' + profile.type.toString())
+          "
+          [label]="profile.internalId"
+          [image]="
+            '../../../../assets/icons/profile/' +
+            getDatabaseIconName(profile.type)
+          "
+        />
+      </div>
+
+      <div>
+        <table class="information">
+          <tr>
+            <td>Researchers Module ID</td>
+            <td>{{ researcherInformationModel.id }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.phoneNumber") }}</td>
+            <td>{{ researcherInformationModel.phoneNumber ?? "-" }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.email") }}</td>
+            <td>{{ researcherInformationModel.email }}</td>
+          </tr>
+          @if (researcherInformationModel.chair) {
+          <tr>
+            <td>{{ t("views.about.faculty") }}</td>
+            <td>{{ researcherInformationModel.chair.facultyTitle }}</td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.chair") }}</td>
+            <td>
+              {{ researcherInformationModel.chair.chairName }} ({{
+                researcherInformationModel.chair.chairAbbreviation
+              }})
+            </td>
+          </tr>
+          }
+          <tr>
+            <td>{{ t("views.about.academicDegree") }}</td>
+            <td>
+              {{
+                "enums.AcademicDegrees." +
+                  researcherInformationModel.academicDegree | transloco
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.posada") }}</td>
+            <td>
+              {{
+                researcherInformationModel.posada ?? t("views.about.undefined")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.stepin") }}</td>
+            <td>
+              {{
+                researcherInformationModel.stepin ?? t("views.about.undefined")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ t("views.about.zvannya") }}</td>
+            <td>
+              {{
+                researcherInformationModel.zvannya ?? t("views.about.undefined")
+              }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </ng-template>
+  </p-panel>
+  } @else { @if(needsRegistration){
+  <h2>Вашого профілю не знайдено у системі</h2>
+  <p>Ви не зможете створювати публікації</p>
+  <div *ngIf="registrationModel">
+    <table>
+      <tr>
+        <td><label for="lastName">Прізвище</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="lastName"
+            [(ngModel)]="registrationModel.lastName"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="firstName">Ім'я</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="firstName"
+            [(ngModel)]="registrationModel.firstName"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="middleName">По-батькові</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="middleName"
+            [(ngModel)]="registrationModel.middleName"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><label for="email">Email</label></td>
+        <td>
+          <input
+            size="30"
+            pInputText
+            id="email"
+            [disabled]="true"
+            [(ngModel)]="registrationModel.email"
+          />
+        </td>
+      </tr>
+    </table>
+    <p><p-button label="Зареєструватся" (onClick)="register()" /></p>
+  </div>
+  } @else {
+  <h1>404. Користувача не знайдено</h1>
+  } } } @else {
+  <app-loading-page></app-loading-page>
+  }
+</ng-container>

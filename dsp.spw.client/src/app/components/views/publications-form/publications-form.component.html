@@ -1,0 +1,476 @@
+<ng-container *transloco="let t">
+  <form [formGroup]="publicationsForm" (ngSubmit)="onSubmit()">
+    <p-panel [header]="t('views.publications.new.title')">
+      <ng-template pTemplate="content">
+        <h4>{{ t("views.publications.new.authors") }}</h4>
+        <div>
+          <table formArrayName="internalAuthors">
+            <tr>
+              <th>{{ t("views.publications.new.author") }}</th>
+              <th>{{ t("views.publications.new.pseudonym") }}</th>
+              <th>
+                <button
+                  type="button"
+                  pButton
+                  [pTooltip]="t('views.publications.new.addAuthor')"
+                  icon="pi pi-plus"
+                  (click)="addNewInternalAuthorFormControl()"
+                ></button>
+              </th>
+            </tr>
+            @for (internalAuthor of
+            publicationsForm.controls.internalAuthors.controls; track
+            internalAuthorIndex; let internalAuthorIndex = $index) {
+            <tr [formGroupName]="internalAuthorIndex">
+              <td>
+                <p-autoComplete
+                  formControlName="author"
+                  [forceSelection]="true"
+                  [suggestions]="foundResearchers"
+                  optionLabel="shortName"
+                  (completeMethod)="onAuthorSearch($event)"
+                  [placeholder]="t('views.publications.new.authorPlaceholder')"
+                  [ngClass]="{
+                    'ng-invalid': isAuthorControlInvalid(),
+                    'ng-dirty': isAuthorControlInvalid()
+                  }"
+                />
+              </td>
+              <td>
+                <p-autoComplete
+                  formControlName="pseudonym"
+                  [forceSelection]="true"
+                  [suggestions]="foundResearcherPseudonyms"
+                  optionLabel="shortName"
+                  (completeMethod)="
+                    onAuthorPseudonymSearch(
+                      publicationsForm.controls.internalAuthors.controls.at(
+                        internalAuthorIndex
+                      )?.controls?.author?.value?.id ?? 0
+                    )
+                  "
+                  [placeholder]="
+                    t('views.publications.new.pseudonymPlaceholder')
+                  "
+                  [ngClass]="{
+                    'ng-invalid': isAuthorControlInvalid(),
+                    'ng-dirty': isAuthorControlInvalid()
+                  }"
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  pButton
+                  [pTooltip]="t('views.publications.new.deleteAuthor')"
+                  icon="pi pi-trash"
+                  (click)="deleteInternalAuthorFormControl(internalAuthorIndex)"
+                ></button>
+              </td>
+            </tr>
+            }
+          </table>
+          <p-table [styleClass]="'p-datatable-sm'">
+            <ng-template pTemplate="header"></ng-template>
+            <ng-template pTemplate="body" let-author>
+              <ng-container formArrayName="internalAuthors"></ng-container>
+            </ng-template>
+          </p-table>
+          <p>
+            <p-chips
+              formControlName="externalAuthors"
+              [placeholder]="t('views.publications.new.externalAuthors')"
+              [ngClass]="{
+                'ng-invalid': isAuthorControlInvalid(),
+                'ng-dirty': isAuthorControlInvalid()
+              }"
+            />
+          </p>
+        </div>
+        <h4>{{ t("views.publications.new.information") }}</h4>
+        <div class="input-fields-wrapper">
+          <p-floatLabel
+            ><input
+              pInputText
+              id="title"
+              name="title"
+              formControlName="title"
+              [ngClass]="{
+                'ng-invalid': isControlInvalid('title'),
+                'ng-dirty': isControlDirty('title')
+              }"
+            />
+            <label for="title">{{
+              t("views.publications.new.publicationTitle")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel>
+            <textarea
+              pInputTextarea
+              cols="60"
+              rows="4"
+              required
+              id="dstuReference"
+              name="dstuReference"
+              formControlName="reference"
+              [ngClass]="{
+                'ng-invalid': isControlInvalid('reference'),
+                'ng-dirty': isControlDirty('reference')
+              }"
+            ></textarea>
+            <label for="dstuReference">{{
+              t("views.publications.new.dstuReference")
+            }}</label>
+          </p-floatLabel>
+
+          <p-floatLabel>
+            <p-dropdown
+              required
+              [options]="translatedPublicationTypes"
+              class="p-inputtext-sm"
+              id="publicationType"
+              name="publicationType"
+              formControlName="type"
+              [loading]="translatedPublicationTypes.length < 1"
+              [ngClass]="{
+                'ng-invalid':
+                isControlInvalid('type'),
+                'ng-dirty':
+                isControlDirty('type'),
+              }"
+              ><ng-template pTemplate="selectedItem" let-item>
+                {{ t("enums.PublicationTypes." + item.label) }} </ng-template
+              ><ng-template pTemplate="item" let-item>
+                {{ t("enums.PublicationTypes." + item.label) }}
+              </ng-template></p-dropdown
+            >
+            <label for="publicationType">{{
+              t("views.publications.new.publicationTypes")
+            }}</label>
+          </p-floatLabel>
+          <p-floatLabel
+            ><p-dropdown
+              required
+              [options]="translatedPublicationCategories"
+              class="p-inputtext-sm"
+              id="publicationCategory"
+              name="publicationCategory"
+              formControlName="category"
+              [loading]="translatedPublicationCategories.length < 1"
+              [ngClass]="{
+                'ng-invalid':
+                isControlInvalid('category'),
+                'ng-dirty':
+                  isControlDirty('category'),
+              }"
+              ><ng-template pTemplate="selectedItem" let-item>
+                {{ t("enums.PublicationCategory." + item.label) }} </ng-template
+              ><ng-template pTemplate="item" let-item>
+                {{ t("enums.PublicationCategory." + item.label) }}
+              </ng-template></p-dropdown
+            >
+            <label for="publicationCategory">{{
+              t("views.publications.new.publicationCategory")
+            }}</label></p-floatLabel
+          >
+        </div>
+
+        <h4>{{ t("views.publications.new.properties") }}</h4>
+
+        <div class="input-fields-wrapper vertical">
+          <p-checkbox
+            name="isInternational"
+            [binary]="true"
+            [label]="t('views.publications.new.isInternational')"
+            id="isInternational"
+            formControlName="isInternational"
+          />
+
+          <p-checkbox
+            id="isWithStudent"
+            name="isWithStudent"
+            formControlName="isWithStudent"
+            [binary]="true"
+            [label]="t('views.publications.new.isWithStudent')"
+          />
+        </div>
+
+        <div class="input-fields-wrapper">
+          <p-floatLabel>
+            <p-calendar
+              class="p-inputtext-sm"
+              name="publicationYear"
+              id="publicationYear"
+              formControlName="year"
+              [dateFormat]="'yy'"
+              [iconDisplay]="'input'"
+              [showIcon]="true"
+              [readonlyInput]="true"
+              [showButtonBar]="true"
+              [maxDate]="currentDate"
+              view="year"
+              [ngClass]="{
+                'ng-invalid':
+                isControlInvalid('year'),
+                'ng-dirty':
+                  isControlDirty('year'),
+              }"
+            />
+            <label for="publicationYear">{{
+              t("views.publications.new.publicationYear")
+            }}</label> </p-floatLabel
+          ><p-floatLabel
+            ><p-inputNumber
+              class="p-inputtext-sm"
+              id="totalPages"
+              name="totalPages"
+              formControlName="pages"
+              [min]="0"
+              [max]="100000"
+            /><label for="totalPages">{{
+              t("views.publications.new.totalPages")
+            }}</label></p-floatLabel
+          >
+
+          <p-floatLabel>
+            <p-inputNumber
+              class="p-inputtext-sm"
+              id="pagesAuthor"
+              name="pagesAuthor"
+              formControlName="pagesAuthor"
+              [min]="0"
+              [max]="100000"
+            /><label for="pagesAuthor">{{
+              t("views.publications.new.authorPages")
+            }}</label></p-floatLabel
+          >
+        </div>
+        <div
+          class="input-fields-wrapper"
+          *ngIf="
+            publicationsForm.controls.type.value === publicationTypes.Theses
+          "
+        >
+          <p-floatLabel>
+            <p-inputNumber
+              class="p-inputtext-sm"
+              id="pageFirst"
+              name="pageFirst"
+              formControlName="pageFirst"
+              [min]="0"
+              [max]="100000"
+            />
+            <label for="pageFirst">{{
+              t("views.publications.new.pageFirst")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel>
+            <p-inputNumber
+              class="p-inputtext-sm"
+              id="pageLast"
+              name="pageLast"
+              formControlName="pageLast"
+              [min]="0"
+              [max]="100000"
+            />
+            <label for="pageLast">{{
+              t("views.publications.new.pageLast")
+            }}</label></p-floatLabel
+          >
+
+          <p-floatLabel>
+            <input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="conferenceName"
+              name="conferenceName"
+              formControlName="conferenceName"
+            />
+            <label for="conferenceName">{{
+              t("views.publications.new.conferenceName")
+            }}</label>
+          </p-floatLabel>
+
+          <p-floatLabel
+            ><p-calendar
+              class="p-inputtext-sm"
+              selectionMode="range"
+              [dateFormat]="'dd.mm.yy'"
+              [iconDisplay]="'input'"
+              [showIcon]="true"
+              [readonlyInput]="true"
+              [showButtonBar]="true"
+              [maxDate]="currentDate"
+              id="conferenceDates"
+              name="conferenceDates"
+              formControlName="conferenceDates"
+              [firstDayOfWeek]="1"
+            /><label>{{
+              t("views.publications.new.conferenceDates")
+            }}</label></p-floatLabel
+          >
+
+          <p-floatLabel *ngIf="publicationsForm.controls.isInternational.value"
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="conferenceCountry"
+              name="conferenceCountry"
+              formControlName="conferenceCountry"
+            /><label for="conferenceCountry">{{
+              t("views.publications.new.conferenceCountry")
+            }}</label></p-floatLabel
+          >
+
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="conferenceCity"
+              name="conferenceCity"
+              formControlName="conferenceCity"
+            /><label for="conferenceCity">{{
+              t("views.publications.new.conferenceCity")
+            }}</label></p-floatLabel
+          >
+        </div>
+        <div
+          class="input-fields-wrapper"
+          *ngIf="
+            publicationsForm.controls.type.value === publicationTypes.Article ||
+            publicationsForm.controls.type.value ===
+              publicationTypes.MethodicalManual ||
+            publicationsForm.controls.type.value ===
+              publicationTypes.StudyMethodicalManual
+          "
+        >
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="magazineName"
+              name="magazineName"
+              formControlName="magazineName"
+            /><label for="magazineName">{{
+              t("views.publications.new.magazineName")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="magazineIssue"
+              name="magazineIssue"
+              formControlName="magazineIssue"
+            /><label for="magazineIssue">{{
+              t("views.publications.new.magazineIssue")
+            }}</label></p-floatLabel
+          >
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="magazineNumber"
+              name="magazineNumber"
+              formControlName="magazineNumber"
+            />
+            <label>{{
+              t("views.publications.new.magazineNumber")
+            }}</label></p-floatLabel
+          >
+
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="printingInfo"
+              name="printingInfo"
+              formControlName="publishingName"
+            /><label for="printingInfo">{{
+              t("views.publications.new.printingInfo")
+            }}</label></p-floatLabel
+          >
+        </div>
+        <h4>{{ t("views.publications.new.metadata") }}</h4>
+        <div class="input-fields-wrapper">
+          <p-floatLabel
+            ><input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="isbn"
+              name="isbn"
+              formControlName="isbn"
+            /><label for="isbn">ISBN</label></p-floatLabel
+          >
+          <p-floatLabel>
+            <input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="issn"
+              name="issn"
+              formControlName="issn"
+            />
+            <label for="issn">ISSN</label>
+          </p-floatLabel>
+          <p-floatLabel>
+            <input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="doi"
+              name="doi"
+              formControlName="doi"
+            />
+            <label for="doi">DOI</label>
+          </p-floatLabel>
+          <p-floatLabel>
+            <input
+              class="p-inputtext-sm"
+              pInputText
+              type="text"
+              id="url"
+              name="url"
+              formControlName="url"
+            />
+            <label for="url">URL</label>
+          </p-floatLabel>
+        </div></ng-template
+      >
+      <ng-template pTemplate="footer"
+        ><button
+          type="submit"
+          pButton
+          [label]="t('views.publications.new.addPublication')"
+        ></button
+      ></ng-template>
+    </p-panel>
+    <br />
+    <p-panel [header]="t('views.publications.new.usefullLinks')">
+      <ul>
+        <li>
+          <a
+            target="_blank"
+            href="https://www.grafiati.com/uk/blogs/dstu-8302-2015-referencing-generator/"
+            >{{ t("views.publications.new.tips.dstuReference") }}</a
+          >
+        </li>
+        <li>
+          <a
+            target="_blank"
+            href="https://nauka.gov.ua/information/naukovi-publikatsii-v-zhurnalakh-iaki-vkhodiat-do-katehorii-a-b/"
+            >{{ t("views.publications.new.tips.publicationCategory") }}</a
+          >
+        </li>
+      </ul>
+    </p-panel>
+  </form>
+</ng-container>

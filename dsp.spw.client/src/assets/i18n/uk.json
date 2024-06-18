@@ -1,0 +1,152 @@
+{
+  "test": "Привіт, світ",
+  "views": {
+    "layout": {
+      "aside": {
+        "aboutme": "Про мене",
+        "researchers": "НПП",
+        "publications": "Публікації",
+        "newpublication": "Нова публікація",
+        "reports": "Звіти",
+        "disciplines": "Дисципліни"
+      }
+    },
+    "login": {
+      "signin": {
+        "microsoft": "Увійти за допомогою Microsoft"
+      },
+      "description": "Цей модуль дозволяє зручно вести облік публікацій та формувати звіти (інформаційні довідки, список публікацій тощо)"
+    },
+    "about": {
+      "avatar": "Аватар",
+      "undefined": "Не вказано",
+      "phoneNumber": "Телефон",
+      "email": "Пошта",
+      "academicDegree": "Академічний рівень",
+      "posada": "Посада",
+      "stepin": "Степінь",
+      "zvannya": "Звання",
+      "faculty": "Факультет",
+      "chair": "Кафедра",
+      "pseudonyms": "Псевдоніми:"
+    },
+    "researchers": {
+      "fullName": "ПІБ",
+      "email": "Пошта",
+      "chair": "Кафедра",
+      "faculty": "Факультет",
+      "profile": "Профіль"
+    },
+    "publications": {
+      "list": {
+        "searchPlaceholder": "Пошук",
+        "noResults": "Результатів не знайдено"
+      },
+      "new": {
+        "addPublication": "Створити публікацію",
+        "title": "Нова публікація",
+        "publicationTitle": "Назва публікації",
+        "internalAuthors": "НПП, зо зареєстровані у системі",
+        "externalAuthors": "Незареєстровані автори",
+        "deleteAuthor": "Видалити автора",
+        "addAuthor": "Додати автора",
+        "authors": "Автори",
+        "author": "Автор",
+        "authorPlaceholder": "Іваненко Марія Петрівна",
+        "pseudonym": "Псевдонім",
+        "pseudonymPlaceholder": "Ivanenko M.P.",
+        "dstuReference": "Рядок цитування згідно ДСТУ 8302:2015",
+        "publicationTypes": "Тип публікації",
+        "publicationCategory": "Категорія публікації",
+        "properties": "Властивості",
+        "isInternational": "Міжнародна публікація",
+        "isWithStudent": "Публікація зі студентом",
+        "isConferenceInformation": "Додати інформацію про конференцію / журнал",
+        "publicationYear": "Рік публікації",
+        "totalPages": "Кількість сторінок (загальна)",
+        "authorPages": "Кількість сторінок (авторський доробок)",
+        "publicationPages": "Сторінки публікації",
+        "pageFirst": "Початкова сторінка",
+        "pageLast": "Кінцева сторінка",
+        "conferenceDates": "Дати конференції",
+        "conferenceCity": "Місто конференції",
+        "conferenceCountry": "Країна конференції",
+        "conferenceName": "Назва конференції",
+        "magazineIssue": "Випуск журналу",
+        "magazineNumber": "Номер журналу",
+        "magazineName": "Назва журналу",
+        "printingInfo": "Видавництво",
+        "metadata": "Метаданні",
+        "usefullLinks": "Корисні посилання",
+        "information": "Інформація",
+        "tips": {
+          "dstuReference": "Як оформити цитування згідно ДСТУ 8302:2015 «Інформація та документація. Бібліографічне посилання. Загальні положення та правила складання»?",
+          "publicationCategory": "Як визначити категорію публікації (А,Б,В)?"
+        },
+        "messages": {
+          "successSubmit": "Публікацію створено"
+        }
+      }
+    }
+  },
+  "enums": {
+    "ScienceDatabaseTypes": {
+      "Scopus": "Scopus",
+      "WebOfScience": "WebOfScience",
+      "GoogleAcademy": "Google Scholar",
+      "1": "Scopus",
+      "2": "WebOfScience",
+      "3": "Google Scholar"
+    },
+    "AcademicDegrees": {
+      "0": "Не встановлений",
+      "1": "Студент",
+      "2": "Асистент",
+      "3": "Доцент",
+      "4": "Старший викладач",
+      "5": "Викладач",
+      "6": "Професор"
+    },
+    "HighEducationLevels": {
+      "Bachelor": "Б",
+      "Master": "М",
+      "DoctorOfPhilosophy": "ДФ"
+    },
+    "PublicationCategory": {
+      "A": "Категорія А (Scopus, Web of Science)",
+      "B": "Категорія Б (Фахове)",
+      "C": "Категорія В (нефахове)",
+      "1": "Категорія А (Scopus, Web of Science)",
+      "2": "Категорія Б (Фахове)",
+      "3": "Категорія В (нефахове)"
+    },
+    "PublicationTypes": {
+      "Article": "Стаття у журналі",
+      "Theses": "Тези конференції",
+      "MethodicalManual": "Методичний посібник",
+      "StudyMethodicalManual": "Навчально-методичний посібник",
+      "Patent": "Патент",
+      "Note": "Замітка",
+      "1": "Стаття у журналі",
+      "2": "Тези конференції",
+      "3": "Методичний посібник",
+      "4": "Навчально-методичний посібник",
+      "5": "Патент",
+      "6": "Замітка"
+    }
+  },
+  "messages": {
+    "errors": {
+      "unhandled": "Необроблена помилка",
+      "network": "Помилка мережі",
+      "badrequest": "Поганий запит",
+      "validation": "Помилка"
+    },
+    "warn": {
+      "unsavedChanges": {
+        "title": "Зміни не збережено",
+        "description": "Ви дійсно хочете покинути форму"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<div>
+  <p><strong>First Name: </strong> {{ profile.givenName }}</p>
+  <p><strong>Last Name: </strong> {{ profile.surname }}</p>
+  <p><strong>Email: </strong> {{ profile.userPrincipalName }}</p>
+  <p><strong>Id: </strong> {{ profile.id }}</p>
+  <app-test-api-call></app-test-api-call>
+  <p-avatar
+    *ngIf="profile"
+    styleClass="mr-2"
+    [label]="profile.userPrincipalName![0].toString()"
+    size="xlarge"
+    [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }"
+    ><img [src]="image" alt="r" />
+  </p-avatar>
+</div>

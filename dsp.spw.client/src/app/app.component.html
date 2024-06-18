@@ -1,0 +1,14 @@
+@if (loginDisplay) {
+<app-header></app-header>
+<div class="page">
+  <app-aside></app-aside>
+  <main>
+    <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+    <router-outlet *ngIf="!isIframe"></router-outlet>
+  </main>
+</div>
+} @else {
+<app-login-page></app-login-page>
+}
+<p-toast />
+<p-confirmDialog />

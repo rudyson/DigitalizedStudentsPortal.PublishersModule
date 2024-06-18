@@ -1,0 +1,16 @@
+<div class="login-page" *transloco="let t">
+  <div class="login-page-container">
+    <div class="login-page-logo">
+      <img src="./../../../../assets/new-logo.svg" alt="Logo" width="150" />
+    </div>
+    <p class="login-page-description">
+      {{ t("views.login.description") }}
+    </p>
+    <button type="button" (click)="loginWithMicrosoft()" class="sign-in-button">
+      <img
+        src="./../../../../assets/icons/login/ms-symbollockup_mssymbol_19.svg"
+        alt="Sign in with Microsoft"
+      /><span>{{ t("views.login.signin.microsoft") }}</span>
+    </button>
+  </div>
+</div>
