@@ -8,14 +8,17 @@
   flex-direction: row;
   justify-content: space-between;
   box-sizing: border-box;
-  &-left {
-  }
-  &-right {
-  }
   &-avatar {
     aspect-ratio: 1/1;
     height: 100%;
     overflow: hidden;
+    padding: 2px;
+    img {
+      aspect-ratio: 1/1;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 50%;
+    }
   }
   &-logo {
     width: max-content;
@@ -31,6 +34,7 @@
   &-userprofile {
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
     gap: 8px;
     color: white;

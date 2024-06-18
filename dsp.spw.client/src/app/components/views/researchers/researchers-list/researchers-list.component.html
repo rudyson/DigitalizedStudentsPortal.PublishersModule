@@ -1,0 +1,49 @@
+<ng-container *transloco="let t">
+  <p-table
+    [value]="researchers"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="rows"
+    [first]="first"
+    [totalRecords]="totalRecords"
+    (onPage)="onPageChanged($event)"
+    [lazy]="true"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ t("views.researchers.fullName") }}</th>
+        <th>{{ t("views.researchers.email") }}</th>
+        <th>{{ t("views.researchers.chair") }}</th>
+        <th>{{ t("views.researchers.profile") }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-researcher>
+      <tr>
+        <td>
+          {{
+            [
+              researcher.lastName,
+              researcher.firstName,
+              researcher.middleName
+            ].join(" ")
+          }}
+        </td>
+        <td>{{ researcher.email }}</td>
+        <td>
+          <ng-container *ngIf="researcher.chair"
+            >{{ researcher.chair.chairAbbreviation }} •
+            {{ researcher.chair.facultyTitle }}</ng-container
+          >
+        </td>
+        <td>
+          <p-button
+            size="small"
+            icon="pi pi-arrow-up-right"
+            [routerLink]="['/researchers/' + researcher.id]"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-container>

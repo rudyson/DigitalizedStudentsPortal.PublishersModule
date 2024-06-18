@@ -1,6 +1,16 @@
 {
   "test": "Hello, world",
   "views": {
+    "layout": {
+      "aside": {
+        "aboutme": "About me",
+        "researchers": "Researchers",
+        "publications": "Publications",
+        "newpublication": "New publication",
+        "reports": "Reports",
+        "disciplines": "Disciplines"
+      }
+    },
     "login": {
       "signin": {
         "microsoft": "Sign in with Microsoft"

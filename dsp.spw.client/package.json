@@ -20,6 +20,7 @@
     "@angular/router": "^17.3.10",
     "@azure/msal-angular": "^3.0.18",
     "@azure/msal-browser": "^3.15.0",
+    "@jsverse/transloco": "^7.4.2",
     "primeicons": "^7.0.0",
     "primeng": "^17.17.0",
     "rxjs": "~7.8.0",

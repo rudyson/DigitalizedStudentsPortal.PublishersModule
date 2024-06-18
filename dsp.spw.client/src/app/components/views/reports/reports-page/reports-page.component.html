@@ -1,0 +1,5 @@
+<p>Натисніть, щоб створити звіт</p>
+<p-button (onClick)="generateSimpleReport()">Створити простий звіт</p-button>
+@if (report) {
+<p><a [href]="getReportUrl()">Завантажити</a></p>
+}

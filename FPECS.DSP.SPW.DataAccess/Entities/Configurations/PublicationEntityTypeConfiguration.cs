@@ -16,5 +16,9 @@ public class PublicationEntityTypeConfiguration : IEntityTypeConfiguration<Publi
         builder.HasMany(e => e.PublicationPublishers)
             .WithOne(e => e.Publication)
             .HasForeignKey(e => e.PublicationId);
+
+        builder.HasMany(e => e.Disciplines)
+            .WithMany(e => e.Publications)
+            .UsingEntity<PublicationDiscipline>();
     }
 }

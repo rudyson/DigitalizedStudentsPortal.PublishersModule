@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FPECS.DSP.SPW.DataAccess.Entities;
+﻿namespace FPECS.DSP.SPW.DataAccess.Entities;
 public class ResearcherPseudonym
 {
     public required long Id { get; set; }

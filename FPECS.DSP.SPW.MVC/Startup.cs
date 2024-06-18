@@ -1,15 +1,8 @@
-﻿using System.Net.Http.Headers;
-using System.Text.Json;
-using FPECS.DSP.SPW.Business;
+﻿using FPECS.DSP.SPW.Business;
 using FPECS.DSP.SPW.MVC.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Graph;
-using Microsoft.Identity.Client;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
+using System.Text.Json;
 
 namespace FPECS.DSP.SPW.MVC;
 
@@ -43,7 +36,7 @@ public class Startup(IConfiguration configuration)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials()
-                        .WithOrigins("http://localhost:4200", "https://localhost:4200","http://localhost:4200/", "https://localhost:4200/");
+                        .WithOrigins("http://localhost:4200", "https://localhost:4200", "http://localhost:4200/", "https://localhost:4200/");
                 });
             options.AddPolicy("AzureADPolicy",
                 builder =>
@@ -88,6 +81,8 @@ public class Startup(IConfiguration configuration)
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseStaticFiles();
 
         app.UseEndpoints(endpoints =>
         {

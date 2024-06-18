@@ -54,6 +54,30 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                     b.ToTable("chairs", (string)null);
                 });
 
+            modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.Discipline", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer")
+                        .HasColumnName("level");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_disciplines");
+
+                    b.ToTable("disciplines", (string)null);
+                });
+
             modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.Faculty", b =>
                 {
                     b.Property<long>("Id")
@@ -89,9 +113,41 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("category");
 
+                    b.Property<string>("ConferenceCity")
+                        .HasColumnType("text")
+                        .HasColumnName("conference_city");
+
+                    b.Property<string>("ConferenceCountry")
+                        .HasColumnType("text")
+                        .HasColumnName("conference_country");
+
+                    b.Property<DateTime?>("ConferenceEndDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("conference_end_date");
+
+                    b.Property<string>("ConferenceName")
+                        .HasColumnType("text")
+                        .HasColumnName("conference_name");
+
+                    b.Property<DateTime?>("ConferenceStartDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("conference_start_date");
+
+                    b.Property<int?>("DatabaseType")
+                        .HasColumnType("integer")
+                        .HasColumnName("database_type");
+
                     b.Property<string>("Doi")
                         .HasColumnType("text")
                         .HasColumnName("doi");
+
+                    b.Property<bool>("IsInternational")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_international");
+
+                    b.Property<bool>("IsWithStudent")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_with_student");
 
                     b.Property<string>("Isbn")
                         .HasColumnType("text")
@@ -101,6 +157,26 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("text")
                         .HasColumnName("issn");
 
+                    b.Property<string>("MagazineIssue")
+                        .HasColumnType("text")
+                        .HasColumnName("magazine_issue");
+
+                    b.Property<string>("MagazineName")
+                        .HasColumnType("text")
+                        .HasColumnName("magazine_name");
+
+                    b.Property<string>("MagazineNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("magazine_number");
+
+                    b.Property<short?>("PageFirst")
+                        .HasColumnType("smallint")
+                        .HasColumnName("page_first");
+
+                    b.Property<short?>("PageLast")
+                        .HasColumnType("smallint")
+                        .HasColumnName("page_last");
+
                     b.Property<short?>("Pages")
                         .HasColumnType("smallint")
                         .HasColumnName("pages");
@@ -109,13 +185,14 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("pages_author");
 
-                    b.Property<string>("PublicationOriginSource")
+                    b.Property<string>("PublishingName")
                         .HasColumnType("text")
-                        .HasColumnName("publication_origin_source");
+                        .HasColumnName("publishing_name");
 
-                    b.Property<string>("PublicationOriginSourceUrl")
+                    b.Property<string>("Reference")
+                        .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("publication_origin_source_url");
+                        .HasColumnName("reference");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -126,10 +203,64 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("type");
 
+                    b.Property<string>("Url")
+                        .HasColumnType("text")
+                        .HasColumnName("url");
+
+                    b.Property<DateOnly>("Year")
+                        .HasColumnType("date")
+                        .HasColumnName("year");
+
                     b.HasKey("Id")
                         .HasName("pk_publications");
 
                     b.ToTable("publications", (string)null);
+                });
+
+            modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.PublicationDiscipline", b =>
+                {
+                    b.Property<long>("DisciplineId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("discipline_id");
+
+                    b.Property<long>("PublicationId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("publication_id");
+
+                    b.HasKey("DisciplineId", "PublicationId")
+                        .HasName("pk_publications_disciplines");
+
+                    b.HasIndex("PublicationId")
+                        .HasDatabaseName("ix_publications_disciplines_publication_id");
+
+                    b.ToTable("publications_disciplines", (string)null);
+                });
+
+            modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.PublicationExternalPublisher", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Pseudonym")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("pseudonym");
+
+                    b.Property<long>("PublicationId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("publication_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_publication_external_publishers");
+
+                    b.HasIndex("PublicationId")
+                        .HasDatabaseName("ix_publication_external_publishers_publication_id");
+
+                    b.ToTable("publication_external_publishers", (string)null);
                 });
 
             modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.PublicationPublisher", b =>
@@ -142,15 +273,11 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("publisher_id");
 
-                    b.Property<long>("PseudonymId")
+                    b.Property<long?>("PseudonymId")
                         .HasColumnType("bigint")
                         .HasColumnName("pseudonym_id");
 
-                    b.Property<short?>("PublicationNumber")
-                        .HasColumnType("smallint")
-                        .HasColumnName("publication_number");
-
-                    b.HasKey("PublicationId", "PublisherId", "PseudonymId")
+                    b.HasKey("PublicationId", "PublisherId")
                         .HasName("pk_publications_publishers");
 
                     b.HasIndex("PseudonymId")
@@ -312,13 +439,44 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
                     b.Navigation("Faculty");
                 });
 
+            modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.PublicationDiscipline", b =>
+                {
+                    b.HasOne("FPECS.DSP.SPW.DataAccess.Entities.Discipline", "Discipline")
+                        .WithMany()
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_publications_disciplines_disciplines_discipline_id");
+
+                    b.HasOne("FPECS.DSP.SPW.DataAccess.Entities.Publication", "Publication")
+                        .WithMany()
+                        .HasForeignKey("PublicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_publications_disciplines_publications_publication_id");
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Publication");
+                });
+
+            modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.PublicationExternalPublisher", b =>
+                {
+                    b.HasOne("FPECS.DSP.SPW.DataAccess.Entities.Publication", "Publication")
+                        .WithMany("PublicationExternalPublishers")
+                        .HasForeignKey("PublicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_publication_external_publishers_publications_publication_id");
+
+                    b.Navigation("Publication");
+                });
+
             modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.PublicationPublisher", b =>
                 {
                     b.HasOne("FPECS.DSP.SPW.DataAccess.Entities.ResearcherPseudonym", "Pseudonym")
                         .WithMany()
                         .HasForeignKey("PseudonymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_publications_publishers_researcher_pseudonyms_pseudonym_id");
 
                     b.HasOne("FPECS.DSP.SPW.DataAccess.Entities.Publication", "Publication")
@@ -388,6 +546,8 @@ namespace FPECS.DSP.SPW.DataAccess.Migrations
 
             modelBuilder.Entity("FPECS.DSP.SPW.DataAccess.Entities.Publication", b =>
                 {
+                    b.Navigation("PublicationExternalPublishers");
+
                     b.Navigation("PublicationPublishers");
                 });
 

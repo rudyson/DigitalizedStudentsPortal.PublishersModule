@@ -9,24 +9,30 @@ import { MenuItem } from 'primeng/api';
 export class AsideComponent {
   sideMenuItems: MenuItem[] = [
     {
-      label: 'Home',
-      icon: 'pi pi-home',
-      routerLink: '',
-    },
-    {
-      label: 'About me',
+      label: 'aboutme',
       icon: 'pi pi-user',
-      routerLink: 'about-me',
+      routerLink: 'researchers/me',
     },
     {
-      label: 'Publications',
+      label: 'researchers',
+      icon: 'pi pi-users',
+      routerLink: 'researchers/all',
+    },
+    {
+      label: 'publications',
       icon: 'pi pi-file-check',
+      routerLink: 'publications/all',
     },
     {
-      label: 'Reports',
-      icon: 'pi pi-receipt',
+      label: 'newpublication',
+      icon: 'pi pi-plus',
+      routerLink: 'publications/new',
     },
-    { label: 'Conferences', icon: 'pi pi-briefcase' },
-    { label: 'Science groups', icon: 'pi pi-users' },
+    {
+      label: 'reports',
+      icon: 'pi pi-receipt',
+      routerLink: 'reports',
+    },
+    { label: 'disciplines', icon: 'pi pi-briefcase' },
   ];
 }

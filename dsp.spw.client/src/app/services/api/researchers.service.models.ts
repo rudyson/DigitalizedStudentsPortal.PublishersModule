@@ -1,6 +1,7 @@
 export interface PublisherProfileIdentityModel {
   lastName: string;
   firstName: string;
+  middleName?: string;
   email: string;
 }
 
@@ -26,6 +27,8 @@ export interface ResearcherGetInformationModel {
   zvannya?: string;
   academicDegree: AcademicDegrees;
   stepin?: string;
+
+  chair?: ChairGetInformationModel;
 
   pseudonyms: ResearcherPseudonymModel[];
   profiles: ResearcherProfileModel[];
@@ -53,4 +56,22 @@ export interface ResearcherProfileModel {
 
   internalId?: string;
   url?: string;
+}
+
+export interface ResearcherPseudonymSearchModel {
+  id: number;
+  shortName: string;
+}
+
+export interface ResearcherSearchModel {
+  id: number;
+  shortName: string;
+}
+
+export interface ChairGetInformationModel {
+  chairName: string;
+  chairAbbreviation: string;
+  facultyTitle: string;
+  chairId: number;
+  facultyId: number;
 }

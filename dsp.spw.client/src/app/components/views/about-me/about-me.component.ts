@@ -1,6 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ResearchersService } from 'src/app/services/api/researchers.service';
 import {
+  PublisherProfileIdentityModel,
   ResearcherGetInformationModel,
   ScienceDatabaseTypes,
 } from 'src/app/services/api/researchers.service.models';
@@ -14,29 +17,60 @@ import { MicrosoftGraphService } from 'src/app/services/microsoft/microsoft-grap
 export class AboutMeComponent implements OnInit {
   researcherInformationModel?: ResearcherGetInformationModel;
   profileAvatar: string = '';
+  id: string | null = null;
+  loading: boolean = true;
+  needsRegistration: boolean = false;
+  registrationModel?: PublisherProfileIdentityModel;
 
   constructor(
     private researchersService: ResearchersService,
-    private microsoftGraphService: MicrosoftGraphService
-  ) {}
+    private microsoftGraphService: MicrosoftGraphService,
+    private route: ActivatedRoute
+  ) {
+    this.id = this.route.snapshot.paramMap.get('id');
+  }
+
+  loadMyInfo() {
+    this.loading = true;
+    this.researchersService
+      .getMyInfo()
+      .then((response) => {
+        if (response.data) {
+          this.researcherInformationModel = response.data;
+        }
+      })
+      .catch((error: HttpErrorResponse) => {
+        this.loading = false;
+        if (error.status === 404) {
+          this.needsRegistration = true;
+          this.getGraphInfo();
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  loadInfoById() {
+    this.loading = true;
+    this.researchersService
+      .getInfoById(Number(this.id))
+      .then((response) => {
+        if (response.data) {
+          this.researcherInformationModel = response.data;
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
 
   ngOnInit(): void {
-    /* TODO: Create account
-    this.microsoftGraphService.getMe().subscribe((graphProfile) => {
-      let model: PublisherProfileIdentityModel = {
-        firstName: graphProfile.givenName,
-        lastName: graphProfile.surname,
-        email: graphProfile.mail!,
-      };
-      this.researchersService
-        .getOrCreateInfo(model)
-        .subscribe((moduleProfile) => {
-          this.profile = moduleProfile;
-        });
-    }); */
-    this.researchersService.getInfo().subscribe((moduleProfile) => {
-      this.researcherInformationModel = moduleProfile;
-    });
+    if (this.id) {
+      this.loadInfoById();
+    } else {
+      this.loadMyInfo();
+    }
   }
 
   getDatabaseIconName(type: ScienceDatabaseTypes): string {
@@ -56,5 +90,28 @@ export class AboutMeComponent implements OnInit {
         break;
     }
     return fileName;
+  }
+
+  getGraphInfo() {
+    this.microsoftGraphService.getMe().subscribe((graphProfile) => {
+      this.registrationModel = {
+        firstName: graphProfile.givenName,
+        lastName: graphProfile.surname,
+        email: graphProfile.mail!,
+      };
+    });
+  }
+  register() {
+    if (this.registrationModel) {
+      this.researchersService
+        .getOrCreateInfo(this.registrationModel)
+        .then((response) => {
+          window.location.reload();
+        });
+    }
+  }
+
+  onPseudonymCreateButtonClick() {
+    throw new Error('Method not implemented.');
   }
 }

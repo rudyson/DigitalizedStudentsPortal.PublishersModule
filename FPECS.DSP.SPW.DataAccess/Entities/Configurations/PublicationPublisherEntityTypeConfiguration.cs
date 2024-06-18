@@ -8,7 +8,7 @@ public class PublicationPublisherEntityTypeConfiguration : IEntityTypeConfigurat
     public void Configure(EntityTypeBuilder<PublicationPublisher> builder)
     {
         builder.ToTable("publications_publishers");
-        builder.HasKey(e => new { e.PublicationId, e.PublisherId, e.PseudonymId });
+        builder.HasKey(e => new { e.PublicationId, e.PublisherId });
 
         builder.HasOne(e => e.Publication)
             .WithMany(e => e.PublicationPublishers)

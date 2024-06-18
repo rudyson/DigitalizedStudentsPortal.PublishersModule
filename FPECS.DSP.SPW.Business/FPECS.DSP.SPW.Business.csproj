@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.2" />
+    <PackageReference Include="FluentValidation" Version="11.9.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.Async" Version="2.0.1" />
     <PackageReference Include="Mapster.Core" Version="1.2.1" />
@@ -18,9 +17,11 @@
     <PackageReference Include="Mapster.EFCore" Version="5.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="SharpGrip.FluentValidation.AutoValidation.Mvc" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FPECS.DSP.SPW.Common\FPECS.DSP.SPW.Common.csproj" />
     <ProjectReference Include="..\FPECS.DSP.SPW.DataAccess\FPECS.DSP.SPW.DataAccess.csproj" />
   </ItemGroup>
 

@@ -16,11 +16,34 @@ import { ChipModule } from 'primeng/chip';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ChipsModule } from 'primeng/chips';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FieldsetModule } from 'primeng/fieldset';
+import { PanelModule } from 'primeng/panel';
+import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PaginatorModule } from 'primeng/paginator';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import {
   IPublicClientApplication,
   PublicClientApplication,
@@ -47,8 +70,13 @@ import { AsideComponent } from './components/layout/aside/aside.component';
 import { AboutMeComponent } from './components/views/about-me/about-me.component';
 import { LoginPageComponent } from './components/layout/login-page/login-page.component';
 import { TranslocoRootModule } from './transloco-root.module';
-
-const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
+import { PublicationsFormComponent } from './components/views/publications-form/publications-form.component';
+import { LoadingPageComponent } from './components/layout/loading-page/loading-page.component';
+import { PublicationsListComponent } from './components/views/publications/publications-list/publications-list.component';
+import { ResearchersListComponent } from './components/views/researchers/researchers-list/researchers-list.component';
+import { ReportsPageComponent } from './components/views/reports/reports-page/reports-page.component';
+import { environment } from 'src/environments/environment';
+import { errorInterceptor } from './interceptors/error.interceptor';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -58,16 +86,12 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
   console.log(message);
 }
 
-const microsoftEntraIdPreferences = {
-  tenantId: '72e42a61-9cee-4b78-8828-29b226163bd7',
-};
-
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
-      clientId: '95e3fcdb-5f1c-4a70-ae15-56e68a9337ed',
-      authority: `https://login.microsoftonline.com/${microsoftEntraIdPreferences.tenantId}`,
-      redirectUri: 'http://localhost:4200/',
+      clientId: environment.microsoft.entraId.clientId,
+      authority: `https://login.microsoftonline.com/${environment.microsoft.entraId.tenantId}`,
+      redirectUri: environment.microsoft.entraId.redirectUri,
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
@@ -85,10 +109,11 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
-  protectedResourceMap.set(GRAPH_ENDPOINT, ['user.read']);
-  protectedResourceMap.set('localhost', [
-    'api://95e3fcdb-5f1c-4a70-ae15-56e68a9337ed/api.scope',
-  ]);
+  protectedResourceMap.set(environment.microsoft.graph, ['user.read']);
+  protectedResourceMap.set(
+    'localhost',
+    environment.microsoft.entraId.exposedApis
+  );
 
   return {
     interactionType: InteractionType.Redirect,
@@ -100,7 +125,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: ['user.read'],
+      scopes: environment.microsoft.entraId.scopes,
     },
   };
 }
@@ -114,11 +139,18 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     TestApiCallComponent,
     AboutMeComponent,
     LoginPageComponent,
+    PublicationsFormComponent,
+    LoadingPageComponent,
+    PublicationsListComponent,
+    ResearchersListComponent,
+    ReportsPageComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
 
     TabMenuModule,
     MenuModule,
@@ -132,17 +164,37 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     IconFieldModule,
     InputIconModule,
     ChipsModule,
+    ProgressSpinnerModule,
+    InputTextModule,
+    InputTextareaModule,
+    DropdownModule,
+    CheckboxModule,
+    FloatLabelModule,
+    FieldsetModule,
+    PanelModule,
+    CalendarModule,
+    TableModule,
+    AutoCompleteModule,
+    InputNumberModule,
+    PaginatorModule,
+    ConfirmDialogModule,
+    ToastModule,
 
-    HttpClientModule,
     MsalModule,
     TranslocoRootModule,
   ],
   providers: [
+    ConfirmationService,
+    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
       multi: true,
     },
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([errorInterceptor])
+    ),
     {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory,

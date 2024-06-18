@@ -12,7 +12,6 @@ import {
   PopupRequest,
   RedirectRequest,
 } from '@azure/msal-browser';
-import { MenuItem } from 'primeng/api';
 import { filter, takeUntil, Subject } from 'rxjs';
 
 @Component({
@@ -21,9 +20,6 @@ import { filter, takeUntil, Subject } from 'rxjs';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  tabMenuItems: MenuItem[] | undefined;
-  sideMenuItems: MenuItem[] | undefined;
-
   title = 'dsp.spw.client';
 
   isIframe = false;
@@ -37,55 +33,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tabMenuItems = [
-      { label: 'Dashboard', icon: 'pi pi-home' },
-      { label: 'Transactions', icon: 'pi pi-chart-line' },
-      { label: 'Products', icon: 'pi pi-list' },
-      { label: 'Messages', icon: 'pi pi-inbox' },
-    ];
-    this.sideMenuItems = [
-      {
-        separator: true,
-      },
-      {
-        label: 'Documents',
-        items: [
-          {
-            label: 'New',
-            icon: 'pi pi-plus',
-            shortcut: '⌘+N',
-          },
-          {
-            label: 'Search',
-            icon: 'pi pi-search',
-            shortcut: '⌘+S',
-          },
-        ],
-      },
-      {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Settings',
-            icon: 'pi pi-cog',
-            shortcut: '⌘+O',
-          },
-          {
-            label: 'Messages',
-            icon: 'pi pi-inbox',
-            badge: '2',
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            shortcut: '⌘+Q',
-          },
-        ],
-      },
-      {
-        separator: true,
-      },
-    ];
     this.isIframe = window !== window.parent && !window.opener;
 
     this.msalBroadcastService.inProgress$

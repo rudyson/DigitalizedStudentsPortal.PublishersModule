@@ -5,14 +5,10 @@
   <div class="header-right">
     <div class="header-userprofile" *ngIf="profile">
       <div class="header-avatar">
-        <p-avatar
-          styleClass="mr-2"
-          [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }"
-          ><img
-            [src]="image"
-            [alt]="profile.userPrincipalName![0].toString().toUpperCase()"
-          />
-        </p-avatar>
+        <img
+          [src]="image"
+          [alt]="profile.userPrincipalName![0].toString().toUpperCase()"
+        />
       </div>
       <div
         class="header-userprofile-info"

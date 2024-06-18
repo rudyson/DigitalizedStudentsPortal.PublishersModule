@@ -6,18 +6,6 @@ import {
   MicrosoftGraphService,
 } from 'src/app/services/microsoft/microsoft-graph.service';
 
-const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
-
-type ProfileType = {
-  givenName?: string;
-  surname?: string;
-  userPrincipalName?: string;
-  id?: string;
-  displayName?: string;
-  jobTitle?: string;
-  email?: string;
-};
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -26,7 +14,6 @@ type ProfileType = {
 export class HeaderComponent implements OnInit {
   profile!: MicrosoftGraphMeResponse;
   image?: SafeUrl;
-  imageUrl: string = '';
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -46,11 +33,9 @@ export class HeaderComponent implements OnInit {
   }
 
   getImageUrl(): void {
-    this.microsoftGraphService.getMePhoto().subscribe((blob: any) => {
+    this.microsoftGraphService.getMePhoto().subscribe((blob: Blob) => {
       let objectURL = URL.createObjectURL(blob);
       this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-      this.imageUrl =
-        this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.image) ?? '';
     });
   }
 
