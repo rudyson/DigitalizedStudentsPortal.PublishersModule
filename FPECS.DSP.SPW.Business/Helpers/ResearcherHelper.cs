@@ -1,9 +1,5 @@
 ﻿using FPECS.DSP.SPW.DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FPECS.DSP.SPW.Business.Helpers;
 public static class ResearcherHelper

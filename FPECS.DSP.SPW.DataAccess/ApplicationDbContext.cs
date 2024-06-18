@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using FPECS.DSP.SPW.DataAccess.Entities;
+﻿using FPECS.DSP.SPW.DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FPECS.DSP.SPW.DataAccess;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

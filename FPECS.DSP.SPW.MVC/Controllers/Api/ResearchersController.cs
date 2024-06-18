@@ -13,6 +13,14 @@ namespace FPECS.DSP.SPW.MVC.Controllers.Api;
 [Route("api/[controller]")]
 public class ResearchersController(IResearcherService researcherService) : ControllerBase
 {
+    [Authorize(Roles = "Manager")]
+    [HttpPost("createAsManager")]
+    public async Task<IActionResult> GetOrCreateAsManager(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default) //new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail)
+    {
+        var mappedUser = await researcherService.GetInformationOnLoginAsync(model, cancellationToken);
+        return mappedUser.WrapToActionResult();
+    }
+
     [HttpPost("create")]
     public async Task<IActionResult> GetOrCreate(PublisherProfileIdentityModel model, CancellationToken cancellationToken = default) //new PublisherProfileIdentityModel(user.Surname, user.GivenName, user.Mail)
     {

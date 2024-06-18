@@ -26,40 +26,50 @@ export class AboutMeComponent implements OnInit {
     private researchersService: ResearchersService,
     private microsoftGraphService: MicrosoftGraphService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.id = this.route.snapshot.paramMap.get('id');
+  }
+
+  loadMyInfo() {
+    this.loading = true;
+    this.researchersService
+      .getMyInfo()
+      .then((response) => {
+        if (response.data) {
+          this.researcherInformationModel = response.data;
+        }
+      })
+      .catch((error: HttpErrorResponse) => {
+        this.loading = false;
+        if (error.status === 404) {
+          this.needsRegistration = true;
+          this.getGraphInfo();
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  loadInfoById() {
+    this.loading = true;
+    this.researchersService
+      .getInfoById(Number(this.id))
+      .then((response) => {
+        if (response.data) {
+          this.researcherInformationModel = response.data;
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
-
     if (this.id) {
-      this.researchersService
-        .getInfoById(Number(this.id))
-        .then((response) => {
-          if (response.data) {
-            this.researcherInformationModel = response.data;
-          }
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.loadInfoById();
     } else {
-      this.researchersService
-        .getMyInfo()
-        .then((response) => {
-          if (response.data) {
-            this.researcherInformationModel = response.data;
-          }
-        })
-        .catch((error: HttpErrorResponse) => {
-          this.loading = false;
-          if (error.status === 404) {
-            this.needsRegistration = true;
-            this.getGraphInfo();
-          }
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.loadMyInfo();
     }
   }
 
@@ -99,5 +109,9 @@ export class AboutMeComponent implements OnInit {
           window.location.reload();
         });
     }
+  }
+
+  onPseudonymCreateButtonClick() {
+    throw new Error('Method not implemented.');
   }
 }

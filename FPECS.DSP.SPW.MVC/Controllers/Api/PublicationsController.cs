@@ -1,7 +1,5 @@
-﻿using FluentValidation;
-using FPECS.DSP.SPW.Business.Models.Publication;
+﻿using FPECS.DSP.SPW.Business.Models.Publication;
 using FPECS.DSP.SPW.Business.Services;
-using FPECS.DSP.SPW.Business.Validators.Publications;
 using FPECS.DSP.SPW.Common.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

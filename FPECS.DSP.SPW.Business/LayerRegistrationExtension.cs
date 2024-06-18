@@ -7,7 +7,6 @@ using Mapster;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
-using System.Globalization;
 
 namespace FPECS.DSP.SPW.Business;
 
@@ -16,6 +15,7 @@ public static class LayerRegistrationExtension
     public static IServiceCollection AddBusinessLayer(this IServiceCollection services, IConfiguration configuration)
     {
         ValidatorOptions.Global.LanguageManager.Enabled = true;
+        // TODO: Бібліотека FluentValidation підтримує переклади українською
         //ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("uk");
         services.AddValidatorsFromAssemblyContaining<PublicationCreateRequestValidator>();
         services.AddFluentValidationAutoValidation(options =>
@@ -32,7 +32,7 @@ public static class LayerRegistrationExtension
         services.AddScoped<IPublicationService, PublicationService>();
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IDisciplineService, DisciplineService>();
-        
+
         services.AddMapster();
         services.RegisterMapsterConfiguration();
         services.UseDataAccessLayer(configuration);

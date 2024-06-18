@@ -27,6 +27,12 @@
           "
           class="p-mr-2"
         ></p-badge>
+        <p-button
+          *ngIf="!id"
+          icon="pi pi-plus"
+          size="small"
+          (onClick)="onPseudonymCreateButtonClick()"
+        />
       </div>
       <div class="dbprofiles-wrapper">
         <p-chip

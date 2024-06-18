@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FPECS.DSP.SPW.Business.Models;
+﻿namespace FPECS.DSP.SPW.Business.Models;
 public class PaginationWrapper<TModel> where TModel : class
 {
     public TModel? Data { get; set; }

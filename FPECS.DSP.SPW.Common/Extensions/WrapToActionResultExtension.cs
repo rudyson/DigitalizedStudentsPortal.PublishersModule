@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using FPECS.DSP.SPW.Common.Responses;
+using System.Net;
 using System.Security;
-using FPECS.DSP.SPW.Common.Responses;
 
 namespace FPECS.DSP.SPW.Common.Extensions;
 

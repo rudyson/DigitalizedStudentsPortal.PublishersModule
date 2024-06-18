@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FPECS.DSP.SPW.Business.Models;
+﻿using FPECS.DSP.SPW.Business.Models;
 using FPECS.DSP.SPW.Business.Models.Publication;
-using FPECS.DSP.SPW.Business.Models.Researcher;
 using FPECS.DSP.SPW.DataAccess;
 using FPECS.DSP.SPW.DataAccess.Entities;
 using Mapster;
@@ -65,7 +59,9 @@ public class PublicationService(ApplicationDbContext context) : IPublicationServ
             .Where(x => EF.Functions
                 .ToTsVector(x.Title + ' ' + x.Reference)
                 .Matches(query))
-            .OrderBy(x => EF.Functions.ToTsVector(x.Title + ' ' + x.Reference).Rank(EF.Functions.PlainToTsQuery(query)));
+            .OrderByDescending(x => 
+                EF.Functions.ToTsVector(x.Title + ' ' + x.Reference)
+                .Rank(EF.Functions.PlainToTsQuery(query)));
 
         var publications = await filtered
             .Take(5)

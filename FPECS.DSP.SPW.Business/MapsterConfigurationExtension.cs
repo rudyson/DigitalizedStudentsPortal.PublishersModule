@@ -1,15 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FPECS.DSP.SPW.Business.Models.Publication;
+﻿using FPECS.DSP.SPW.Business.Models.Publication;
+using FPECS.DSP.SPW.Business.Models.Researcher;
 using FPECS.DSP.SPW.DataAccess.Entities;
 using Mapster;
-using FPECS.DSP.SPW.Business.Models.Researcher;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FPECS.DSP.SPW.Business;
 
@@ -33,7 +26,7 @@ public static class MapsterConfigurationExtension
             .Map(destination => destination.FacultyId, s => s.FacultyId);
 
         TypeAdapterConfig<PublicationCreateRequest, Publication>.NewConfig()
-            .Map(destination => destination.ConferenceStartDate, source => source.ConferenceDates![0],shouldMap => shouldMap.ConferenceDates != null && shouldMap.ConferenceDates.Count > 0)
+            .Map(destination => destination.ConferenceStartDate, source => source.ConferenceDates![0], shouldMap => shouldMap.ConferenceDates != null && shouldMap.ConferenceDates.Count > 0)
             .Map(destination => destination.ConferenceEndDate, source => source.ConferenceDates![1], shouldMap => shouldMap.ConferenceDates != null && shouldMap.ConferenceDates.Count > 1)
             .Map(destination => destination.PublicationExternalPublishers,
                 source => source.ExternalAuthors!

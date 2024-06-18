@@ -1,19 +1,14 @@
-﻿using DocumentFormat.OpenXml.Office2016.Excel;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FPECS.DSP.SPW.Business.Helpers;
 using FPECS.DSP.SPW.DataAccess;
-using FPECS.DSP.SPW.DataAccess.Entities;
+using FPECS.DSP.SPW.DataAccess.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace FPECS.DSP.SPW.Business.Services;
 
+public record InfoReportDocumentRow(int Number,string Name,string WorkType,string InputData,string Volume,string Collaborations);
 public interface IReportService
 {
     Task<string?> GeneratePublicationsListFor5Years(string email, CancellationToken cancellationToken = default);
@@ -43,12 +38,53 @@ public class ReportService(ApplicationDbContext context) : IReportService
         var currentYear = DateOnly.FromDateTime(currentDate);
 
         var publications = await context.Publications.AsNoTracking()
-            .Include(x => x.PublicationPublishers)
+            .Include(x => x.PublicationPublishers!)
+                .ThenInclude(x => x.Pseudonym)
+            .Include(x => x.PublicationExternalPublishers)
             .Where(x
                 => x.PublicationPublishers!.Any(p => p.PublisherId == author.Id)
                    && x.Year >= currentYear.AddYears(-5))
+            .OrderBy(x => x.Year)
             .ToListAsync(cancellationToken);
 
+        var allPublications5YearsCount = publications.Count;
+
+        var publicationsCategoryACount = publications.Where(x => x.Category is PublicationCategory.A).ToList().Count;
+        var publicationsCategoryBCount = publications.Where(x => x.Category is PublicationCategory.B).ToList().Count;
+        var publicationsCategoryCCount = publications.Where(x => x.Category is PublicationCategory.C).ToList().Count;
+
+        var publicationsInternationalCount = publications.Where(x => x.IsInternational).ToList().Count;
+
+        var publicationsManualsCount = publications.Where(x => x.Type is PublicationTypes.MethodicalManual or PublicationTypes.StudyMethodicalManual).ToList().Count;
+
+        var statisticsDictionary = new Dictionary<string, int>
+        {
+            {"Усього публікацій за 5 років", allPublications5YearsCount},
+            {"Публікацій категорії А", publicationsCategoryACount},
+            {"Публікацій категорії Б", publicationsCategoryBCount},
+            {"Публікацій категорії В", publicationsCategoryCCount},
+            {"З них міжнародних публікацій", publicationsInternationalCount},
+            {"Кількість друкованих посібників", publicationsManualsCount}
+        };
+
+        var infoReportRows = new List<InfoReportDocumentRow>();
+
+        var iterator = 0;
+        foreach (var publication in publications)
+        {
+            var authors = new List<string>();
+
+            authors.AddRange(publication.PublicationPublishers!.Where(x => x.PublisherId!= author.Id).Select(x => x.Pseudonym!.ShortName));
+            authors.AddRange(publication.PublicationExternalPublishers!.Select(x => x.Pseudonym));
+
+            infoReportRows.Add(new (
+                ++iterator,
+                publication.Title,
+                GetWorkType(publication.Type),
+                publication.Reference,
+                (publication.PagesAuthor ?? 0).ToString(),
+                string.Join(", ", authors)));
+        }
 
         using var wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document, true);
         MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
@@ -81,14 +117,22 @@ public class ReportService(ApplicationDbContext context) : IReportService
         authorParagraph.Append(authorRun);
         body.Append(authorParagraph);
 
+        iterator = 0;
+
         foreach (var publication in publications)
         {
             Paragraph publicationParagraph = new Paragraph();
             Run publicationRun = new Run();
-            publicationRun.Append(new Text(publication.Reference));
+            publicationRun.Append(new Text($"{++iterator}. {publication.Reference}"));
             publicationParagraph.Append(publicationRun);
             body.Append(publicationParagraph);
         }
+
+        InsertNewLine(body);
+        InsertPublicationsTable(body, infoReportRows);
+
+        InsertNewLine(body);
+        InsertStatistics(statisticsDictionary, body);
 
         SetFontTimesNewRoman(body);
 
@@ -98,9 +142,89 @@ public class ReportService(ApplicationDbContext context) : IReportService
         return fileName;
     }
 
+    private static void InsertPublicationsTable(Body body, List<InfoReportDocumentRow> rows)
+    {
+        Table table = new Table();
+
+        TableProperties tableProperties = new TableProperties(
+            new TableBorders(
+                new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 }
+            )
+        );
+        table.AppendChild(tableProperties);
+
+        TableRow headerRow = new TableRow();
+        List<string> headers = new List<string>
+            {
+                "№ з/п", "Назва", "Характер роботи", "Вихідні дані", "Обсяг (у сторінках) / авторський доробок", "Співавтори"
+            };
+        foreach (string header in headers)
+        {
+            TableCell cell = new TableCell(new Paragraph(new Run(new Text(header))));
+            headerRow.Append(cell);
+        }
+        table.Append(headerRow);
+
+        foreach (var row in rows)
+        {
+            TableRow tableRow = new TableRow();
+
+            tableRow.Append(new TableCell(new Paragraph(new Run(new Text(row.Number.ToString())))));
+            tableRow.Append(new TableCell(new Paragraph(new Run(new Text(row.Name)))));
+            tableRow.Append(new TableCell(new Paragraph(new Run(new Text(row.WorkType)))));
+            tableRow.Append(new TableCell(new Paragraph(new Run(new Text(row.InputData)))));
+            tableRow.Append(new TableCell(new Paragraph(new Run(new Text(row.Volume)))));
+            tableRow.Append(new TableCell(new Paragraph(new Run(new Text(row.Collaborations)))));
+
+            table.Append(tableRow);
+        }
+
+        body.Append(table);
+    }
+
+    private static string GetWorkType(PublicationTypes type)
+    {
+        return type switch
+        {
+            PublicationTypes.Article => "стаття",
+            PublicationTypes.Theses => "тези",
+            PublicationTypes.MethodicalManual => "Навчальний посібник",
+            PublicationTypes.StudyMethodicalManual => "Навчально-методичний посібник",
+            PublicationTypes.Patent => "патент",
+            PublicationTypes.Notes => "замітка",
+            _ => "невідомий",
+        };
+    }
+
     private static string GenerateReportName() => $"report_{Guid.NewGuid()}.docx";
 
-    static void SetFontTimesNewRoman(Body body)
+    private static void InsertNewLine(Body body)
+    {
+        Paragraph publicationParagraph = new Paragraph();
+        Run publicationRun = new Run();
+        publicationRun.Append(new Text(""));
+        publicationParagraph.Append(publicationRun);
+        body.Append(publicationParagraph);
+    }
+
+    private static void InsertStatistics(Dictionary<string, int> statistics, Body body)
+    {
+        foreach (var keyValuePair in statistics)
+        {
+            Paragraph publicationParagraph = new Paragraph();
+            Run publicationRun = new Run();
+            publicationRun.Append(new Text($"{keyValuePair.Key}: {keyValuePair.Value}"));
+            publicationParagraph.Append(publicationRun);
+            body.Append(publicationParagraph);
+        }
+    }
+
+    private static void SetFontTimesNewRoman(Body body)
     {
         foreach (Paragraph paragraph in body.Descendants<Paragraph>())
         {
@@ -114,7 +238,7 @@ public class ReportService(ApplicationDbContext context) : IReportService
                 }
 
                 runProperties.RunFonts = new RunFonts() { Ascii = "Times New Roman" };
-                runProperties.FontSize = new FontSize() { Val = "28" }; // 14 pt = 28 half-point size
+                runProperties.FontSize = new FontSize() { Val = "28" };
             }
         }
     }
